@@ -1,7 +1,10 @@
-### Set port gloabally and call /demo route
+### Set port gloabally and drop and recreate tables
 < {%
     client.global.set("port", "8080")
 %}
+POST http://localhost:{{port}}/api/database/recreate
+
+### Call /demo route
 GET http://localhost:{{port}}/demo
 
 > {%

@@ -2,10 +2,7 @@ package com.example.demo.post
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.r2dbc.core.DatabaseClient
-import org.springframework.r2dbc.core.awaitOneOrNull
-import org.springframework.r2dbc.core.awaitRowsUpdated
-import org.springframework.r2dbc.core.flow
+import org.springframework.r2dbc.core.*
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -48,4 +45,5 @@ class PostRepository(private val databaseClient: DatabaseClient,
             databaseClient.sql("DELETE FROM posts WHERE id = :id")
                     .bind("id", id)
                     .fetch().awaitRowsUpdated()
+
 }
