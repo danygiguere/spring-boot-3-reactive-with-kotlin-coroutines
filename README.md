@@ -8,8 +8,8 @@
   - how to create controllers, dtos, entities, and repositories with Kotlin coroutines
   - how to set up Flyway to manage migrations
   - how to set an exception handler to manage failed validations in a reactive context
-  - how to use input request validations with translations (check the requests.http file for more info)
-  - how to create custom validator
+  - how to return translated validation error messages (check the requests.http file for more info)
+  - how to create custom validators
 
 ### Todo
 - do an async parallel demo (findByIdWithPosts should be async)
