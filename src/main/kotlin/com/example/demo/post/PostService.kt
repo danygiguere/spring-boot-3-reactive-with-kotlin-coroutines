@@ -13,9 +13,6 @@ class PostService(val repository: PostRepository) {
     suspend fun findById(id: Long): PostDto? =
             repository.findById(id)
 
-    suspend fun findByUserId(id: Long): Flow<PostDto>? =
-            repository.findByUserId(id)
-
     suspend fun create(userId: Long, postDto: PostDto): PostDto? =
             repository.create(userId, postDto)
 

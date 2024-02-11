@@ -1,6 +1,5 @@
 package com.example.demo.user
 
-import com.example.demo.post.PostDto
 import com.example.demo.post.PostRepository
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingleOrNull
