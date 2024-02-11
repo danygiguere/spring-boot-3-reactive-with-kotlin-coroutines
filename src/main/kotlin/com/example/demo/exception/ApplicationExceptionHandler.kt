@@ -15,7 +15,7 @@ class ApplicationExceptionHandler {
     companion object: KLogging()
 
     @ExceptionHandler(WebExchangeBindException::class)
-    suspend fun handleWebExchangeBindException(e: WebExchangeBindException): ResponseEntity<Any> {
+    fun handleWebExchangeBindException(e: WebExchangeBindException): ResponseEntity<Any> {
         logger.info("*** WebExchangeBindException: $e")
         val errorMap: MutableMap<String, ArrayList<String>> = HashMap()
         e.bindingResult.fieldErrors
@@ -30,19 +30,19 @@ class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(IllegalStateException::class)
-    suspend fun handleIllegalStateException(e: IllegalStateException): String {
+    fun handleIllegalStateException(e: IllegalStateException): String {
         logger.info("*** IllegalStateException: $e")
         return e.toString()
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    suspend fun handleConstraintViolationException(e: ConstraintViolationException): String {
+    fun handleConstraintViolationException(e: ConstraintViolationException): String {
         logger.info("*** ConstraintViolationException: $e")
         return e.toString()
     }
 
     @ExceptionHandler(ServerWebInputException::class)
-    suspend fun handleServerWebInputException(e: ServerWebInputException): String {
+    fun handleServerWebInputException(e: ServerWebInputException): String {
         logger.info("*** ServerWebInputException: $e")
         return e.toString()
     }

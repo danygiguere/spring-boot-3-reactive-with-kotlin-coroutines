@@ -10,6 +10,7 @@
   - how to set an exception handler to manage failed validations in a reactive context
   - how to return translated validation error messages (check the requests.http file for more info)
   - how to create custom validators
+  - how to do a oneToMany relationship query
 
 ### Todo
 - do an async parallel demo (findByIdWithPosts should be async)

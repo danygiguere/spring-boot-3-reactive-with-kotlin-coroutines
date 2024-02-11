@@ -15,6 +15,7 @@ class H2DatabaseConfiguration {
     fun initializeH2Database(@Qualifier("connectionFactory") connectionFactory: ConnectionFactory): ConnectionFactoryInitializer {
         val initializer = ConnectionFactoryInitializer()
         initializer.setConnectionFactory(connectionFactory)
+        // this line below is necessary because I still haven't figured out how to make flyway work with h2
         initializer.setDatabasePopulator(ResourceDatabasePopulator(ClassPathResource("db/migration/V1_1__create_users_and_posts_tables.sql")))
         return initializer
     }
