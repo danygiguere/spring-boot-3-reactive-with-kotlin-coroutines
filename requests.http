@@ -86,16 +86,17 @@ Accept: application/json
     });
 %}
 
-#### GET User with id 1 with its posts
-#GET http://localhost:{{port}}/users/1/with-posts
-#Accept: application/json
-#
-#> {%
-#    client.test("Request executed successfully", function () {
-#        client.assert(response.status === 200, "Response status is not 200");
-#        client.assert(response.body.username ==="john.doe")
-#    });
-#%}
+#### WIP: GET User with id 1 with its posts
+GET http://localhost:{{port}}/users/1/with-posts
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.username ==="john.doe")
+        // assert contains posts
+    });
+%}
 
 ### Create a Post
 POST http://localhost:{{port}}/posts

@@ -5,6 +5,7 @@ import com.example.demo.validator.IsValidPhoneNumber
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import kotlinx.coroutines.flow.Flow
 
 data class UserDto(
         val id: Long?,
@@ -24,7 +25,7 @@ data class UserDto(
         @get:IsValidPhoneNumber
         val phoneNumber: String,
 
-        var posts: List<PostDto>? = null
+        var posts: Flow<PostDto>? = null
 )
 
 fun UserDto.toEntity(): User = User(

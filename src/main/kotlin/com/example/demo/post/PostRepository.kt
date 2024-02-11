@@ -7,18 +7,24 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class PostRepository(private val databaseClient: DatabaseClient,
-                     private val mapper: PostMapper) {
+                     private val postMapper: PostMapper) {
 
     suspend fun findAll(): Flow<PostDto>? =
             databaseClient.sql("SELECT * FROM posts")
-                    .map(mapper::apply)
+                    .map(postMapper::apply)
                     .flow()
 
     suspend fun findById(id: Long): PostDto? =
             databaseClient.sql("SELECT * FROM posts WHERE id = :id")
                     .bind("id", id)
-                    .map(mapper::apply)
+                    .map(postMapper::apply)
                     .awaitOneOrNull()
+
+    suspend fun findByUserId(userId: Long): Flow<PostDto>? =
+            databaseClient.sql("SELECT * FROM posts WHERE userId = :userId")
+                    .bind("userId", userId)
+                    .map(postMapper::apply)
+                    .flow()
 
     suspend fun create(userId: Long, postDto: PostDto): PostDto? =
             databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
