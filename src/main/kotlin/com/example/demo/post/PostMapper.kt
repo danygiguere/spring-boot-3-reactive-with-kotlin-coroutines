@@ -9,6 +9,7 @@ class PostMapper: BiFunction<Row, Any, PostDto> {
     override fun apply(row: Row, o: Any): PostDto {
         return Post(
                 row.get("id") as Long,
+                row.get("userId") as Long,
                 row.get("title") as String,
                 row.get("description") as String,
         ).toDto()

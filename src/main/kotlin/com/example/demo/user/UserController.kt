@@ -33,6 +33,13 @@ class UserController(private val userService: UserService) {
         else ResponseEntity.notFound().build()
     }
 
+    @GetMapping("/users/{id}/with-posts")
+    suspend fun getByIdWithPosts(@PathVariable id: Long): ResponseEntity<UserDto> {
+        val response = userService.findByIdWithPosts(id)
+        return if (response != null) ResponseEntity.ok(response)
+        else ResponseEntity.notFound().build()
+    }
+
     @PostMapping("/users")
     suspend fun create(@Valid @RequestBody userDto: UserDto): ResponseEntity<UserDto> {
         val response = userService.create(userDto)

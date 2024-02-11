@@ -7,6 +7,9 @@ class UserService(val repository: UserRepository) {
     suspend fun findById(id: Long): UserDto? =
             repository.findById(id)
 
+    suspend fun findByIdWithPosts(id: Long): UserDto? =
+            repository.findByIdWithPosts(id)
+
     suspend fun create(userDto: UserDto): UserDto? =
             repository.create(userDto)
 }

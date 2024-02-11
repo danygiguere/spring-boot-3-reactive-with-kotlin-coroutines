@@ -1,4 +1,4 @@
-# Spring boot reactive with Kotlin coroutines
+# Spring boot 3 reactive with Kotlin coroutines
 
 ### About
 - This project is just a demo or a starting template to work with Spring boot and Kotlin coroutines

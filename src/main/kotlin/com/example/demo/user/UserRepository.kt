@@ -15,12 +15,23 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .map(mapper::apply)
                     .awaitOneOrNull()
 
+    suspend fun findByIdWithPosts(id: Long): UserDto? =
+            databaseClient.sql("""
+                SELECT * FROM users 
+                JOIN posts
+                ON users.id = posts.userId
+                WHERE users.id = :id
+            """.trimIndent())
+                    .bind("id", id)
+                    .map(mapper::apply)
+                    .awaitOneOrNull()
+
     suspend fun create(userDto: UserDto): UserDto? =
-            databaseClient.sql("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
+            databaseClient.sql("INSERT INTO users (username, email, phoneNumber) VALUES (:username, :email, :phoneNumber)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("username", userDto.username)
                     .bind("email", userDto.email)
-                    .bind("password", userDto.password)
+                    .bind("phoneNumber", userDto.phoneNumber)
                     .fetch()
                     .first()
                     .map { row ->

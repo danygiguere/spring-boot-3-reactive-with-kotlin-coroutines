@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size
 data class PostDto(
     val id: Long?,
 
+    var userId: Long,
+
     @get:NotNull()
     @get:NotEmpty()
     @get:Size(min = 6, max = 25, message = "{title.size}")
@@ -18,6 +20,7 @@ data class PostDto(
 )
 
 fun PostDto.toEntity(): Post = Post(
+    userId = userId,
     title = title,
     description = description
 )

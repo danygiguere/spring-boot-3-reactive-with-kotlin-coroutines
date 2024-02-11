@@ -32,7 +32,7 @@ Content-Type: application/json
 {
   "username": "john.doe",
   "email": "john@test.com",
-  "password": "mypassword"
+  "phoneNumber": "555-111-1234"
 }
 
 > {%
@@ -42,14 +42,14 @@ Content-Type: application/json
     });
 %}
 
-### Create a User with a username that will fail validation (will return a 400 with the errors)
+### Create a User with invalid inputs that will fail validation (will return a 400 with the errors)
 POST http://localhost:{{port}}/users
 Content-Type: application/json
 
 {
   "username": "jane",
   "email": "jane@test.com",
-  "password": "mypassword"
+  "phoneNumber": "111-223"
 }
 
 > {%
@@ -58,7 +58,7 @@ Content-Type: application/json
     });
 %}
 
-### Create a User with the Accept-Language header set to French and with a username that will fail validation (will return a 400 with the errors in French)
+### Create a User with the Accept-Language header set to French and with invalid inputs that will fail validation (will return a 400 with the errors in French)
 POST http://localhost:{{port}}/users
 Content-Type: application/json
 Accept-Language: fr
@@ -66,7 +66,7 @@ Accept-Language: fr
 {
   "username": "jane",
   "email": "jane@test.com",
-  "password": "mypassword"
+  "phoneNumber": "111-223"
 }
 
 > {%
@@ -86,11 +86,23 @@ Accept: application/json
     });
 %}
 
+#### GET User with id 1 with its posts
+#GET http://localhost:{{port}}/users/1/with-posts
+#Accept: application/json
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 200, "Response status is not 200");
+#        client.assert(response.body.username ==="john.doe")
+#    });
+#%}
+
 ### Create a Post
 POST http://localhost:{{port}}/posts
 Content-Type: application/json
 
 {
+  "userId": 1,
   "title": "The title",
   "description": "The description"
 }

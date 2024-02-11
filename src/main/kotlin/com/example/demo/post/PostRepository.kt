@@ -20,9 +20,10 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .map(mapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun create(postDto: PostDto): PostDto? =
-            databaseClient.sql("INSERT INTO posts (title, description) VALUES (:title, :description)")
+    suspend fun create(userId: Long, postDto: PostDto): PostDto? =
+            databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
+                    .bind("userId", userId)
                     .bind("title", postDto.title)
                     .bind("description", postDto.description)
                     .fetch()

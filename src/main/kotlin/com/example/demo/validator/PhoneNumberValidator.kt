@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 @MustBeDocumented
 @Constraint(validatedBy = [PhoneNumberValidator::class])
-@Target(AnnotationTarget.FIELD)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class IsValidPhoneNumber(
     val message: String = "{isValidPhoneNumber}",

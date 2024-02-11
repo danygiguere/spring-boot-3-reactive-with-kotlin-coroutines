@@ -7,12 +7,12 @@ data class User(
     @Id var id: Long? = null,
     val username: String,
     val email: String,
-    val password: String
+    val phoneNumber: String
 )
 
 fun User.toDto(): UserDto = UserDto(
     id = id,
     username = username,
     email = email,
-    password = password
+    phoneNumber = phoneNumber
 )
