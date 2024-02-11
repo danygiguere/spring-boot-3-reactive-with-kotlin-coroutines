@@ -1,9 +1,8 @@
 package com.example.demo.user
 
 import com.example.demo.post.PostDto
-import com.example.demo.post.PostMapper
 import com.example.demo.post.PostRepository
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -25,24 +24,9 @@ class UserRepository(private val databaseClient: DatabaseClient,
 
     suspend fun findByIdWithPosts(id: Long): UserDto? {
         val user = findById(id)
-        val posts = postRepository.findByUserId(id)
-        if (posts != null) {
-            return user?.let { it ->
-                UserDto(
-                        it.id,
-                        it.username,
-                        it.email,
-                        it.phoneNumber,
-                        posts.map { post ->
-                            PostDto(
-                                    post.id,
-                                    post.userId,
-                                    post.title,
-                                    post.description
-                            )
-                        }
-                )
-            }
+        val posts = postRepository.findByUserId(id)?.toList()
+        if (posts != null && user != null) {
+            user.copy(posts = posts)
         }
         return user
     }

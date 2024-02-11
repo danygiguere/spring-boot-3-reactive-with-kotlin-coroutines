@@ -1,5 +1,6 @@
 package com.example.demo.post
 
+import com.example.demo.user.UserDto
 import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,9 @@ class PostService(val repository: PostRepository) {
 
     suspend fun findById(id: Long): PostDto? =
             repository.findById(id)
+
+    suspend fun findByUserId(id: Long): Flow<PostDto>? =
+            repository.findByUserId(id)
 
     suspend fun create(userId: Long, postDto: PostDto): PostDto? =
             repository.create(userId, postDto)

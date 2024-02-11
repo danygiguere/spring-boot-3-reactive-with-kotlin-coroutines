@@ -86,18 +86,6 @@ Accept: application/json
     });
 %}
 
-#### WIP: GET User with id 1 with its posts
-GET http://localhost:{{port}}/users/1/with-posts
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username ==="john.doe")
-        // assert contains posts
-    });
-%}
-
 ### Create a Post
 POST http://localhost:{{port}}/posts
 Content-Type: application/json
@@ -112,6 +100,34 @@ Content-Type: application/json
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.body.title ==="The title")
+    });
+%}
+
+### Create another Post
+POST http://localhost:{{port}}/posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "The title",
+  "description": "The description"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.title ==="The title")
+    });
+%}
+
+#### GET User with id 1 with its posts
+GET http://localhost:{{port}}/users/1/with-posts
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.username ==="john.doe")
     });
 %}
 
