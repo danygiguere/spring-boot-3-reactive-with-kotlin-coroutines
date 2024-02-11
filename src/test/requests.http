@@ -91,7 +91,6 @@ POST http://localhost:{{port}}/posts
 Content-Type: application/json
 
 {
-  "userId": 1,
   "title": "The title",
   "description": "The description"
 }
@@ -108,7 +107,6 @@ POST http://localhost:{{port}}/posts
 Content-Type: application/json
 
 {
-  "userId": 1,
   "title": "The title",
   "description": "The description"
 }
