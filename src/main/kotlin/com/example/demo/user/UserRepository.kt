@@ -25,10 +25,7 @@ class UserRepository(private val databaseClient: DatabaseClient,
     suspend fun findByIdWithPosts(id: Long): UserDto? {
         val user = findById(id)
         val posts = postRepository.findByUserId(id)?.toList()
-        if (posts != null && user != null) {
-            user.copy(posts = posts)
-        }
-        return user
+        return user?.copy(posts = posts)
     }
 
     suspend fun create(userDto: UserDto): UserDto? =
