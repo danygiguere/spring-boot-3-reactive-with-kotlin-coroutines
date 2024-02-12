@@ -8,7 +8,7 @@ data class ImageDto(
     val url: String
 )
 
-fun ImageDto.toEntity(): Image = Image(
+fun ImageDto.toEntity(): ImageEntity = ImageEntity(
     postId = postId,
     url = url
 )

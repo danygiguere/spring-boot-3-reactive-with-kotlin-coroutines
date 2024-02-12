@@ -14,11 +14,9 @@
   - how to run suspend functions in parallel with async/await
 
 ### Todo
-- create belongsTo relationships query
-- create Image model
-- set db constraints
-- rename Post to PostEntity
 - create hasManyThrough relationships query
+- create belongsTo relationships query
+- set db constraints
 - create a web client call
 
 - find a way to seed the db (maybe with a cli)

@@ -22,7 +22,7 @@ data class PostDto(
     var images: List<ImageDto>? = emptyList()
 )
 
-fun PostDto.toEntity(): Post = Post(
+fun PostDto.toEntity(): PostEntity = PostEntity(
     userId = userId,
     title = title,
     description = description

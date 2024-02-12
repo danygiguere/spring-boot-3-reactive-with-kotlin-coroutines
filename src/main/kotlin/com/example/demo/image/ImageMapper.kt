@@ -7,7 +7,7 @@ import java.util.function.BiFunction
 @Component
 class ImageMapper: BiFunction<Row, Any, ImageDto> {
     override fun apply(row: Row, o: Any): ImageDto {
-        return Image(
+        return ImageEntity(
                 row.get("id") as Long,
                 row.get("postId") as Long,
                 row.get("url") as String

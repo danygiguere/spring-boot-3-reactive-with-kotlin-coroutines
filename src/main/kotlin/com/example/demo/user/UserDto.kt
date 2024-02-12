@@ -27,7 +27,7 @@ data class UserDto(
         var posts: List<PostDto>? = emptyList()
 )
 
-fun UserDto.toEntity(): User = User(
+fun UserDto.toEntity(): UserEntity = UserEntity(
         username = username,
         email = email,
         phoneNumber = phoneNumber
