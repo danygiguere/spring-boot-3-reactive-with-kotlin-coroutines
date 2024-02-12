@@ -28,4 +28,15 @@ class DatabaseRepository(private val databaseClient: DatabaseClient) {
             description varchar(255) NOT NULL DEFAULT '',
             PRIMARY KEY (id));""").await()
 
+    suspend fun dropImagesTable(): Unit =
+            databaseClient.sql("DROP TABLE images").await()
+
+    suspend fun createImagesTable(): Unit =
+            databaseClient.sql("""CREATE TABLE IF NOT EXISTS images (
+            id bigint NOT NULL AUTO_INCREMENT,
+            postId bigint NOT NULL,
+            url varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (id)
+        );""").await()
+
 }

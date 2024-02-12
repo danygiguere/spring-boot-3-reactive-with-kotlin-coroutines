@@ -16,6 +16,8 @@
 ### Todo
 - create belongsTo relationships query
 - create Image model
+- set db constraints
+- rename Post to PostEntity
 - create hasManyThrough relationships query
 - create a web client call
 

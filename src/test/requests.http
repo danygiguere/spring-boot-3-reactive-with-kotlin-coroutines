@@ -56,7 +56,7 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username ==="john.doe")
+        client.assert(response.body.username === "john.doe")
     });
 %}
 
@@ -100,7 +100,7 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username ==="john.doe")
+        client.assert(response.body.username === "john.doe")
     });
 %}
 
@@ -116,7 +116,7 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.title ==="The title")
+        client.assert(response.body.title === "The title")
     });
 %}
 
@@ -132,7 +132,7 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.title ==="The title")
+        client.assert(response.body.title === "The title")
     });
 %}
 
@@ -143,7 +143,8 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username ==="john.doe")
+        client.assert(response.body.username === "john.doe")
+        client.assert(response.body.posts[0].userId === 1)
     });
 %}
 
@@ -164,7 +165,46 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.title ==="The title")
+        client.assert(response.body.title === "The title")
+    });
+%}
+
+### Create an Image
+POST http://localhost:{{port}}/images
+Content-Type: application/json
+
+{
+  "url": "https://placehold.co/600x400"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.url === "https://placehold.co/600x400")
+    });
+%}
+
+### GET Image with id 1
+GET http://localhost:{{port}}/images/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.postId === 1)
+        client.assert(response.body.url === "https://placehold.co/600x400")
+    });
+%}
+
+### GET Post with id 1 with its images
+GET http://localhost:{{port}}/posts/1/with-images
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.images[0].id === 1)
+        client.assert(response.body.images[0].postId === 1)
     });
 %}
 
@@ -183,13 +223,13 @@ Content-Type: application/json
     });
 %}
 
-### Delete Post with id 1
-DELETE http://localhost:{{port}}/posts/1
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
+#### Delete Post with id 1
+#DELETE http://localhost:{{port}}/posts/1
+#Accept: application/json
+#
+#> {%
+#    client.test("Request executed successfully", function () {
+#        client.assert(response.status === 200, "Response status is not 200");
+#    });
+#%}
 

@@ -17,6 +17,8 @@ class DatabaseHandler(private val databaseRepository: DatabaseRepository) {
         databaseRepository.createUsersTable()
         databaseRepository.dropPostsTable()
         databaseRepository.createPostsTable()
+        databaseRepository.dropImagesTable()
+        databaseRepository.createImagesTable()
         return ServerResponse.noContent().buildAndAwait()
     }
 }
