@@ -6,16 +6,17 @@
 - If you are using IntelliJ Ultimate, you can run the requests.http file (in the test folder) to test all the available routes
 - The app demonstrates:
   - how to create controllers, dtos, entities, and repositories with Kotlin coroutines
-  - how to set up Flyway to manage migrations
+  - how to set up Flyway to manage migrations (it works with mysql but I wasn't able to make it work with h2)
   - how to set an exception handler to manage failed validations in a reactive context
   - how to return translated validation error messages (check the requests.http file for more info)
   - how to create custom validators
   - how to do a oneToMany relationship query
+  - how to run suspend functions in parallel with async/await
 
 ### Todo
-- do an async parallel demo (findByIdWithPosts should be async)
+- create belongsTo relationships query
 - create Image model
-- create belongsTo and hasManyThrough relationships queries
+- create hasManyThrough relationships query
 - create a web client call
 
 - find a way to seed the db (maybe with a cli)

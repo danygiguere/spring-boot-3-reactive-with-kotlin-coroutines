@@ -2,14 +2,11 @@ package com.example.demo.post
 
 import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
-import mu.KLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class PostController(private val postService: PostService) {
-
-    companion object: KLogging()
 
     @GetMapping("/posts")
     suspend fun getAll(): ResponseEntity<Flow<PostDto>?> {

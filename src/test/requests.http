@@ -25,6 +25,24 @@ Accept-Language: fr
     });
 %}
 
+### Call /demo/blocking route
+GET http://localhost:{{port}}/demo/blocking
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Call /demo/async route
+GET http://localhost:{{port}}/demo/async
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
 ### Create a User
 POST http://localhost:{{port}}/users
 Content-Type: application/json
