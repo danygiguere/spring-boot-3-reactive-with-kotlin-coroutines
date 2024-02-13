@@ -1,6 +1,6 @@
-package com.example.demo.user
+package com.example.demo.user.dto
 
-import com.example.demo.post.PostDto
+import com.example.demo.user.UserEntity
 import com.example.demo.validator.IsValidPhoneNumber
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
@@ -23,11 +23,16 @@ data class UserDto(
         @get:NotEmpty()
         @get:IsValidPhoneNumber
         val phoneNumber: String,
-
-        var posts: List<PostDto>? = emptyList()
 )
 
 fun UserDto.toEntity(): UserEntity = UserEntity(
+        username = username,
+        email = email,
+        phoneNumber = phoneNumber
+)
+
+fun UserDto.toUserWithPostsDto(): UserWithPostsDto = UserWithPostsDto(
+        id = id,
         username = username,
         email = email,
         phoneNumber = phoneNumber

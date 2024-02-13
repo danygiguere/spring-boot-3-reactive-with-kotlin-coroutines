@@ -1,6 +1,9 @@
 package com.example.demo.user
 
 import com.example.demo.post.PostRepository
+import com.example.demo.user.dto.UserDto
+import com.example.demo.user.dto.UserWithPostsDto
+import com.example.demo.user.dto.toUserWithPostsDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.toList
@@ -13,10 +16,10 @@ class UserService(val userRepository: UserRepository,
             userRepository.findById(id)
 
     // oneToMany relationship query example
-    suspend fun findByIdWithPosts(id: Long): UserDto? = coroutineScope {
+    suspend fun findByIdWithPosts(id: Long): UserWithPostsDto? = coroutineScope {
         val user = async{findById(id)}
         val posts = async{postRepository.findByUserId(id)?.toList()}
-        return@coroutineScope user.await()?.copy(posts = posts.await())
+        return@coroutineScope user.await()?.toUserWithPostsDto()?.copy(posts = posts.await())
     }
 
     suspend fun create(userDto: UserDto): UserDto? =

@@ -16,8 +16,8 @@
 
 ### Todo
 - reformat mappers to return no relationship when there is none
-- create hasManyThrough relationships query
 - add validation to block users from updating a post that doesn't belong to them
+- create hasManyThrough relationships query
 - set db constraints
 - create a web client call
 - write tests

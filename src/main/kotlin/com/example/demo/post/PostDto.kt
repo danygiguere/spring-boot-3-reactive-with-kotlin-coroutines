@@ -1,7 +1,7 @@
 package com.example.demo.post
 
 import com.example.demo.image.ImageDto
-import com.example.demo.user.UserDto
+import com.example.demo.user.dto.UserDto
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
