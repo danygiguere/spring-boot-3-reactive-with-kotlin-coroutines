@@ -1,10 +1,6 @@
 package com.example.demo.post
 
-import com.example.demo.image.ImageRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
@@ -14,7 +10,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class PostRepository(private val databaseClient: DatabaseClient,
-                     private val imageRepository: ImageRepository,
                      private val postMapper: PostMapper) {
 
     suspend fun findAll(): Flow<PostDto>? =
@@ -27,13 +22,6 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .bind("id", id)
                     .map(postMapper::apply)
                     .awaitOneOrNull()
-
-    // oneToMany relationship query example
-    suspend fun findByIdWithImages(id: Long): PostDto? = coroutineScope {
-        val post = async{findById(id)}
-        val images = async{imageRepository.findByPostId(id)?.toList()}
-        return@coroutineScope post.await()?.copy(images = images.await())
-    }
 
     suspend fun findByUserId(userId: Long): Flow<PostDto>? =
             databaseClient.sql("SELECT * FROM posts WHERE userId = :userId")

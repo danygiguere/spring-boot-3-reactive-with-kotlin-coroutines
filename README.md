@@ -11,12 +11,13 @@
   - how to return translated validation error messages (check the requests.http file for more info)
   - how to create custom validators
   - how to do a oneToMany relationship query
+  - how to do a belongsTo relationship query
   - how to run suspend functions in parallel with async/await
 
 ### Todo
 - reformat mappers to return no relationship when there is none
 - create hasManyThrough relationships query
-- create belongsTo relationships query
+- add validation to block users from updating a post that doesn't belong to them
 - set db constraints
 - create a web client call
 - write tests

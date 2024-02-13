@@ -29,6 +29,13 @@ class PostController(private val postService: PostService) {
         else ResponseEntity.notFound().build()
     }
 
+    @GetMapping("/posts/{id}/with-user")
+    suspend fun getByIdWithUser(@PathVariable id: Long): ResponseEntity<PostDto> {
+        val response = postService.findByIdWithUser(id)
+        return if (response != null) ResponseEntity.ok(response)
+        else ResponseEntity.notFound().build()
+    }
+
     @PostMapping("/posts")
     suspend fun create(@Valid @RequestBody postDto: PostDto): ResponseEntity<PostDto> {
         val userId: Long = 1; // for demo only. The userId needs to be taken from the auth user

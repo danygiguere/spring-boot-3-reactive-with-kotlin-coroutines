@@ -208,6 +208,16 @@ Accept: application/json
     });
 %}
 
+### GET Post with id 1 with the user it belongs to
+GET http://localhost:{{port}}/posts/1/with-user
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
 ### Update Post with id 1
 PUT http://localhost:{{port}}/posts/1
 Content-Type: application/json
