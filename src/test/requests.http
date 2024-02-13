@@ -116,6 +116,7 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.userId === 1)
         client.assert(response.body.title === "The title")
     });
 %}
@@ -132,6 +133,7 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.userId === 1)
         client.assert(response.body.title === "The title")
     });
 %}
@@ -174,6 +176,7 @@ POST http://localhost:{{port}}/images
 Content-Type: application/json
 
 {
+  "postId": 1,
   "url": "https://placehold.co/600x400"
 }
 

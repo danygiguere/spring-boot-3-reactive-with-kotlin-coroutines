@@ -15,7 +15,6 @@
   - how to run suspend functions in parallel with async/await
 
 ### Todo
-- reformat mappers to return no relationship when there is none
 - add validation to block users from updating a post that doesn't belong to them
 - create hasManyThrough relationships query
 - set db constraints

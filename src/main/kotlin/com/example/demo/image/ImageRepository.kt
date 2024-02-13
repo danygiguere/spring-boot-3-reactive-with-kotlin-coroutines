@@ -26,24 +26,24 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .flow()
 
-    suspend fun create(postId: Long, postDto: ImageDto): ImageDto? =
+    suspend fun create(imageDto: ImageDto): ImageDto? =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("postId", postId)
-                    .bind("url", postDto.url)
+                    .bind("postId", imageDto.postId)
+                    .bind("url", imageDto.url)
                     .fetch()
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val postEntity = postDto.toEntity().copy(id = id)
+                        val postEntity = imageDto.toEntity().copy(id = id)
                         postEntity.toDto()
                     }
                     .awaitSingleOrNull()
 
-    suspend fun update(id: Long, postDto: ImageDto): Long =
+    suspend fun update(id: Long, imageDto: ImageDto): Long =
             databaseClient.sql("UPDATE images SET url = :url WHERE id = :id")
                     .bind("id", id)
-                    .bind("url", postDto.url)
+                    .bind("url", imageDto.url)
                     .fetch().awaitRowsUpdated()
 
     suspend fun delete(id: Long): Long =

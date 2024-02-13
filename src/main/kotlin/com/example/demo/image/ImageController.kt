@@ -24,8 +24,7 @@ class ImageController(private val imageService: ImageService) {
 
     @PostMapping("/images")
     suspend fun create(@Valid @RequestBody imageDto: ImageDto): ResponseEntity<ImageDto> {
-        val userId: Long = 1; // for demo only. The userId needs to be taken from the auth user
-        val response = imageService.create(userId, imageDto)
+        val response = imageService.create(imageDto)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }

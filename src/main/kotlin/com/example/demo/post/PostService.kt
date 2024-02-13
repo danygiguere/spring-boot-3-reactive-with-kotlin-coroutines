@@ -35,7 +35,7 @@ class PostService(val postRepository: PostRepository,
     }
 
     suspend fun create(userId: Long, postDto: PostDto): PostDto? =
-            postRepository.create(userId, postDto)
+            postRepository.create(postDto.copy(userId = userId))
 
     suspend fun update(id: Long, postDto: PostDto): Long =
             postRepository.update(id, postDto)
