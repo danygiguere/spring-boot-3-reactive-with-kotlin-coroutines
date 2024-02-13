@@ -1,6 +1,6 @@
 package com.example.demo.user.dto
 
-import com.example.demo.post.PostDto
+import com.example.demo.post.dto.PostDto
 
 data class UserWithPostsDto(
         val id: Long?,

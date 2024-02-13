@@ -1,7 +1,6 @@
-package com.example.demo.post
+package com.example.demo.post.dto
 
-import com.example.demo.image.ImageDto
-import com.example.demo.user.dto.UserDto
+import com.example.demo.post.PostEntity
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -19,13 +18,24 @@ data class PostDto(
     @get:NotEmpty()
     @get:Size(min = 6, max = 25, message = "{description.size}")
     val description: String,
-
-    var images: List<ImageDto>? = emptyList(),
-    var user: UserDto? = null
 )
 
 fun PostDto.toEntity(): PostEntity = PostEntity(
     userId = userId,
     title = title,
     description = description
+)
+
+fun PostDto.toPostWithImagesDto(): PostWithImagesDto = PostWithImagesDto(
+        id = id,
+        userId = userId,
+        title = title,
+        description = description
+)
+
+fun PostDto.toPostWithUserDto(): PostWithUserDto = PostWithUserDto(
+        id = id,
+        userId = userId,
+        title = title,
+        description = description
 )

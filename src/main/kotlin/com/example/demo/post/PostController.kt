@@ -1,5 +1,8 @@
 package com.example.demo.post
 
+import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dto.PostWithImagesDto
+import com.example.demo.post.dto.PostWithUserDto
 import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
@@ -23,14 +26,14 @@ class PostController(private val postService: PostService) {
     }
 
     @GetMapping("/posts/{id}/with-images")
-    suspend fun getByIdWithImages(@PathVariable id: Long): ResponseEntity<PostDto> {
+    suspend fun getByIdWithImages(@PathVariable id: Long): ResponseEntity<PostWithImagesDto> {
         val response = postService.findByIdWithImages(id)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
     @GetMapping("/posts/{id}/with-user")
-    suspend fun getByIdWithUser(@PathVariable id: Long): ResponseEntity<PostDto> {
+    suspend fun getByIdWithUser(@PathVariable id: Long): ResponseEntity<PostWithUserDto> {
         val response = postService.findByIdWithUser(id)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()

@@ -1,6 +1,7 @@
 package com.example.demo.post
 
 import com.example.demo.image.ImageRepository
+import com.example.demo.post.dto.*
 import com.example.demo.user.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -20,17 +21,17 @@ class PostService(val postRepository: PostRepository,
             postRepository.findById(id)
 
     // oneToMany relationship query example
-    suspend fun findByIdWithImages(id: Long): PostDto? = coroutineScope {
+    suspend fun findByIdWithImages(id: Long): PostWithImagesDto? = coroutineScope {
         val post = async{findById(id)}
         val images = async{imageRepository.findByPostId(id)?.toList()}
-        return@coroutineScope post.await()?.copy(images = images.await())
+        return@coroutineScope post.await()?.toPostWithImagesDto()?.copy(images = images.await())
     }
 
     // belongsTo relationship query example
-    suspend fun findByIdWithUser(id: Long): PostDto? = coroutineScope {
+    suspend fun findByIdWithUser(id: Long): PostWithUserDto? = coroutineScope {
         val post = async{findById(id)}
         val user = async{userRepository.findById(id)}
-        return@coroutineScope post.await()?.copy(user = user.await())
+        return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await())
     }
 
     suspend fun create(userId: Long, postDto: PostDto): PostDto? =
