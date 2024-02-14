@@ -15,6 +15,9 @@
   - how to do a hasManyThrough relationship query
   - how to run suspend functions in parallel with async/await
 
+### TLDR 
+- Clone the project, run it (it's set up by default with H2), then go to /test/request.http and run the requests on by one.
+
 ### Todo
 - add validation to block users from updating a post that doesn't belong to them
 - set db constraints
