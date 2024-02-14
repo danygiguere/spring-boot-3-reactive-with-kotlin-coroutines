@@ -25,7 +25,7 @@ class UserService(val userRepository: UserRepository,
     // hasManyThrough relationship query example
     suspend fun findByIdWithImages(id: Long): UserWithImagesDto? = coroutineScope {
         val user = async{findById(id)}
-        val images = async { imageRepository.findByUserIdThroughPosts(id)?.toList() }
+        val images = async {imageRepository.findByUserIdThroughPosts(id)?.toList()}
         return@coroutineScope user.await()?.toUserWithImagesDto()?.copy(images = images.await())
     }
 
