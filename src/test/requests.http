@@ -221,6 +221,19 @@ Accept: application/json
     });
 %}
 
+#### GET User with id 1 with its images (hasManyImagesThroughPosts relationship)
+GET http://localhost:{{port}}/users/1/with-images
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.username === "john.doe")
+        client.assert(response.body.images[0].url === "https://placehold.co/600x400")
+    });
+%}
+
+
 ### Update Post with id 1
 PUT http://localhost:{{port}}/posts/1
 Content-Type: application/json

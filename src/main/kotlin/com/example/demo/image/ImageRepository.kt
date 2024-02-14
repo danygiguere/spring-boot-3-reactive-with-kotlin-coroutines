@@ -26,6 +26,17 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .flow()
 
+    suspend fun findByUserIdThroughPosts(userId: Long): Flow<ImageDto>? =
+            databaseClient.sql("""
+                SELECT images.* FROM images 
+                INNER JOIN posts 
+                ON posts.id = images.postId 
+                WHERE posts.userId IN (:userId);
+            """.trimIndent())
+                    .bind("userId", userId)
+                    .map(imageMapper::apply)
+                    .flow()
+
     suspend fun create(imageDto: ImageDto): ImageDto? =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }

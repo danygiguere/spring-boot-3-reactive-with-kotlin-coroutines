@@ -12,11 +12,11 @@
   - how to create custom validators
   - how to do a oneToMany relationship query
   - how to do a belongsTo relationship query
+  - how to do a hasManyThrough relationship query
   - how to run suspend functions in parallel with async/await
 
 ### Todo
 - add validation to block users from updating a post that doesn't belong to them
-- create hasManyThrough relationships query
 - set db constraints
 - create a web client call
 - write tests

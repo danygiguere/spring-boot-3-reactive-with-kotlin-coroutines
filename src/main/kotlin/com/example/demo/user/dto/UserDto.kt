@@ -37,3 +37,10 @@ fun UserDto.toUserWithPostsDto(): UserWithPostsDto = UserWithPostsDto(
         email = email,
         phoneNumber = phoneNumber
 )
+
+fun UserDto.toUserWithImagesDto(): UserWithImagesDto = UserWithImagesDto(
+        id = id,
+        username = username,
+        email = email,
+        phoneNumber = phoneNumber
+)
