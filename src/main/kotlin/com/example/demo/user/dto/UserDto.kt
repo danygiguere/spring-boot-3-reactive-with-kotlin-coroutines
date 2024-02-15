@@ -2,6 +2,7 @@ package com.example.demo.user.dto
 
 import com.example.demo.user.UserEntity
 import com.example.demo.validator.IsValidPhoneNumber
+import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -16,7 +17,7 @@ data class UserDto(
 
         @get:NotNull()
         @get:NotEmpty()
-        @get:Size(min = 6, max = 25, message = "{email.size}")
+        @get:Email(message = "{email}")
         val email: String,
 
         @get:NotNull()

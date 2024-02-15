@@ -83,7 +83,7 @@ Accept-Language: fr
 
 {
   "username": "jane",
-  "email": "jane@test.com",
+  "email": "invalid_email_address",
   "phoneNumber": "111-223"
 }
 
