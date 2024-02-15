@@ -18,7 +18,7 @@ class DemoControllerTest(@Autowired val webTestClient: WebTestClient) {
                 .expectBody(String::class.java)
                 .returnResult()
 
-        Assertions.assertEquals("Welcome to my Spring Boot Kotlin app", result.responseBody)
+        Assertions.assertEquals("Welcome to my Spring Boot Kotlin appppp", result.responseBody)
     }
 
 }

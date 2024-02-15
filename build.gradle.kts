@@ -36,7 +36,6 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
-	testImplementation("io.mockk:mockk:1.13.9")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 
 }
