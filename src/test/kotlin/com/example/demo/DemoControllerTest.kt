@@ -10,7 +10,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 class DemoControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
-    fun retrieveGreeting() {
+    fun `WHEN demo is requested THEN the welcome message is returned`() {
         val result = webTestClient.get()
                 .uri("/demo")
                 .exchange()
