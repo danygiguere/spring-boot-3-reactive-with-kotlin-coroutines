@@ -43,6 +43,16 @@ GET http://localhost:{{port}}/demo/async
     });
 %}
 
+### Call /demo/webclient route
+GET http://localhost:{{port}}/demo/webclient
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body === "Welcome to my Spring Boot Kotlin app")
+    });
+%}
+
 ### Create a User
 POST http://localhost:{{port}}/users
 Content-Type: application/json
@@ -246,6 +256,16 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Call /demo/webclient/flow route
+GET http://localhost:{{port}}/demo/webclient/flow
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body[0].id === 1)
     });
 %}
 

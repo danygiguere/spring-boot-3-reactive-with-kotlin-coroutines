@@ -1,5 +1,6 @@
 package com.example.demo.demo
 
+import com.example.demo.post.dto.PostDto
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.i18n.LocaleContext
@@ -12,6 +13,10 @@ import org.springframework.web.server.ServerWebExchange
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.awaitBody
+import org.springframework.web.reactive.function.client.bodyToFlow
 
 import kotlin.math.abs
 
@@ -57,6 +62,26 @@ class DemoController() {
         val timeAfter = System.currentTimeMillis()
         val duration = abs(timeBefore - timeAfter)
         return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms async/parallel queries) : $duration ms"
+    }
+
+    @GetMapping("/demo/webclient")
+    suspend fun demoWebclient(): String? {
+        val webClient = WebClient.create("http://localhost:8080")
+
+        return webClient.get()
+            .uri("/demo")
+            .retrieve()
+            .awaitBody<String>()
+    }
+
+    @GetMapping("/demo/webclient/flow")
+    suspend fun demoWebclientUsers(): Flow<PostDto>? {
+        val webClient = WebClient.create("http://localhost:8080")
+
+        return webClient.get()
+            .uri("/posts")
+            .retrieve()
+            .bodyToFlow<PostDto>()
     }
 
 }
