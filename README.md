@@ -14,19 +14,17 @@
   - how to do a belongsTo relationship query
   - how to do a hasManyThrough relationship query
   - how to run suspend functions in parallel with async/await
+  - how to create unit tests in a reactive context
 
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
 
 ### Todo
-- add validation to block users from updating a post that doesn't belong to them
-- set db constraints
+- set up Docker for the app
+- add factories and seeders (and maybe requestDtos) and use them with tests and on startup (local), to seed the db
+- add integration tests
 - create a web client call
-- write tests
-
-- find a way to seed the db (maybe with a cli)
-- setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already set by default for the validations)
-
-
-
-
+- set db constraints
+- 
+- add validation to block users from updating a post that doesn't belong to them
+- setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)
