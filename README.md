@@ -18,15 +18,14 @@
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
 
-### Todo
-- add validation to block users from updating a post that doesn't belong to them
-- set db constraints
-- create a web client call
-- write tests
-
-- find a way to seed the db (maybe with a cli)
-- setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already set by default for the validations)
-
+**********
+# Note regarding this branch.
+Docker is working on this branch but I had to comment the H2DatabaseConfiguration script else the containters (app and db) would not connect
+But now, I can start the docker_db container and then with the instructions below
+https://www.jetbrains.com/help/idea/run-and-debug-a-spring-boot-application-using-docker-compose.html
+I can start the app, do some changes, and then just press the green play button as usual to restart the app.
+To us the debugger, intelliJ will give the instructions in the logs but basicall we need to go in Docker Desktop, then Resources / File sharing and add the path specified in the logs (on Mac it's the Applications folder)
+**********
 
 
 
