@@ -20,11 +20,12 @@
 
 **********
 # Note regarding this branch.
-Docker is working on this branch but I had to comment the H2DatabaseConfiguration script else the containters (app and db) would not connect
-But now, I can start the docker_db container and then with the instructions below
+- Docker is working on this branch but I had to comment the H2DatabaseConfiguration script else the containters (app and db) would not connect.
+- But now, I can start the docker_db container and then with the instructions below:
 https://www.jetbrains.com/help/idea/run-and-debug-a-spring-boot-application-using-docker-compose.html
-I can start the app, do some changes, and then just press the green play button as usual to restart the app.
-To us the debugger, intelliJ will give the instructions in the logs but basicall we need to go in Docker Desktop, then Resources / File sharing and add the path specified in the logs (on Mac it's the Applications folder)
+- I can start the app, do some changes, and then just press the green play button as usual to restart the app.
+- To use the debugger, intelliJ will give the instructions in the logs but basically we need to go in Docker Desktop, then Resources / File sharing and add the path specified in the logs (on Mac it's the Applications folder)
+- The only thing I will need to figure out is how to set a fix port because IntellJ keeps changing the port every time I start the app (it seems to be a know but according to https://youtrack.jetbrains.com/issue/IDEA-284458/DockerCompose-target.-Port-bindings-from-docker-compose-file-are-absent-in-the-target-container?_gl=1*ku2d29*_ga*MTgzMTg0OTA3My4xNzA2NjU2NTEx*_ga_9J976DJZ68*MTcwODE5MTA5NC4xMi4xLjE3MDgxOTQzODIuMzQuMC4w&_ga=2.213165588.126016512.1708128656-1831849073.1706656511)
 **********
 
 
