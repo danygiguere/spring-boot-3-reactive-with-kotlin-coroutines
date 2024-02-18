@@ -31,8 +31,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
 	implementation("io.asyncer:r2dbc-mysql:1.1.0")
-	implementation("org.flywaydb:flyway-core:10.7.2")
-	implementation("org.flywaydb:flyway-mysql:10.7.2")
+	implementation("org.flywaydb:flyway-core:10.8.1")
+	implementation("org.flywaydb:flyway-mysql:10.8.1")
 	implementation("io.bloco:faker:2.0.4")
 
 	runtimeOnly("com.h2database:h2")

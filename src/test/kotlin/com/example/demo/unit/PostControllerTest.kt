@@ -1,6 +1,6 @@
 package com.example.demo.unit
 
-import com.example.factory.PostFactory
+import factory.PostFactory
 import com.example.demo.post.PostRepository
 import com.example.demo.post.PostService
 import com.example.demo.post.dto.PostDto

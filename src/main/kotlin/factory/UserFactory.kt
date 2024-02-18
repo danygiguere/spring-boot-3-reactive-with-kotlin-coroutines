@@ -1,4 +1,4 @@
-package com.example.factory
+package factory
 
 import com.example.demo.user.UserRepository
 import com.example.demo.user.dto.UserDto

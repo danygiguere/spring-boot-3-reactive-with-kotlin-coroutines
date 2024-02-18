@@ -27,3 +27,5 @@
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them
 - setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)
+
+https://documentation.red-gate.com/flyway/flyway-cli-and-api/usage/command-line
