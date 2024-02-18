@@ -15,7 +15,7 @@ class UserFactory(val userRepository: UserRepository) {
     }
 
     fun makeMany(quantities: Int): List<UserDto> {
-        return (0 until quantities).map { makeOne(it.toLong()) }
+        return (0 until quantities).map { makeOne(it + 1L ) }
     }
 
     suspend fun createOne(): UserDto {
@@ -23,6 +23,6 @@ class UserFactory(val userRepository: UserRepository) {
     }
 
     suspend fun createMany(quantities: Int): List<UserDto> {
-        return (0 until quantities).map { userRepository.create(makeOne(it.toLong())) }
+        return (0 until quantities).map { userRepository.create(makeOne()) }
     }
 }

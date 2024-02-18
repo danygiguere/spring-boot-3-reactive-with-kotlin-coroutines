@@ -44,12 +44,18 @@ class DataSeeder() : ApplicationRunner {
         post?.id?.let { ImageFactory(imageRepository).createOne(it) }
 
         val users = UserFactory(userRepository).createMany(9)
-        for (newUser in users) {
-            newUser.id?.let { userId ->
-                val postDto = PostFactory(postRepository).createOne(userId)
-                postDto.id?.let { ImageFactory(imageRepository).createOne(it) }
+        for (singleUser in users) {
+            singleUser.id?.let { userId ->
+                val posts = PostFactory(postRepository).createMany(2, userId)
+                for (singlePost in posts) {
+                    singlePost.id?.let { postId ->
+                        ImageFactory(imageRepository).createMany(2, postId)
+                    }
+                }
             }
         }
+
+
     }
 
 }

@@ -12,7 +12,7 @@ class ImageFactory(val imageRepository: ImageRepository) {
     }
 
     fun makeMany(quantities: Int, postId: Long): List<ImageDto> {
-        return List(quantities) { makeOne(postId) }
+        return List(quantities) { makeOne(postId).copy(id = it + 1L) }
     }
 
     suspend fun createOne(postId: Long): ImageDto {

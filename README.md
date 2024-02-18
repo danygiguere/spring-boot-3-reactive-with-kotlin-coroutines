@@ -23,6 +23,7 @@
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
 
 ### Todo
+- figure out how to mock repositories in unit tests 
 - add integration tests
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them

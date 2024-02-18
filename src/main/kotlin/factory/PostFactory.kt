@@ -13,11 +13,7 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     fun makeMany(quantities: Int, userId: Long): List<PostDto> {
-        return List(quantities) { makeOne(userId) }
-    }
-
-    fun makeMany(quantities: Int): List<PostDto> {
-        return (0 until quantities).map { makeOne(it.toLong()) }
+        return List(quantities) { makeOne(userId).copy(id = it + 1L) }
     }
 
     suspend fun createOne(userId: Long): PostDto {
