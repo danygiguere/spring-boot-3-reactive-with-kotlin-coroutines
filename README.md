@@ -17,7 +17,7 @@
   - how to create unit tests in a reactive context
   - how to do webclient calls with Kotlin Coroutines
   - how to data factories to seed the db and to create dtos in tests
-  - how to set up Docker (I figured it out on the branch Docker but the H2DatabaseConfiguration script is problematic)
+  - how to set up Docker (I figured it out on the Docker branch (https://github.com/danygiguere/spring-boot-3-reactive-with-kotlin-coroutines/tree/Docker) but the H2DatabaseConfiguration script is problematic)
 
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
@@ -27,5 +27,3 @@
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them
 - setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)
-
-https://documentation.red-gate.com/flyway/flyway-cli-and-api/usage/command-line
