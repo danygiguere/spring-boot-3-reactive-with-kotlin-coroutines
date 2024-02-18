@@ -1,6 +1,3 @@
-#server:
-#  port : 8081
-
 spring:
 #  r2dbc:
 #    url: r2dbc:h2:mem:///~/db/
@@ -12,6 +9,7 @@ spring:
 #    user: ${spring.r2dbc.username}
 #    password: ${spring.r2dbc.password}
 #    baseline-on-migrate: true
+#    cleanDisabled: false
 
   r2dbc:
     url: r2dbc:mysql://localhost:3306
@@ -34,6 +32,7 @@ spring:
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
     baseline-on-migrate: true
+    cleanDisabled: false
 
 logging:
   level:

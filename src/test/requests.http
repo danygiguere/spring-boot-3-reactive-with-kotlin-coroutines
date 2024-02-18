@@ -43,6 +43,16 @@ GET http://localhost:{{port}}/demo/async
     });
 %}
 
+### Call /demo/webclient route
+GET http://localhost:{{port}}/demo/webclient
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body === "Welcome to my Spring Boot Kotlin app")
+    });
+%}
+
 ### Create a User
 POST http://localhost:{{port}}/users
 Content-Type: application/json
@@ -100,7 +110,7 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username === "john.doe")
+        client.assert(response.body.id === 1)
     });
 %}
 
@@ -145,7 +155,7 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username === "john.doe")
+        client.assert(response.body.id === 1)
         client.assert(response.body.posts[0].userId === 1)
     });
 %}
@@ -167,7 +177,7 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.title === "The title")
+        client.assert(response.body.id === 1)
     });
 %}
 
@@ -228,7 +238,7 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username === "john.doe")
+        client.assert(response.body.id === 1)
         client.assert(response.body.images[0].url === "https://placehold.co/600x400")
     });
 %}
@@ -249,13 +259,23 @@ Content-Type: application/json
     });
 %}
 
-#### Delete Post with id 1
-#DELETE http://localhost:{{port}}/posts/1
-#Accept: application/json
-#
-#> {%
-#    client.test("Request executed successfully", function () {
-#        client.assert(response.status === 200, "Response status is not 200");
-#    });
-#%}
+### Call /demo/webclient/flow route
+GET http://localhost:{{port}}/demo/webclient/flow
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body[0].id === 1)
+    });
+%}
+
+### Delete Post with id 1
+DELETE http://localhost:{{port}}/posts/1
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 

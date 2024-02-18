@@ -1,6 +1,7 @@
 package com.example.demo.image
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.r2dbc.core.*
 import org.springframework.stereotype.Repository
@@ -37,7 +38,7 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .flow()
 
-    suspend fun create(imageDto: ImageDto): ImageDto? =
+    suspend fun create(imageDto: ImageDto): ImageDto =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("postId", imageDto.postId)
@@ -49,7 +50,7 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                         val postEntity = imageDto.toEntity().copy(id = id)
                         postEntity.toDto()
                     }
-                    .awaitSingleOrNull()
+                    .awaitSingle()
 
     suspend fun update(id: Long, imageDto: ImageDto): Long =
             databaseClient.sql("UPDATE images SET url = :url WHERE id = :id")
