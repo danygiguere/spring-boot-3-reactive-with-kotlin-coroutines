@@ -33,10 +33,13 @@ dependencies {
 	implementation("io.asyncer:r2dbc-mysql:1.1.0")
 	implementation("org.flywaydb:flyway-core:10.7.2")
 	implementation("org.flywaydb:flyway-mysql:10.7.2")
+	implementation("io.bloco:faker:2.0.4")
+
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
+
 
 }
 

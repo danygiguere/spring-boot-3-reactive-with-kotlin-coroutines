@@ -25,7 +25,7 @@ class DatabaseRepository(private val databaseClient: DatabaseClient) {
             id bigint NOT NULL AUTO_INCREMENT,
             userId bigint NOT NULL,
             title varchar(255) NOT NULL DEFAULT '',
-            description varchar(255) NOT NULL DEFAULT '',
+            description varchar(1000) NOT NULL DEFAULT '',
             PRIMARY KEY (id));""").await()
 
     suspend fun dropImagesTable(): Unit =

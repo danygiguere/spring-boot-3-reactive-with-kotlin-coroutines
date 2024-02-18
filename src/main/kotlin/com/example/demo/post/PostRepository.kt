@@ -3,6 +3,7 @@ package com.example.demo.post
 import com.example.demo.post.dto.PostDto
 import com.example.demo.post.dto.toEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
@@ -31,7 +32,7 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .map(postMapper::apply)
                     .flow()
 
-    suspend fun create(postDto: PostDto): PostDto? =
+    suspend fun create(postDto: PostDto): PostDto =
             databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("userId", postDto.userId)
@@ -44,7 +45,7 @@ class PostRepository(private val databaseClient: DatabaseClient,
                         val postEntity = postDto.toEntity().copy(id = id)
                         postEntity.toDto()
                     }
-                    .awaitSingleOrNull()
+                    .awaitSingle()
 
     suspend fun update(id: Long, postDto: PostDto): Long =
             databaseClient.sql("UPDATE posts SET title = :title, description = :description WHERE id = :id")

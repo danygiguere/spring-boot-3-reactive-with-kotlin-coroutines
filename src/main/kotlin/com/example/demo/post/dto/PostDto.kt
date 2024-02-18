@@ -12,11 +12,11 @@ data class PostDto(
 
     @get:NotNull()
     @get:NotEmpty()
-    @get:Size(min = 6, max = 25, message = "{title.size}")
+    @get:Size(min = 6, max = 255, message = "{title.size}")
     val title: String,
 
     @get:NotEmpty()
-    @get:Size(min = 6, max = 25, message = "{description.size}")
+    @get:Size(min = 6, max = 1000, message = "{description.size}")
     val description: String,
 )
 

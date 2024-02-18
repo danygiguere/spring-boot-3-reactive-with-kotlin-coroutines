@@ -1,5 +1,7 @@
 package com.example.demo.unit
 
+import com.factory.PostFactory
+import com.example.demo.post.PostRepository
 import com.example.demo.post.PostService
 import com.example.demo.post.dto.PostDto
 import com.ninjasquad.springmockk.MockkBean
@@ -13,16 +15,18 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @ContextConfiguration
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @MockkBean
     lateinit var postService: PostService
 
+    @Autowired
+    lateinit var postRepository: PostRepository
+
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
-            val postDto = PostDto(1, 1, "The title", "The Description")
+            val postDto = PostFactory(postRepository).makeOne(1)
 
             coEvery { postService.create(1, postDto) } returns postDto
             val result = webTestClient.post()
@@ -51,16 +55,12 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
             .expectStatus().isBadRequest
             .expectBody()
             .jsonPath("$.title").isNotEmpty()
-            .jsonPath("$.title").isEqualTo("The field Title must be between 6 and 25 characters long")
+            .jsonPath("$.title").isEqualTo("The field Title must be between 6 and 255 characters long")
     }
 
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() {
-        val posts: MutableList<PostDto> = mutableListOf(
-            PostDto(1, 1, "First Post", "This is the content of the first post."),
-            PostDto(2, 1, "Second Post", "This is the content of the second post."),
-            PostDto(3, 1, "Third Post", "This is the content of the third post.")
-        )
+        val posts = PostFactory(postRepository).makeMany(3, 1)
 
         // Stubbing the service call to return the list of posts
         coEvery { postService.findAll() } returns posts.asFlow()
@@ -87,7 +87,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() {
-        val postDto = PostDto(1, 1, "The new title", "The new Description")
+        val postDto = PostFactory(postRepository).makeOne(1)
 
         coEvery { postService.update(1, postDto) } returns 1
         val result = webTestClient.put()

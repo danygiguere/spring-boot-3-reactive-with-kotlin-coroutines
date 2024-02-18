@@ -10,7 +10,7 @@ class RouterConfiguration {
     @Bean
     fun routes(databaseHandler: DatabaseHandler) = coRouter {
         "/api".nest {
-            POST("/database/recreate", databaseHandler::reCreate)
+            POST("/database/recreate", databaseHandler::reCreateDb)
         }
     }
 }

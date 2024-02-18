@@ -2,6 +2,7 @@ package com.example.demo.user
 
 import com.example.demo.user.dto.UserDto
 import com.example.demo.user.dto.toEntity
+import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -20,7 +21,7 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .map(userMapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun create(userDto: UserDto): UserDto? =
+    suspend fun create(userDto: UserDto): UserDto =
             databaseClient.sql("INSERT INTO users (username, email, phoneNumber) VALUES (:username, :email, :phoneNumber)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("username", userDto.username)
@@ -33,5 +34,5 @@ class UserRepository(private val databaseClient: DatabaseClient,
                         val userEntity = userDto.toEntity().copy(id = id)
                         userEntity.toDto()
                     }
-                    .awaitSingleOrNull()
+                    .awaitSingle()
 }

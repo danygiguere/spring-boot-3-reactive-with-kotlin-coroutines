@@ -16,14 +16,13 @@
   - how to run suspend functions in parallel with async/await
   - how to create unit tests in a reactive context
   - how to do webclient calls with Kotlin Coroutines
-  -
+  - how to data factories to seed the db and to create dtos in tests
   - how to set up Docker (I figured it out on the branch Docker but the H2DatabaseConfiguration script is problematic)
 
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
 
 ### Todo
-- add factories and seeders (and maybe requestDtos) and use them with tests and on startup (local), to seed the db
 - add integration tests
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them

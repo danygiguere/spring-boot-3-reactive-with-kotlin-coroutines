@@ -12,13 +12,17 @@ class DatabaseHandler(private val databaseRepository: DatabaseRepository) {
 
     companion object: KLogging()
 
-    suspend fun reCreate(req: ServerRequest): ServerResponse {
+    suspend fun reCreate() {
         databaseRepository.dropUsersTable()
         databaseRepository.createUsersTable()
         databaseRepository.dropPostsTable()
         databaseRepository.createPostsTable()
         databaseRepository.dropImagesTable()
         databaseRepository.createImagesTable()
+    }
+
+    suspend fun reCreateDb(req: ServerRequest): ServerResponse {
+        reCreate()
         return ServerResponse.noContent().buildAndAwait()
     }
 }
