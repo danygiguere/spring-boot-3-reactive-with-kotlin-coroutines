@@ -1,4 +1,4 @@
-package com.example.demo.integration
+package com.example.demo.factory.integration
 
 import com.example.demo.user.UserRepository
 import factory.UserFactory

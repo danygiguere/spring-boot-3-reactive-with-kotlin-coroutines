@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS posts
      userId bigint NOT NULL,
      title varchar(255) NOT NULL DEFAULT '',
      description varchar(1000) NOT NULL DEFAULT '',
-     PRIMARY KEY (id)
+     PRIMARY KEY (id),
+     FOREIGN KEY (userId)
+     REFERENCES users(id)
+     ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS images
@@ -21,5 +24,8 @@ CREATE TABLE IF NOT EXISTS images
     id bigint NOT NULL AUTO_INCREMENT,
     postId bigint NOT NULL,
     url varchar(255) NOT NULL DEFAULT '',
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (postId)
+    REFERENCES posts(id)
+    ON DELETE CASCADE
 );

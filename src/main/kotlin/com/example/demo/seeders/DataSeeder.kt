@@ -29,13 +29,16 @@ class DataSeeder() : ApplicationRunner {
     lateinit var imageRepository: ImageRepository
 
     override fun run(args: ApplicationArguments) {
-
         runBlocking {
             // On startup, clean the db, migrate it and seed it with data
-            flywayConfiguration.flyway().clean()
-            flywayConfiguration.flyway().migrate()
-            seed()
+            recreateAndSeedDb()
         }
+    }
+
+    suspend fun recreateAndSeedDb() {
+        flywayConfiguration.flyway().clean()
+        flywayConfiguration.flyway().migrate()
+        seed()
     }
 
     suspend fun seed() {
