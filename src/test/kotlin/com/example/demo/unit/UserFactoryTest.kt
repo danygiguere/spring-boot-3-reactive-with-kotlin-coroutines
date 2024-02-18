@@ -26,10 +26,10 @@ class UserFactoryTest {
 
     @Test
     fun `GIVEN no params WHEN makeOne is called THEN a user is returned`() {
-        // Create a single user
+        // When
         val userDto = userFactory.makeOne()
 
-        // Assert that the user is not null
+        // Then
         assertEquals(1, userDto.id)
         assertNotNull(userDto.username)
         assertNotNull(userDto.email)
@@ -41,10 +41,10 @@ class UserFactoryTest {
         // Given
         val userId: Long = 2
 
-        // Create a single user
+        // When
         val userDto = userFactory.makeOne(userId)
 
-        // Assert that the user is not null
+        // Then
         assertEquals(userId, userDto.id)
         assertNotNull(userDto.username)
         assertNotNull(userDto.email)
@@ -54,13 +54,13 @@ class UserFactoryTest {
     @Test
     fun `GIVEN a quantity WHEN makeMany is called THEN a list of users is returned`() {
         // Given
-        val quantity = 3 // Define the number of users to create
+        val quantity = 3
 
         // When
         val users = userFactory.makeMany(quantity)
 
         // Then
-        assertEquals(quantity, users.size, "Number of users in the list should match the specified quantity")
+        assertEquals(quantity, users.size)
 
         users.forEachIndexed { index, userDto ->
             val id = index + 1L

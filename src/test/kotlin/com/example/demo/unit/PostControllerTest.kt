@@ -26,28 +26,35 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
-            val postDto = PostFactory(postRepository).makeOne(1)
+        // Given
+        val postDto = PostFactory(postRepository).makeOne(1)
 
-            coEvery { postService.create(1, postDto) } returns postDto
-            val result = webTestClient.post()
-                    .uri("/posts")
-                    .bodyValue(postDto)
-                    .exchange()
-                    .expectStatus().is2xxSuccessful
-                    .expectBody(PostDto::class.java)
-                    .returnResult()
-                    .responseBody
+        coEvery { postService.create(1, postDto) } returns postDto
 
-            Assertions.assertTrue {
-                result!!.id != null
-            }
+        // When
+        val result = webTestClient.post()
+                .uri("/posts")
+                .bodyValue(postDto)
+                .exchange()
+                .expectStatus().is2xxSuccessful
+                .expectBody(PostDto::class.java)
+                .returnResult()
+                .responseBody
+
+        // Then
+        Assertions.assertTrue {
+            result!!.id != null
+        }
     }
 
     @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
+        // Given
         val postDto = PostDto(1, 1, "T", "The Description")
 
         coEvery { postService.create(1, postDto) } returns postDto
+
+        // When, Then
         webTestClient.post()
             .uri("/posts")
             .bodyValue(postDto)
@@ -60,12 +67,12 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() {
+        // Given
         val posts = PostFactory(postRepository).makeMany(3, 1)
 
-        // Stubbing the service call to return the list of posts
         coEvery { postService.findAll() } returns posts.asFlow()
 
-        // Performing the HTTP request
+        // When
         val result = webTestClient.get()
             .uri("/posts")
             .exchange()
@@ -74,7 +81,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
             .returnResult()
             .responseBody
 
-        // Assertions
+        // Then
         Assertions.assertNotNull(result)
         Assertions.assertEquals(posts.size, result!!.size)
 
@@ -87,9 +94,12 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() {
+        // Given
         val postDto = PostFactory(postRepository).makeOne(1)
 
         coEvery { postService.update(1, postDto) } returns 1
+
+        // When
         val result = webTestClient.put()
             .uri("""/posts/${postDto.id}""")
             .bodyValue(postDto)
@@ -99,6 +109,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
             .returnResult()
             .responseBody
 
+        // Then
         Assertions.assertTrue {
             result?.toInt() == 1
         }
@@ -106,6 +117,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Test
     fun `WHEN a post is deleted THEN 1 is returned`() {
+        // When
         coEvery { postService.delete(1) } returns 1
         val result = webTestClient.delete()
             .uri("""/posts/1""")
@@ -115,6 +127,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
             .returnResult()
             .responseBody
 
+        // Then
         Assertions.assertTrue {
             result?.toInt() == 1
         }

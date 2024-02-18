@@ -29,29 +29,29 @@ class PostFactoryTest {
         // Given
         val userId: Long = 1
 
-        // Create a single post
+        // When
         val postDto = postFactory.makeOne(userId)
 
-        // Assert that the post's userId matches the given userId
+        // Then
         assertEquals(userId, postDto.userId)
     }
 
     @Test
-    fun `GIVEN a quantity WHEN makeMany is called THEN a list of posts is returned`() {
+    fun `GIVEN a quantity and userId = x WHEN makeMany is called THEN a list of posts with userId is returned`() {
         // Given
-        val quantity = 3 // Define the number of posts to create
+        val quantity = 3
         val userId: Long = 1
 
         // When
         val posts = postFactory.makeMany(quantity, userId)
 
         // Then
-        assertEquals(quantity, posts.size, "Number of posts in the list should match the specified quantity")
+        assertEquals(quantity, posts.size)
 
         posts.forEachIndexed { index, postDto ->
             val id = index + 1L
             assertEquals(id, postDto.id)
-            assertNotNull(postDto.userId)
+            assertEquals(userId, postDto.userId)
             assertNotNull(postDto.title)
             assertNotNull(postDto.description)
         }

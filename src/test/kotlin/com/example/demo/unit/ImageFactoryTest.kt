@@ -37,21 +37,21 @@ class ImageFactoryTest {
     }
 
     @Test
-    fun `GIVEN a quantity WHEN makeMany is called THEN a list of images is returned`() {
+    fun `GIVEN a quantity and postId = x WHEN makeMany is called THEN a list of images with postId x is returned`() {
         // Given
-        val quantity = 3 // Define the number of images to create
+        val quantity = 3
         val postId: Long = 1
 
         // When
         val images = imageFactory.makeMany(quantity, postId)
 
         // Then
-        assertEquals(quantity, images.size, "Number of images in the list should match the specified quantity")
+        assertEquals(quantity, images.size)
 
         images.forEachIndexed { index, imageDto ->
             val id = index + 1L
             assertEquals(id, imageDto.id)
-            assertNotNull(imageDto.postId)
+            assertEquals(postId, imageDto.postId)
             assertNotNull(imageDto.url)
         }
     }
