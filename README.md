@@ -24,6 +24,7 @@
 
 ### Todo
 - figure out how to mock repositories in unit tests
+- set tests to run on a separate database
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them
 - setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)
