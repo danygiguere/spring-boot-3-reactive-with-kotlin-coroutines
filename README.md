@@ -23,8 +23,7 @@
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
 
 ### Todo
-- figure out how to mock repositories in unit tests 
-- add integration tests
+- figure out how to mock repositories in unit tests
 - set db constraints
 - add validation to block users from updating a post that doesn't belong to them
 - setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)

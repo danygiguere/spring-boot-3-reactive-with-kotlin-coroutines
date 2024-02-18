@@ -1,4 +1,4 @@
-package com.example.demo.unit
+package com.example.demo.factory.unit
 
 import com.example.demo.post.PostRepository
 import factory.PostFactory
