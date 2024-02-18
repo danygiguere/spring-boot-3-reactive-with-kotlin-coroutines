@@ -1,4 +1,4 @@
-package com.example.demo.utils
+package com.example.demo.database
 
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.await

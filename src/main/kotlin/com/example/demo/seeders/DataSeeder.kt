@@ -1,12 +1,12 @@
 package com.example.demo.seeders
 
-import com.factory.ImageFactory
+import com.example.factory.ImageFactory
 import com.example.demo.image.ImageRepository
-import com.factory.PostFactory
+import com.example.factory.PostFactory
 import com.example.demo.post.PostRepository
-import com.factory.UserFactory
+import com.example.factory.UserFactory
 import com.example.demo.user.UserRepository
-import com.example.demo.utils.DatabaseHandler
+import com.example.demo.database.DatabaseHandler
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments

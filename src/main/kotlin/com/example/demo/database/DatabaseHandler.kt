@@ -1,5 +1,4 @@
-package com.example.demo.utils
-
+package com.example.demo.database
 
 import mu.KLogging
 import org.springframework.stereotype.Component
