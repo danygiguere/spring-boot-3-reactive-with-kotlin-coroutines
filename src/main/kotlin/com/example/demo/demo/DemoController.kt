@@ -6,7 +6,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import mu.KLogging
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.i18n.LocaleContext
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.context.support.ResourceBundleMessageSource
@@ -19,17 +18,12 @@ import org.springframework.web.server.ServerWebExchange
 import kotlin.math.abs
 
 @RestController
-class DemoController() {
+class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
 
     companion object: KLogging()
-
-    @Autowired
-    private val messageSource: ResourceBundleMessageSource? = null
-
     suspend fun executeFaked1000msCall() {
         delay(1000)
     }
-
     @GetMapping("/demo")
     suspend fun demo(exchange: ServerWebExchange): String {
         val localeContext: LocaleContext = exchange.localeContext

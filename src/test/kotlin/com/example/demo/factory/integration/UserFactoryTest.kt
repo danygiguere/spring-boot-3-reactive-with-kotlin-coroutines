@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserFactoryTest {
+class UserFactoryTest() {
 
     @Autowired
     lateinit var userRepository: UserRepository
