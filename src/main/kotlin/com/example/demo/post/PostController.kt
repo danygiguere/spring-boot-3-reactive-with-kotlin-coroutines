@@ -48,7 +48,7 @@ class PostController(private val postService: PostService) {
     }
 
     @PutMapping("/posts/{id}")
-    suspend fun update(@Valid @PathVariable id: Long, @RequestBody postDto: PostDto): ResponseEntity<Long> {
+    suspend fun update(@PathVariable id: Long, @Valid @RequestBody postDto: PostDto): ResponseEntity<Long> {
         val response = postService.update(id, postDto)
         return ResponseEntity.ok(response)
     }

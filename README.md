@@ -18,6 +18,8 @@
   - how to do webclient calls with Kotlin Coroutines
   - how to data factories to seed the db and to create dtos in tests
   - how to set up Docker (I figured it out on the Docker branch (https://github.com/danygiguere/spring-boot-3-reactive-with-kotlin-coroutines/tree/Docker) but the H2DatabaseConfiguration script is problematic)
+- I recommend you watch this nice video regarding coroutines and the different strategies available: https://www.youtube.com/watch?v=ahTXElHrV0c
+
 
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
