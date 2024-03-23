@@ -25,8 +25,8 @@ Accept-Language: fr
     });
 %}
 
-### Call /demo/blocking route
-GET http://localhost:{{port}}/demo/blocking
+### Call /demo/non-parallel route
+GET http://localhost:{{port}}/demo/non-parallel
 
 > {%
     client.test("Request executed successfully", function () {
@@ -34,8 +34,8 @@ GET http://localhost:{{port}}/demo/blocking
     });
 %}
 
-### Call /demo/async route
-GET http://localhost:{{port}}/demo/async
+### Call /demo/parallel route
+GET http://localhost:{{port}}/demo/parallel
 
 > {%
     client.test("Request executed successfully", function () {

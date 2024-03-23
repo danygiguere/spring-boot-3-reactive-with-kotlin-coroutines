@@ -25,14 +25,14 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         delay(1000)
     }
     @GetMapping("/demo")
-    suspend fun demo(exchange: ServerWebExchange): String {
+    fun demo(exchange: ServerWebExchange): String {
         val localeContext: LocaleContext = exchange.localeContext
         val locale = localeContext.locale
         LocaleContextHolder.setLocale(locale)
         return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale())
     }
 
-    @GetMapping("/demo/blocking")
+    @GetMapping("/demo/non-parallel")
     suspend fun demoBlocking(exchange: ServerWebExchange): String {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed one after the other
@@ -43,7 +43,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         return "Number of milliseconds to execute function (containing two 1000ms blocking queries) : $duration ms"
     }
 
-    @GetMapping("/demo/async")
+    @GetMapping("/demo/parallel")
     suspend fun demoAsync(exchange: ServerWebExchange): String = coroutineScope {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed in parallel (at the same time)
