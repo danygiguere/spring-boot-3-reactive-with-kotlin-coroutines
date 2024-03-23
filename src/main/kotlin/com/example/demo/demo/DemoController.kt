@@ -33,18 +33,18 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
     }
 
     @GetMapping("/demo/non-parallel")
-    suspend fun demoBlocking(exchange: ServerWebExchange): String {
+    suspend fun demoNonParallel(exchange: ServerWebExchange): String {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed one after the other
         executeFaked1000msCall()
         executeFaked1000msCall()
         val timeAfter = System.currentTimeMillis()
         val duration = abs(timeBefore - timeAfter)
-        return "Number of milliseconds to execute function (containing two 1000ms blocking queries) : $duration ms"
+        return "Number of milliseconds to execute function (containing two 1000ms queries) : $duration ms"
     }
 
     @GetMapping("/demo/parallel")
-    suspend fun demoAsync(exchange: ServerWebExchange): String = coroutineScope {
+    suspend fun demoParallel(exchange: ServerWebExchange): String = coroutineScope {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed in parallel (at the same time)
         val durationRequest1 = async{executeFaked1000msCall()}
@@ -53,7 +53,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         durationRequest2.await()
         val timeAfter = System.currentTimeMillis()
         val duration = abs(timeBefore - timeAfter)
-        return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms async/parallel queries) : $duration ms"
+        return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms parallel queries) : $duration ms"
     }
 
     @GetMapping("/demo/webclient")
@@ -67,7 +67,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
     }
 
     @GetMapping("/demo/webclient/flow")
-    suspend fun demoWebclientUsers(): Flow<PostDto>? {
+    suspend fun demoWebclientPosts(): Flow<PostDto>? {
         val webClient = WebClient.create("http://localhost:8080")
 
         return webClient.get()
