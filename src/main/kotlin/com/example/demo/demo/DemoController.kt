@@ -86,19 +86,22 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
             .awaitBody<String>()
     }
 
-    suspend fun generateNumbersFlow(n: Int): Flow<Int> = flow {
+    suspend fun generateFlowNumbers(n: Int): Flow<Int> = flow {
         for (i in 1..n) {
-            delay(10)
-            println("emit $i: ${LocalDateTime.now()}")
+            delay(1)
+            println("emit     $i: ${LocalDateTime.now()}")
             emit(i)
         }
     }
 
     @GetMapping("/demo/flow")
-    suspend fun demoFlow(): Unit? {
-        return generateNumbersFlow(5).collect { number ->
+    suspend fun demoFlow(): Int {
+        var sum = 0
+        generateFlowNumbers(5).collect { number ->
             println("Received $number: ${LocalDateTime.now()}")
+            sum+= number
         }
+        return sum
     }
 
 }
