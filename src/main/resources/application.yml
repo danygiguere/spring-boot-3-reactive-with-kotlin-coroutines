@@ -34,12 +34,3 @@ spring:
 #    baseline-on-migrate: true
 #    cleanDisabled: false
 
-logging:
-  level:
-    org:
-      hibernate:
-        nodeValue: ERROR
-        SQL: DEBUG
-      springframework:
-        web: DEBUG
-

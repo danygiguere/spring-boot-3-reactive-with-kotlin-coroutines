@@ -4,7 +4,14 @@
 %}
 POST http://localhost:{{port}}/api/database/recreate
 
+### Call /demo/blocking
+GET http://localhost:{{port}}/demo/blocking
 
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
 
 ### Call /demo/non-parallel
 GET http://localhost:{{port}}/demo/non-parallel
@@ -23,6 +30,17 @@ GET http://localhost:{{port}}/demo/parallel
         client.assert(response.status === 200, "Response status is not 200");
     });
 %}
+
+#### Call /demo/flow route
+GET http://localhost:{{port}}/demo/flow
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
 
 ### Create a User
 POST http://localhost:{{port}}/users
