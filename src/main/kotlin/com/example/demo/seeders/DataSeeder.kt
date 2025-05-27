@@ -8,25 +8,16 @@ import factory.ImageFactory
 import factory.PostFactory
 import factory.UserFactory
 import kotlinx.coroutines.runBlocking
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
 @Component
-class DataSeeder() : ApplicationRunner {
-
-    @Autowired
-    lateinit var flywayConfiguration: FlywayConfiguration
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-
-    @Autowired
-    lateinit var postRepository: PostRepository
-
-    @Autowired
-    lateinit var imageRepository: ImageRepository
+class DataSeeder(val flywayConfiguration: FlywayConfiguration,
+    val userRepository: UserRepository,
+    val postRepository: PostRepository,
+    val imageRepository: ImageRepository
+    ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
         runBlocking {

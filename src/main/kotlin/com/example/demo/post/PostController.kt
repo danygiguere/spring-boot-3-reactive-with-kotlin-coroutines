@@ -7,12 +7,13 @@ import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 
 @RestController
 class PostController(private val postService: PostService) {
 
     @GetMapping("/posts")
-    suspend fun getAll(): ResponseEntity<Flow<PostDto>?> {
+    suspend fun getAll(): ResponseEntity<Flux<PostDto>?> {
         val response = postService.findAll()
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
@@ -48,7 +49,7 @@ class PostController(private val postService: PostService) {
     }
 
     @PutMapping("/posts/{id}")
-    suspend fun update(@Valid @PathVariable id: Long, @RequestBody postDto: PostDto): ResponseEntity<Long> {
+    suspend fun update(@PathVariable id: Long, @Valid @RequestBody postDto: PostDto): ResponseEntity<Long> {
         val response = postService.update(id, postDto)
         return ResponseEntity.ok(response)
     }

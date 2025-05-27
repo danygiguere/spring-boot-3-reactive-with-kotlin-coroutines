@@ -27,6 +27,8 @@ class ApplicationExceptionHandler {
             }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(errorMap)
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//            .body(mapOf("errors" to errorMap))
     }
 
     @ExceptionHandler(IllegalStateException::class)

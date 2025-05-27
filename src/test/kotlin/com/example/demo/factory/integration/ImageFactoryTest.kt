@@ -1,5 +1,6 @@
 package com.example.demo.factory.integration
 
+import BaseIntegrationTest
 import com.example.demo.image.ImageRepository
 import factory.ImageFactory
 import kotlinx.coroutines.runBlocking
@@ -13,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ImageFactoryTest {
+class ImageFactoryTest : BaseIntegrationTest() {
 
     @Autowired
     lateinit var imageRepository: ImageRepository

@@ -1,12 +1,11 @@
 package com.example.demo.factory.unit
 
-import com.example.demo.post.PostRepository
 import factory.PostFactory
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 
@@ -14,14 +13,11 @@ import org.springframework.test.context.ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostFactoryTest {
 
-    @Autowired
-    lateinit var postRepository: PostRepository
-
     private lateinit var postFactory: PostFactory
 
     @BeforeEach
     fun setUp() {
-        postFactory = PostFactory(postRepository)
+        postFactory = PostFactory(mockk())
     }
 
     @Test

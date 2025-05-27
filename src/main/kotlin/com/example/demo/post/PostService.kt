@@ -8,13 +8,14 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
 
 @Service
 class PostService(val postRepository: PostRepository,
                   private val userRepository: UserRepository,
                   private val imageRepository: ImageRepository) {
 
-    suspend fun findAll(): Flow<PostDto>? =
+    suspend fun findAll(): Flux<PostDto>? =
             postRepository.findAll()
 
     suspend fun findById(id: Long): PostDto? =

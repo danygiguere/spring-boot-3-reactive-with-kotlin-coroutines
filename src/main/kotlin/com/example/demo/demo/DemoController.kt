@@ -1,12 +1,12 @@
 package com.example.demo.demo
 
-import com.example.demo.post.dto.PostDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
 import mu.KLogging
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.i18n.LocaleContext
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.context.support.ResourceBundleMessageSource
@@ -14,24 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
-import org.springframework.web.reactive.function.client.bodyToFlow
 import org.springframework.web.server.ServerWebExchange
+import java.time.LocalDateTime
 import kotlin.math.abs
 
 @RestController
-class DemoController() {
+class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
 
     companion object: KLogging()
-
-    @Autowired
-    private val messageSource: ResourceBundleMessageSource? = null
-
     suspend fun executeFaked1000msCall() {
         delay(1000)
     }
-
     @GetMapping("/demo")
-    suspend fun demo(exchange: ServerWebExchange): String {
+    fun demo(exchange: ServerWebExchange): String {
         val localeContext: LocaleContext = exchange.localeContext
         val locale = localeContext.locale
         LocaleContextHolder.setLocale(locale)
@@ -39,18 +34,37 @@ class DemoController() {
     }
 
     @GetMapping("/demo/blocking")
-    suspend fun demoBlocking(exchange: ServerWebExchange): String {
+    fun demoBlocking(exchange: ServerWebExchange): String {
+        val timeBefore = System.currentTimeMillis()
+        /*
+        runBlocking:
+        Runs a new coroutine and blocks the current thread interruptibly until its completion.
+        This function should not be used from a coroutine.
+        It is designed to bridge regular blocking code to libraries that are written in suspending style,
+        to be used in main functions and in tests.
+         */
+        runBlocking {
+            executeFaked1000msCall()
+            executeFaked1000msCall()
+        }
+        val timeAfter = System.currentTimeMillis()
+        val duration = abs(timeBefore - timeAfter)
+        return "Number of milliseconds to execute function (containing two 1000ms queries) : $duration ms"
+    }
+
+    @GetMapping("/demo/non-parallel")
+    suspend fun demoNonParallel(exchange: ServerWebExchange): String {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed one after the other
         executeFaked1000msCall()
         executeFaked1000msCall()
         val timeAfter = System.currentTimeMillis()
         val duration = abs(timeBefore - timeAfter)
-        return "Number of milliseconds to execute function (containing two 1000ms blocking queries) : $duration ms"
+        return "Number of milliseconds to execute function (containing two 1000ms queries) : $duration ms"
     }
 
-    @GetMapping("/demo/async")
-    suspend fun demoAsync(exchange: ServerWebExchange): String = coroutineScope {
+    @GetMapping("/demo/parallel")
+    suspend fun demoParallel(exchange: ServerWebExchange): String = coroutineScope {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed in parallel (at the same time)
         val durationRequest1 = async{executeFaked1000msCall()}
@@ -59,7 +73,7 @@ class DemoController() {
         durationRequest2.await()
         val timeAfter = System.currentTimeMillis()
         val duration = abs(timeBefore - timeAfter)
-        return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms async/parallel queries) : $duration ms"
+        return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms parallel queries) : $duration ms"
     }
 
     @GetMapping("/demo/webclient")
@@ -72,14 +86,22 @@ class DemoController() {
             .awaitBody<String>()
     }
 
-    @GetMapping("/demo/webclient/flow")
-    suspend fun demoWebclientUsers(): Flow<PostDto>? {
-        val webClient = WebClient.create("http://localhost:8080")
+    suspend fun generateFlowNumbers(n: Int): Flow<Int> = flow {
+        for (i in 1..n) {
+            delay(1)
+            println("emit     $i: ${LocalDateTime.now()}")
+            emit(i)
+        }
+    }
 
-        return webClient.get()
-            .uri("/posts")
-            .retrieve()
-            .bodyToFlow<PostDto>()
+    @GetMapping("/demo/flow")
+    suspend fun demoFlow(): Int {
+        var sum = 0
+        generateFlowNumbers(5).collect { number ->
+            println("Received $number: ${LocalDateTime.now()}")
+            sum+= number
+        }
+        return sum
     }
 
 }

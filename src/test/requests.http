@@ -25,8 +25,8 @@ Accept-Language: fr
     });
 %}
 
-### Call /demo/blocking route
-GET http://localhost:{{port}}/demo/blocking
+### Call /demo/non-parallel route
+GET http://localhost:{{port}}/demo/non-parallel
 
 > {%
     client.test("Request executed successfully", function () {
@@ -34,8 +34,8 @@ GET http://localhost:{{port}}/demo/blocking
     });
 %}
 
-### Call /demo/async route
-GET http://localhost:{{port}}/demo/async
+### Call /demo/parallel route
+GET http://localhost:{{port}}/demo/parallel
 
 > {%
     client.test("Request executed successfully", function () {
@@ -50,6 +50,16 @@ GET http://localhost:{{port}}/demo/webclient
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.body === "Welcome to my Spring Boot Kotlin app")
+    });
+%}
+
+#### Call /demo/flow route
+GET http://localhost:{{port}}/demo/flow
+Accept: application/json
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
     });
 %}
 
@@ -259,16 +269,6 @@ Content-Type: application/json
     });
 %}
 
-### Call /demo/webclient/flow route
-GET http://localhost:{{port}}/demo/webclient/flow
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body[0].id === 1)
-    });
-%}
-
 ### Delete Post with id 1
 DELETE http://localhost:{{port}}/posts/1
 Accept: application/json
@@ -278,4 +278,6 @@ Accept: application/json
         client.assert(response.status === 200, "Response status is not 200");
     });
 %}
+
+
 

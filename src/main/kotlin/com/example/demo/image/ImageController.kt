@@ -30,7 +30,7 @@ class ImageController(private val imageService: ImageService) {
     }
 
     @PutMapping("/images/{id}")
-    suspend fun update(@Valid @PathVariable id: Long, @RequestBody imageDto: ImageDto): ResponseEntity<Long> {
+    suspend fun update(@PathVariable id: Long, @Valid @RequestBody imageDto: ImageDto): ResponseEntity<Long> {
         val response = imageService.update(id, imageDto)
         return ResponseEntity.ok(response)
     }

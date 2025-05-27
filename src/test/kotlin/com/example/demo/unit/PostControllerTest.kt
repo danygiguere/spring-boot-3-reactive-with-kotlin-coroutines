@@ -1,20 +1,19 @@
 package com.example.demo.unit
 
-import factory.PostFactory
-import com.example.demo.post.PostRepository
 import com.example.demo.post.PostService
 import com.example.demo.post.dto.PostDto
 import com.ninjasquad.springmockk.MockkBean
+import factory.PostFactory
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.asFlow
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Flux
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,17 +22,10 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @MockkBean
     lateinit var postService: PostService
 
-    lateinit var postRepository: PostRepository
-
-    @BeforeEach
-    fun setUp() {
-        postRepository = mockk()
-    }
-
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
         // Given
-        val postDto = PostFactory(postRepository).makeOne(1)
+        val postDto = PostFactory(mockk()).makeOne(1)
 
         coEvery { postService.create(1, postDto) } returns postDto
 
@@ -74,10 +66,9 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() {
         // Given
-        val posts = PostFactory(postRepository).makeMany(3, 1)
+        val posts = PostFactory(mockk()).makeMany(3, 1)
 
-        coEvery { postService.findAll() } returns posts.asFlow()
-
+        coEvery { postService.findAll() } returns Flux.fromIterable(posts)
         // When
         val result = webTestClient.get()
             .uri("/posts")
@@ -101,7 +92,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @Test
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() {
         // Given
-        val postDto = PostFactory(postRepository).makeOne(1)
+        val postDto = PostFactory(mockk()).makeOne(1)
 
         coEvery { postService.update(1, postDto) } returns 1
 
