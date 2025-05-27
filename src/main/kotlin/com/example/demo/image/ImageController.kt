@@ -1,7 +1,6 @@
 package com.example.demo.image
 
 import jakarta.validation.Valid
-import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 class ImageController(private val imageService: ImageService) {
 
     @GetMapping("/images")
-    suspend fun getAll(): ResponseEntity<Flow<ImageDto>?> {
+    suspend fun getAll(): ResponseEntity<List<ImageDto>?> {
         val response = imageService.findAll()
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()

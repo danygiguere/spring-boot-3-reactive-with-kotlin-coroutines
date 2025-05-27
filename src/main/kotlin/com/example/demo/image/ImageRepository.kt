@@ -1,19 +1,21 @@
 package com.example.demo.image
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
-import org.springframework.r2dbc.core.*
+import org.springframework.r2dbc.core.DatabaseClient
+import org.springframework.r2dbc.core.awaitOneOrNull
+import org.springframework.r2dbc.core.awaitRowsUpdated
+import org.springframework.r2dbc.core.flow
 import org.springframework.stereotype.Repository
 
 @Repository
 class ImageRepository(private val databaseClient: DatabaseClient,
                       private val imageMapper: ImageMapper) {
 
-    suspend fun findAll(): Flow<ImageDto>? =
+    suspend fun findAll(): List<ImageDto>? =
             databaseClient.sql("SELECT * FROM images")
                     .map(imageMapper::apply)
-                    .flow()
+                    .flow().toList()
 
     suspend fun findById(id: Long): ImageDto? =
             databaseClient.sql("SELECT * FROM images WHERE id = :id")
@@ -21,13 +23,13 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun findByPostId(postId: Long): Flow<ImageDto>? =
+    suspend fun findByPostId(postId: Long): List<ImageDto>? =
             databaseClient.sql("SELECT * FROM images WHERE postId = :postId")
                     .bind("postId", postId)
                     .map(imageMapper::apply)
-                    .flow()
+                    .flow().toList()
 
-    suspend fun findByUserIdThroughPosts(userId: Long): Flow<ImageDto>? =
+    suspend fun findByUserIdThroughPosts(userId: Long): List<ImageDto>? =
             databaseClient.sql("""
                 SELECT images.* FROM images 
                 INNER JOIN posts 
@@ -36,7 +38,7 @@ class ImageRepository(private val databaseClient: DatabaseClient,
             """.trimIndent())
                     .bind("userId", userId)
                     .map(imageMapper::apply)
-                    .flow()
+                    .flow().toList()
 
     suspend fun create(imageDto: ImageDto): ImageDto =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")

@@ -2,24 +2,22 @@ package com.example.demo.post
 
 import com.example.demo.post.dto.PostDto
 import com.example.demo.post.dto.toEntity
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
 import org.springframework.r2dbc.core.awaitRowsUpdated
 import org.springframework.r2dbc.core.flow
 import org.springframework.stereotype.Repository
-import reactor.core.publisher.Flux
 
 @Repository
 class PostRepository(private val databaseClient: DatabaseClient,
                      private val postMapper: PostMapper) {
 
-    suspend fun findAll(): Flow<PostDto>? =
+    suspend fun findAll(): List<PostDto>? =
         databaseClient.sql("SELECT * FROM posts")
             .map(postMapper::apply)
-            .flow()
+            .flow().toList()
 
     suspend fun findById(id: Long): PostDto? =
             databaseClient.sql("SELECT * FROM posts WHERE id = :id")
@@ -27,11 +25,11 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .map(postMapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun findByUserId(userId: Long): Flow<PostDto>? =
+    suspend fun findByUserId(userId: Long): List<PostDto>? =
             databaseClient.sql("SELECT * FROM posts WHERE userId = :userId")
                     .bind("userId", userId)
                     .map(postMapper::apply)
-                    .flow()
+                .flow().toList()
 
     suspend fun create(postDto: PostDto): PostDto =
             databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")

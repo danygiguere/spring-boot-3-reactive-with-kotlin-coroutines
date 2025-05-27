@@ -5,6 +5,7 @@ import com.example.demo.post.PostRepository
 import com.example.demo.post.dto.PostDto
 import factory.PostFactory
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -62,7 +63,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() {
-        runBlocking {
+        runTest {
             // Given
             PostFactory(postRepository).createMany(3, 1)
 

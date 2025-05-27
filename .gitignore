@@ -38,6 +38,4 @@ out/
 
 ### Kotlin ###
 .kotlin
-
 .DS_Store
-*.log

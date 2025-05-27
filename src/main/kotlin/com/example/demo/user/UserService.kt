@@ -5,7 +5,6 @@ import com.example.demo.post.PostRepository
 import com.example.demo.user.dto.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,14 +17,14 @@ class UserService(val userRepository: UserRepository,
     // oneToMany relationship query example
     suspend fun findByIdWithPosts(id: Long): UserWithPostsDto? = coroutineScope {
         val user = async{findById(id)}
-        val posts = async{postRepository.findByUserId(id)?.toList()}
+        val posts = async{postRepository.findByUserId(id)}
         return@coroutineScope user.await()?.toUserWithPostsDto()?.copy(posts = posts.await())
     }
 
     // hasManyThrough relationship query example
     suspend fun findByIdWithImages(id: Long): UserWithImagesDto? = coroutineScope {
         val user = async{findById(id)}
-        val images = async {imageRepository.findByUserIdThroughPosts(id)?.toList()}
+        val images = async {imageRepository.findByUserIdThroughPosts(id)}
         return@coroutineScope user.await()?.toUserWithImagesDto()?.copy(images = images.await())
     }
 

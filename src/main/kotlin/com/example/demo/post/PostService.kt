@@ -5,17 +5,14 @@ import com.example.demo.post.dto.*
 import com.example.demo.user.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Flux
 
 @Service
 class PostService(val postRepository: PostRepository,
                   private val userRepository: UserRepository,
                   private val imageRepository: ImageRepository) {
 
-    suspend fun findAll(): Flow<PostDto>? =
+    suspend fun findAll(): List<PostDto>? =
             postRepository.findAll()
 
     suspend fun findById(id: Long): PostDto? =
@@ -24,7 +21,7 @@ class PostService(val postRepository: PostRepository,
     // oneToMany relationship query example
     suspend fun findByIdWithImages(id: Long): PostWithImagesDto? = coroutineScope {
         val post = async{findById(id)}
-        val images = async{imageRepository.findByPostId(id)?.toList()}
+        val images = async{imageRepository.findByPostId(id)}
         return@coroutineScope post.await()?.toPostWithImagesDto()?.copy(images = images.await())
     }
 

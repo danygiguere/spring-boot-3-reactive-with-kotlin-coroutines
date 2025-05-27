@@ -1,12 +1,11 @@
 package com.example.demo.image
 
-import kotlinx.coroutines.flow.Flow
 import org.springframework.stereotype.Service
 
 @Service
 class ImageService(val repository: ImageRepository) {
 
-    suspend fun findAll(): Flow<ImageDto>? =
+    suspend fun findAll(): List<ImageDto>? =
             repository.findAll()
 
     suspend fun findById(id: Long): ImageDto? =

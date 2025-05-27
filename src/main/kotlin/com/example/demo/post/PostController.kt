@@ -4,16 +4,14 @@ import com.example.demo.post.dto.PostDto
 import com.example.demo.post.dto.PostWithImagesDto
 import com.example.demo.post.dto.PostWithUserDto
 import jakarta.validation.Valid
-import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
 
 @RestController
 class PostController(private val postService: PostService) {
 
     @GetMapping("/posts")
-    suspend fun getAll(): ResponseEntity<Flow<PostDto>?> {
+    suspend fun getAll(): ResponseEntity<List<PostDto>?> {
         val response = postService.findAll()
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
