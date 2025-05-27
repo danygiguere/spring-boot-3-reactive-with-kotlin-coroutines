@@ -16,10 +16,10 @@ import reactor.core.publisher.Flux
 class PostRepository(private val databaseClient: DatabaseClient,
                      private val postMapper: PostMapper) {
 
-    suspend fun findAll(): Flux<PostDto>? =
+    suspend fun findAll(): Flow<PostDto>? =
         databaseClient.sql("SELECT * FROM posts")
             .map(postMapper::apply)
-            .all()
+            .flow()
 
     suspend fun findById(id: Long): PostDto? =
             databaseClient.sql("SELECT * FROM posts WHERE id = :id")

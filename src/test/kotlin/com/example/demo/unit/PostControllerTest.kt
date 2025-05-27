@@ -6,6 +6,7 @@ import com.ninjasquad.springmockk.MockkBean
 import factory.PostFactory
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -68,7 +69,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
         // Given
         val posts = PostFactory(mockk()).makeMany(3, 1)
 
-        coEvery { postService.findAll() } returns Flux.fromIterable(posts)
+        coEvery { postService.findAll() } returns posts.asFlow()
         // When
         val result = webTestClient.get()
             .uri("/posts")

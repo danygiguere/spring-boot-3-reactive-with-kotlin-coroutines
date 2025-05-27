@@ -15,7 +15,7 @@ class PostService(val postRepository: PostRepository,
                   private val userRepository: UserRepository,
                   private val imageRepository: ImageRepository) {
 
-    suspend fun findAll(): Flux<PostDto>? =
+    suspend fun findAll(): Flow<PostDto>? =
             postRepository.findAll()
 
     suspend fun findById(id: Long): PostDto? =

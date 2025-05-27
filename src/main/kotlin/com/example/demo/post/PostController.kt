@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux
 class PostController(private val postService: PostService) {
 
     @GetMapping("/posts")
-    suspend fun getAll(): ResponseEntity<Flux<PostDto>?> {
+    suspend fun getAll(): ResponseEntity<Flow<PostDto>?> {
         val response = postService.findAll()
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
