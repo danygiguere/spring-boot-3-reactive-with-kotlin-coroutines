@@ -10,15 +10,16 @@ import org.springframework.r2dbc.core.awaitOneOrNull
 import org.springframework.r2dbc.core.awaitRowsUpdated
 import org.springframework.r2dbc.core.flow
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 
 @Repository
 class PostRepository(private val databaseClient: DatabaseClient,
                      private val postMapper: PostMapper) {
 
-    suspend fun findAll(): Flow<PostDto>? =
-            databaseClient.sql("SELECT * FROM posts")
-                    .map(postMapper::apply)
-                    .flow()
+    suspend fun findAll(): Flux<PostDto>? =
+        databaseClient.sql("SELECT * FROM posts")
+            .map(postMapper::apply)
+            .all()
 
     suspend fun findById(id: Long): PostDto? =
             databaseClient.sql("SELECT * FROM posts WHERE id = :id")

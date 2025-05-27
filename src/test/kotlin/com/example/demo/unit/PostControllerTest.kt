@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Flux
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -67,8 +68,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
         // Given
         val posts = PostFactory(mockk()).makeMany(3, 1)
 
-        coEvery { postService.findAll() } returns posts.asFlow()
-
+        coEvery { postService.findAll() } returns Flux.fromIterable(posts)
         // When
         val result = webTestClient.get()
             .uri("/posts")

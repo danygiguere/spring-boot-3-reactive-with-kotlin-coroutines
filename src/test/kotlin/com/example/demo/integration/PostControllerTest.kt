@@ -1,5 +1,6 @@
 package com.example.demo.integration
 
+import BaseIntegrationTest
 import com.example.demo.post.PostRepository
 import com.example.demo.post.dto.PostDto
 import factory.PostFactory
@@ -13,7 +14,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
+class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseIntegrationTest() {
 
     @Autowired
     lateinit var postRepository: PostRepository
@@ -68,6 +69,26 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
             // When
             val result = webTestClient.get()
                 .uri("/posts")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(PostDto::class.java)
+                .returnResult()
+                .responseBody
+
+            // Then
+            Assertions.assertNotNull(result!!)
+        }
+    }
+
+    @Test
+    fun `WHEN onepost is requested THEN the post is returned`() {
+        runBlocking {
+            // Given
+            val postDto = PostFactory(postRepository).createOne( 1)
+
+            // When
+            val result = webTestClient.get()
+                .uri("""/posts/${postDto.id}""")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(PostDto::class.java)
