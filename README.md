@@ -4,7 +4,7 @@
 - This project is just a demo or a starting template to work with Spring boot 3 with Kotlin coroutines and r2dbc and DatabaseClient (https://docs.spring.io/spring-framework/reference/data-access/r2dbc.html)
 - The project is set up to work with the H2 in-memory but you can comment the h2 config and uncomment the mysql config in the application.yml file if you prefer to work with mysql (you can clone this project to create a dockerized db: https://github.com/danygiguere/docker_db)
 - If you are using IntelliJ Ultimate, you can run the requests.http file (in the test folder) to test all the available routes
-- In this demo I haven't used an orm. If you'd like to user and ORM, have a look at CoroutineCrudRepository. It' is a non-blocking reactive interface for generic CRUD operations using Kotlin Coroutines.
+- In this demo I haven't used an orm. If you'd like to use an ORM, have a look at CoroutineCrudRepository. It' is a non-blocking reactive interface for generic CRUD operations using Kotlin Coroutines.
 - The app demonstrates:
   - how to create controllers, dtos, entities, and repositories with Kotlin coroutines
   - how to set up Flyway to manage migrations (it works with mysql but I wasn't able to make it work with h2)
