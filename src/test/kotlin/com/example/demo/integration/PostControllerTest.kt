@@ -1,6 +1,5 @@
 package com.example.demo.integration
 
-import BaseIntegrationTest
 import com.example.demo.post.PostRepository
 import com.example.demo.post.dto.PostDto
 import factory.PostFactory
@@ -12,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
 
+
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseIntegrationTest() {
+class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
 
     @Autowired
     lateinit var postRepository: PostRepository

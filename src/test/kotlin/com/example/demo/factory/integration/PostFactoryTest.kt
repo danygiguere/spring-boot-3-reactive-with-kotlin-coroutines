@@ -1,6 +1,5 @@
 package com.example.demo.factory.integration
 
-import BaseIntegrationTest
 import com.example.demo.post.PostRepository
 import factory.PostFactory
 import kotlinx.coroutines.test.runTest
@@ -14,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostFactoryTest() : BaseIntegrationTest() {
+class PostFactoryTest() {
 
     @Autowired
     lateinit var postRepository: PostRepository
