@@ -1,7 +1,7 @@
 package com.example.demo.post
 
-import com.example.demo.post.dto.PostDto
-import com.example.demo.post.dto.toEntity
+import com.example.demo.post.dtos.PostDto
+import com.example.demo.post.dtos.toEntity
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient

@@ -1,7 +1,7 @@
 package factory
 
 import com.example.demo.user.UserRepository
-import com.example.demo.user.dto.UserDto
+import com.example.demo.user.dtos.UserDto
 import io.bloco.faker.Faker
 
 class UserFactory(val userRepository: UserRepository) {

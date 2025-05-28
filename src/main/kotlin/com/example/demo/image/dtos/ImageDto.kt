@@ -1,4 +1,6 @@
-package com.example.demo.image
+package com.example.demo.image.dtos
+
+import com.example.demo.image.ImageEntity
 
 data class ImageDto(
     val id: Long?,

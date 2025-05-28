@@ -1,8 +1,8 @@
 package com.example.demo.post
 
-import com.example.demo.post.dto.PostDto
-import com.example.demo.post.dto.PostWithImagesDto
-import com.example.demo.post.dto.PostWithUserDto
+import com.example.demo.post.dtos.PostDto
+import com.example.demo.post.dtos.PostWithImagesDto
+import com.example.demo.post.dtos.PostWithUserDto
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

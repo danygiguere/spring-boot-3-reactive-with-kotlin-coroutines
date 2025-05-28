@@ -1,4 +1,4 @@
-package com.example.demo.validator
+package com.example.demo.validators
 
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator

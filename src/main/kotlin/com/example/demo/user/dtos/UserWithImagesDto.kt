@@ -1,6 +1,6 @@
-package com.example.demo.user.dto
+package com.example.demo.user.dtos
 
-import com.example.demo.image.ImageDto
+import com.example.demo.image.dtos.ImageDto
 
 data class UserWithImagesDto(
         val id: Long?,

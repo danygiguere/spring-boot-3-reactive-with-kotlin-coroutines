@@ -1,7 +1,7 @@
 package com.example.demo.unit
 
 import com.example.demo.post.PostService
-import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dtos.PostDto
 import com.ninjasquad.springmockk.MockkBean
 import factory.PostFactory
 import io.mockk.coEvery

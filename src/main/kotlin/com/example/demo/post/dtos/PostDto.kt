@@ -1,4 +1,4 @@
-package com.example.demo.post.dto
+package com.example.demo.post.dtos
 
 import com.example.demo.post.PostEntity
 import jakarta.validation.constraints.NotEmpty

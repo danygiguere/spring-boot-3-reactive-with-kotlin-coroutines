@@ -1,5 +1,5 @@
 package com.example.demo.post
-import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dtos.PostDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 

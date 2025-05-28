@@ -1,5 +1,5 @@
 package com.example.demo.user
-import com.example.demo.user.dto.UserDto
+import com.example.demo.user.dtos.UserDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 

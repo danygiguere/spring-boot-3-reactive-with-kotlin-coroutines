@@ -1,7 +1,7 @@
 package com.example.demo.integration
 
 import com.example.demo.post.PostRepository
-import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dtos.PostDto
 import factory.PostFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions

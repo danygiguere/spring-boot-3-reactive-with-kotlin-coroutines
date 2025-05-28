@@ -2,7 +2,7 @@ package com.example.demo.user
 
 import com.example.demo.image.ImageRepository
 import com.example.demo.post.PostRepository
-import com.example.demo.user.dto.*
+import com.example.demo.user.dtos.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service

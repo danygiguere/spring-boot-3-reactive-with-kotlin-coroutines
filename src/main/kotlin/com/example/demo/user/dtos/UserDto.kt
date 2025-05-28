@@ -1,7 +1,7 @@
-package com.example.demo.user.dto
+package com.example.demo.user.dtos
 
 import com.example.demo.user.UserEntity
-import com.example.demo.validator.IsValidPhoneNumber
+import com.example.demo.validators.IsValidPhoneNumber
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull

@@ -1,5 +1,6 @@
 package com.example.demo.image
 
+import com.example.demo.image.dtos.ImageDto
 import org.springframework.stereotype.Service
 
 @Service

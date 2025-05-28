@@ -1,6 +1,6 @@
 package factory
 
-import com.example.demo.image.ImageDto
+import com.example.demo.image.dtos.ImageDto
 import com.example.demo.image.ImageRepository
 import io.bloco.faker.Faker
 

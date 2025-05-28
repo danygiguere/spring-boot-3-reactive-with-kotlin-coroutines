@@ -1,7 +1,7 @@
 package com.example.demo.post
 
 import com.example.demo.image.ImageRepository
-import com.example.demo.post.dto.*
+import com.example.demo.post.dtos.*
 import com.example.demo.user.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

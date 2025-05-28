@@ -1,5 +1,6 @@
 package com.example.demo.image
 
+import com.example.demo.image.dtos.ImageDto
 import io.r2dbc.spi.Row
 import org.springframework.stereotype.Component
 import java.util.function.BiFunction

@@ -1,6 +1,6 @@
-package com.example.demo.post.dto
+package com.example.demo.post.dtos
 
-import com.example.demo.image.ImageDto
+import com.example.demo.image.dtos.ImageDto
 
 data class PostWithImagesDto(
     val id: Long?,

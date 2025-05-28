@@ -1,6 +1,6 @@
 package com.example.demo.post
 
-import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dtos.PostDto
 import io.r2dbc.spi.Row
 import org.springframework.stereotype.Component
 import java.util.function.BiFunction

@@ -1,4 +1,5 @@
 package com.example.demo.image
+import com.example.demo.image.dtos.ImageDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 

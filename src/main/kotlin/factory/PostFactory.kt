@@ -1,7 +1,7 @@
 package factory
 
 import com.example.demo.post.PostRepository
-import com.example.demo.post.dto.PostDto
+import com.example.demo.post.dtos.PostDto
 import io.bloco.faker.Faker
 
 class PostFactory(val postRepository: PostRepository) {

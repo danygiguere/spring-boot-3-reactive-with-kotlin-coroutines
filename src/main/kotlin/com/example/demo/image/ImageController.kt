@@ -1,5 +1,6 @@
 package com.example.demo.image
 
+import com.example.demo.image.dtos.ImageDto
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
