@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserFactoryTest() : BaseIntegrationTest(){
+class UserFactoryTest() : BaseIntegrationTest() {
 
     @Autowired
     lateinit var userRepository: UserRepository

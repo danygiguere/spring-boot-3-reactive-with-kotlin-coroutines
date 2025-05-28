@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ImageFactoryTest : BaseIntegrationTest() {
+class ImageFactoryTest() : BaseIntegrationTest() {
 
     @Autowired
     lateinit var imageRepository: ImageRepository

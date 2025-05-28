@@ -24,7 +24,8 @@
 
 ### TLDR 
 - Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
+- There is a automatic seed on start up because of this config in application.yml: spring.profiles.active=seed. 
 
 ### Todo
-- add validation to block users from updating a post that doesn't belong to them
 - setLocal early in the request lifecycle so that I can get it anytime with getLocale (it's already setin by default for the validations)
+- set a different database for tests

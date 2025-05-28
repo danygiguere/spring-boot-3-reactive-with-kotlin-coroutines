@@ -8,21 +8,36 @@ import factory.ImageFactory
 import factory.PostFactory
 import factory.UserFactory
 import kotlinx.coroutines.runBlocking
+import mu.KLogging
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
+import kotlin.collections.contains
 
 @Component
 class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     val userRepository: UserRepository,
     val postRepository: PostRepository,
-    val imageRepository: ImageRepository
+    val imageRepository: ImageRepository,
+                 @Autowired val env: Environment
     ) : ApplicationRunner {
 
+    companion object: KLogging()
+
     override fun run(args: ApplicationArguments) {
-        runBlocking {
-            // On startup, clean the db, migrate it and seed it with data
-            recreateAndSeedDb()
+        val activeProfiles = args.sourceArgs.filter { it.startsWith("--spring.profiles.active=") }
+            .map { it.substringAfter("=") }
+        val isSeedProfile = activeProfiles.any { it.split(",").contains("seed") }
+                || System.getProperty("spring.profiles.active")?.split(",")?.contains("seed") == true
+                || System.getenv("SPRING_PROFILES_ACTIVE")?.split(",")?.contains("seed") == true
+                || env.activeProfiles.contains("seed")
+
+        if (isSeedProfile) {
+            runBlocking {
+                recreateAndSeedDb()
+            }
         }
     }
 
@@ -48,8 +63,6 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
                 }
             }
         }
-
-
     }
 
 }
