@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import mu.KLogging
-import org.springframework.context.i18n.LocaleContext
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,10 +25,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         delay(1000)
     }
     @GetMapping("/demo")
-    fun demo(exchange: ServerWebExchange): String {
-        val localeContext: LocaleContext = exchange.localeContext
-        val locale = localeContext.locale
-        LocaleContextHolder.setLocale(locale)
+    fun demo(): String {
         return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale())
     }
 
