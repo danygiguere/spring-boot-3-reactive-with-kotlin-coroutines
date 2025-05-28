@@ -4,9 +4,9 @@ import com.example.demo.configuration.FlywayConfiguration
 import com.example.demo.image.ImageRepository
 import com.example.demo.post.PostRepository
 import com.example.demo.user.UserRepository
-import factory.ImageFactory
-import factory.PostFactory
-import factory.UserFactory
+import factories.ImageFactory
+import factories.PostFactory
+import factories.UserFactory
 import kotlinx.coroutines.runBlocking
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired

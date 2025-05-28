@@ -1,7 +1,7 @@
-package com.example.demo.factory.integration
+package com.example.demo.factories.integration
 
 import com.example.demo.post.PostRepository
-import factory.PostFactory
+import factories.PostFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

@@ -3,6 +3,9 @@ package com.example.demo.post
 import com.example.demo.post.dtos.PostDto
 import com.example.demo.post.dtos.PostWithImagesDto
 import com.example.demo.post.dtos.PostWithUserDto
+import com.example.demo.post.requests.CreatePostRequest
+import com.example.demo.post.requests.UpdatePostRequest
+import com.example.demo.post.requests.toPostDto
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -39,16 +42,16 @@ class PostController(private val postService: PostService) {
     }
 
     @PostMapping("/posts")
-    suspend fun create(@Valid @RequestBody postDto: PostDto): ResponseEntity<PostDto> {
+    suspend fun create(@Valid @RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostDto> {
         val userId: Long = 1; // for demo only. The userId needs to be taken from the auth user
-        val response = postService.create(userId, postDto)
+        val response = postService.create(userId, createPostRequest.toPostDto())
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
     @PutMapping("/posts/{id}")
-    suspend fun update(@PathVariable id: Long, @Valid @RequestBody postDto: PostDto): ResponseEntity<Long> {
-        val response = postService.update(id, postDto)
+    suspend fun update(@PathVariable id: Long, @Valid @RequestBody updatePostRequest: UpdatePostRequest): ResponseEntity<Long> {
+        val response = postService.update(id, updatePostRequest.toPostDto())
         return ResponseEntity.ok(response)
     }
 

@@ -1,6 +1,6 @@
-package com.example.demo.factory.unit
+package com.example.demo.factories.unit
 
-import factory.PostFactory
+import factories.PostFactory
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

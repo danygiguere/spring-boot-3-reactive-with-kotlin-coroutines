@@ -3,7 +3,7 @@ package com.example.demo.unit
 import com.example.demo.post.PostService
 import com.example.demo.post.dtos.PostDto
 import com.ninjasquad.springmockk.MockkBean
-import factory.PostFactory
+import factories.PostFactory
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions

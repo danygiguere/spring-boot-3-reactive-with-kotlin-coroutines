@@ -1,4 +1,4 @@
-package factory
+package factories
 
 import com.example.demo.image.dtos.ImageDto
 import com.example.demo.image.ImageRepository
