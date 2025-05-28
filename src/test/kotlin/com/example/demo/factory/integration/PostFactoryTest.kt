@@ -3,7 +3,7 @@ package com.example.demo.factory.integration
 import BaseIntegrationTest
 import com.example.demo.post.PostRepository
 import factory.PostFactory
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +28,7 @@ class PostFactoryTest : BaseIntegrationTest(){
 
     @Test
     fun `GIVEN param userId = x WHEN createOne is called THEN a post with userId x is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val userId: Long = 1
 
@@ -42,7 +42,7 @@ class PostFactoryTest : BaseIntegrationTest(){
 
     @Test
     fun `GIVEN a quantity and userId = x WHEN createMany is called THEN a list of posts with userId x is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val quantity = 3
             val userId: Long = 1

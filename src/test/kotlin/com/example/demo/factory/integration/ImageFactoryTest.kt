@@ -3,7 +3,7 @@ package com.example.demo.factory.integration
 import BaseIntegrationTest
 import com.example.demo.image.ImageRepository
 import factory.ImageFactory
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +28,7 @@ class ImageFactoryTest : BaseIntegrationTest() {
 
     @Test
     fun `GIVEN param postId = x WHEN createOne is called THEN an image with postId x is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val postId: Long = 1
 
@@ -42,7 +42,7 @@ class ImageFactoryTest : BaseIntegrationTest() {
 
     @Test
     fun `GIVEN a quantity and a postId = x WHEN createMany is called THEN a list of images with postId x is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val quantity = 3
             val postId: Long = 1

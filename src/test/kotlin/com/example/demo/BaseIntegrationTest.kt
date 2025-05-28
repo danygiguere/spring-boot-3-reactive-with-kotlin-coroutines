@@ -1,5 +1,5 @@
 import com.example.demo.seeders.DataSeeder
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ abstract class BaseIntegrationTest {
 
     @BeforeAll
     fun globalSetUp() {
-        runBlocking {
+        runTest {
             dataSeeder.recreateAndSeedDb()
         }
     }

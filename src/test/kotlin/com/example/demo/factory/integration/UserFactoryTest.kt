@@ -3,7 +3,7 @@ package com.example.demo.factory.integration
 import BaseIntegrationTest
 import com.example.demo.user.UserRepository
 import factory.UserFactory
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -28,7 +28,7 @@ class UserFactoryTest() : BaseIntegrationTest(){
 
     @Test
     fun `WHEN createOne is called THEN a user is returned`() {
-        runBlocking {
+        runTest {
             // When
             val userDto = userFactory.createOne()
 
@@ -42,7 +42,7 @@ class UserFactoryTest() : BaseIntegrationTest(){
 
     @Test
     fun `GIVEN a quantity WHEN createMany is called THEN a list of users is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val quantity = 3
 

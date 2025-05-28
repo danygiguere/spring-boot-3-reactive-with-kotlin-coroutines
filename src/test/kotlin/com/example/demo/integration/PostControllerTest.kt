@@ -4,7 +4,6 @@ import BaseIntegrationTest
 import com.example.demo.post.PostRepository
 import com.example.demo.post.dto.PostDto
 import factory.PostFactory
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -22,7 +21,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val postDto = PostFactory(postRepository).createOne(1)
 
@@ -45,7 +44,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val postDto = PostDto(1, 1, "T", "The Description")
 
@@ -83,7 +82,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `WHEN onepost is requested THEN the post is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val postDto = PostFactory(postRepository).createOne( 1)
 
@@ -103,7 +102,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() {
-        runBlocking {
+        runTest {
             // Given
             val postDto = PostFactory(postRepository).createOne(1)
 
@@ -126,7 +125,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) : BaseInte
 
     @Test
     fun `WHEN a post is deleted THEN 1 is returned`() {
-        runBlocking {
+        runTest {
             // When
             val result = webTestClient.delete()
                 .uri("""/posts/1""")
