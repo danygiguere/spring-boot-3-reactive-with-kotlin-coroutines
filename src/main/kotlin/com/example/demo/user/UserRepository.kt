@@ -1,7 +1,7 @@
 package com.example.demo.user
 
 import com.example.demo.user.dtos.UserDto
-import com.example.demo.user.dtos.toEntity
+import com.example.demo.user.dtos.toUserEntity
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -30,8 +30,8 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val userEntity = userDto.toEntity().copy(id = id)
-                        userEntity.toDto()
+                        val userEntity = userDto.toUserEntity().copy(id = id)
+                        userEntity.toUserDto()
                     }
                     .awaitSingle()
 }

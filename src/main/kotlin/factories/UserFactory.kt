@@ -11,7 +11,7 @@ class UserFactory(val userRepository: UserRepository) {
     fun makeOne(userId: Long = 1L): UserDto {
         val name = faker.name.firstName().lowercase()+faker.name.lastName().lowercase()
         val phoneNumber = faker.phoneNumber.areaCode()+"-"+faker.phoneNumber.exchangeCode()+"-"+faker.phoneNumber.subscriberNumber()
-        return UserDto(userId, name, "$name@test.com", phoneNumber)
+        return UserDto(userId, name, "$name@test.com", phoneNumber, null, null)
     }
 
     fun makeMany(quantities: Int): List<UserDto> {

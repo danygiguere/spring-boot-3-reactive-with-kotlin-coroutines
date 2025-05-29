@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS users
      username varchar(255) NOT NULL DEFAULT '',
      email varchar(255) NOT NULL DEFAULT '',
      phoneNumber varchar(255) NOT NULL DEFAULT '',
+     createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
      PRIMARY KEY (id)
 );
 

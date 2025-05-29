@@ -30,5 +30,7 @@ fun CreateUserRequest.toUserDto(): UserDto = UserDto(
     id = id,
     username = username,
     email = email,
-    phoneNumber = phoneNumber
+    phoneNumber = phoneNumber,
+    createdAt = null,
+    updatedAt = null
 )
