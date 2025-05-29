@@ -1,6 +1,6 @@
 package com.example.demo.user.requests
 
-import com.example.demo.user.dtos.UserDto
+import com.example.demo.user.UserEntity
 import com.example.demo.validators.IsValidPhoneNumber
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
@@ -8,8 +8,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class CreateUserRequest(
-    val id: Long?,
-
     @get:NotNull()
     @get:NotEmpty()
     @get:Size(min = 6, max = 25, message = "{username.size}")
@@ -26,8 +24,7 @@ data class CreateUserRequest(
     val phoneNumber: String,
 )
 
-fun CreateUserRequest.toUserDto(): UserDto = UserDto(
-    id = id,
+fun CreateUserRequest.toUserEntity(): UserEntity = UserEntity(
     username = username,
     email = email,
     phoneNumber = phoneNumber,

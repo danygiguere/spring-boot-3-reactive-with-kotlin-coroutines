@@ -4,7 +4,6 @@ import com.example.demo.user.dtos.UserDto
 import com.example.demo.user.dtos.UserWithImagesDto
 import com.example.demo.user.dtos.UserWithPostsDto
 import com.example.demo.user.requests.CreateUserRequest
-import com.example.demo.user.requests.toUserDto
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -35,7 +34,7 @@ class UserController(private val userService: UserService) {
 
     @PostMapping("/users")
     suspend fun create(@Valid @RequestBody createUserRequest: CreateUserRequest): ResponseEntity<UserDto> {
-        val response = userService.create(createUserRequest.toUserDto())
+        val response = userService.create(createUserRequest)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
