@@ -46,7 +46,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         runTest {
             // Given
-            val postDto = PostDto(1, 1, "T", "The Description")
+            val postDto = PostDto(1, 1, "T", "The Description", null, null)
 
             // When, Then
             webTestClient.post()

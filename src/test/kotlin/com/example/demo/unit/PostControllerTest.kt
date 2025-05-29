@@ -1,5 +1,6 @@
 package com.example.demo.unit
 
+import com.example.demo.post.PostRepository
 import com.example.demo.post.PostService
 import com.example.demo.post.dtos.PostDto
 import com.ninjasquad.springmockk.MockkBean
@@ -20,17 +21,21 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @MockkBean
     lateinit var postService: PostService
 
+    @Autowired
+    lateinit var postRepository: PostRepository
+
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
         // Given
-        val postDto = PostFactory(mockk()).makeOne(1)
+        val createPostRequest = PostFactory(postRepository).makeCreatePostRequest(1)
+        val postDto = PostFactory(postRepository).makeOne(1)
 
-        coEvery { postService.create(1, postDto) } returns postDto
+        coEvery { postService.create(1, any()) } returns postDto
 
         // When
         val result = webTestClient.post()
                 .uri("/posts")
-                .bodyValue(postDto)
+                .bodyValue(createPostRequest)
                 .exchange()
                 .expectStatus().is2xxSuccessful
                 .expectBody(PostDto::class.java)
@@ -46,7 +51,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         // Given
-        val postDto = PostDto(1, 1, "T", "The Description")
+        val postDto = PostDto(1, 1, "T", "The Description", null, null)
 
         coEvery { postService.create(1, postDto) } returns postDto
 

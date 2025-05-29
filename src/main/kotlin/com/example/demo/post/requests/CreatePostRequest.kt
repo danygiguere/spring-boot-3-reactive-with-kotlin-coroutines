@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class CreatePostRequest(
-    val id: Long?,
-
     var userId: Long,
 
     @get:NotNull()
@@ -21,8 +19,10 @@ data class CreatePostRequest(
 )
 
 fun CreatePostRequest.toPostDto(): PostDto = PostDto(
-    id = id,
+    id = null,
     userId = userId,
     title = title,
-    description = description
+    description = description,
+    createdAt = null,
+    updatedAt = null
 )

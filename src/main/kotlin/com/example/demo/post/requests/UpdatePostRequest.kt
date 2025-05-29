@@ -24,5 +24,7 @@ fun UpdatePostRequest.toPostDto(): PostDto = PostDto(
     id = id,
     userId = userId,
     title = title,
-    description = description
+    description = description,
+    createdAt = null,
+    updatedAt = null
 )
