@@ -1,7 +1,6 @@
 package com.example.demo.user.requests
 
 import com.example.demo.user.UserEntity
-import com.example.demo.validators.IsValidPhoneNumber
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
@@ -16,7 +15,12 @@ data class CreateUserRequest(
     @get:NotNull()
     @get:NotEmpty()
     @get:Email(message = "{email}")
-    val email: String
+    val email: String,
+
+    @get:NotNull()
+    @get:NotEmpty()
+    @get:Size(min = 8, max = 25, message = "{password.size}")
+    val password: String
 )
 
 fun CreateUserRequest.toUserEntity(): UserEntity = UserEntity(

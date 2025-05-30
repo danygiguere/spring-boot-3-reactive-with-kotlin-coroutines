@@ -11,7 +11,7 @@ class UserFactory(val userRepository: UserRepository) {
 
     fun makeOne(userId: Long = 1L): UserDto {
         val name = faker.name.firstName().lowercase()+faker.name.lastName().lowercase()
-        return UserDto(userId, name, "$name@test.com", null, null)
+        return UserDto(userId, name, "$name@test.com", "secret",null, null)
     }
 
     fun makeMany(quantities: Int): List<UserDto> {
@@ -20,10 +20,11 @@ class UserFactory(val userRepository: UserRepository) {
 
     private fun makeCreateUserRequest(username: String? = null,
                                       email: String? = null,
-                                      phoneNumber: String? = null): CreateUserRequest {
+                                      password: String? = null): CreateUserRequest {
         val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
         val emailSeed = email ?: "$usernameSeed@test.com"
-        return CreateUserRequest(usernameSeed, emailSeed)
+        val passwordSeed = password ?: "secret"
+        return CreateUserRequest(usernameSeed, emailSeed, passwordSeed)
     }
 
     suspend fun createUser(username: String? = null,

@@ -1,21 +1,16 @@
 package com.example.demo.user.dtos
 
-import com.example.demo.user.UserEntity
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDateTime
 
 data class UserDto(
         val id: Long?,
         val username: String,
         val email: String,
+        @JsonIgnore()
+        val password: String?,
         var createdAt: LocalDateTime?,
         var updatedAt: LocalDateTime?
-)
-
-fun UserDto.toUserEntity(): UserEntity = UserEntity(
-        username = username,
-        email = email,
-        createdAt = createdAt,
-        updatedAt = updatedAt
 )
 
 fun UserDto.toUserWithPostsDto(): UserWithPostsDto = UserWithPostsDto(
