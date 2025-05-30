@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS images
     id bigint NOT NULL AUTO_INCREMENT,
     postId bigint NOT NULL,
     url varchar(255) NOT NULL DEFAULT '',
+    createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (postId)
     REFERENCES posts(id)

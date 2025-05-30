@@ -8,7 +8,7 @@ class ImageFactory(val imageRepository: ImageRepository) {
 
     val faker = Faker(locale = "en-CA")
     fun makeOne(postId: Long): ImageDto {
-        return ImageDto(1, postId, "https://placehold.co/600x400")
+        return ImageDto(1, postId, "https://placehold.co/600x400", null, null)
     }
 
     fun makeMany(quantities: Int, postId: Long): List<ImageDto> {
