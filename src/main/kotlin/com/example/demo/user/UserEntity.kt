@@ -9,7 +9,6 @@ data class UserEntity(
     @Id var id: Long? = null,
     val username: String,
     val email: String,
-    val phoneNumber: String,
     var createdAt: LocalDateTime?,
     var updatedAt: LocalDateTime?
 )
@@ -18,7 +17,6 @@ fun UserEntity.toUserDto(): UserDto = UserDto(
     id = id,
     username = username,
     email = email,
-    phoneNumber = phoneNumber,
     createdAt = createdAt,
     updatedAt = updatedAt
 )

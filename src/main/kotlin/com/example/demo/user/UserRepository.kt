@@ -1,7 +1,6 @@
 package com.example.demo.user
 
 import com.example.demo.user.dtos.UserDto
-import com.example.demo.user.dtos.toUserEntity
 import com.example.demo.user.requests.CreateUserRequest
 import com.example.demo.user.requests.toUserEntity
 import kotlinx.coroutines.reactor.awaitSingle
@@ -23,11 +22,10 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .awaitOneOrNull()
 
     suspend fun create(createUserRequest: CreateUserRequest): UserDto =
-            databaseClient.sql("INSERT INTO users (username, email, phoneNumber) VALUES (:username, :email, :phoneNumber)")
+            databaseClient.sql("INSERT INTO users (username, email) VALUES (:username, :email)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("username", createUserRequest.username)
                     .bind("email", createUserRequest.email)
-                    .bind("phoneNumber", createUserRequest.phoneNumber)
                     .fetch()
                     .first()
                     .map { row ->

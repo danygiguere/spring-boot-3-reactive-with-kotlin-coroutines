@@ -16,18 +16,12 @@ data class CreateUserRequest(
     @get:NotNull()
     @get:NotEmpty()
     @get:Email(message = "{email}")
-    val email: String,
-
-    @get:NotNull()
-    @get:NotEmpty()
-    @get:IsValidPhoneNumber
-    val phoneNumber: String,
+    val email: String
 )
 
 fun CreateUserRequest.toUserEntity(): UserEntity = UserEntity(
     username = username,
     email = email,
-    phoneNumber = phoneNumber,
     createdAt = null,
     updatedAt = null
 )

@@ -11,8 +11,7 @@ class UserFactory(val userRepository: UserRepository) {
 
     fun makeOne(userId: Long = 1L): UserDto {
         val name = faker.name.firstName().lowercase()+faker.name.lastName().lowercase()
-        val phoneNumber = faker.phoneNumber.areaCode()+"-"+faker.phoneNumber.exchangeCode()+"-"+faker.phoneNumber.subscriberNumber()
-        return UserDto(userId, name, "$name@test.com", phoneNumber, null, null)
+        return UserDto(userId, name, "$name@test.com", null, null)
     }
 
     fun makeMany(quantities: Int): List<UserDto> {
@@ -24,15 +23,12 @@ class UserFactory(val userRepository: UserRepository) {
                                       phoneNumber: String? = null): CreateUserRequest {
         val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
         val emailSeed = email ?: "$usernameSeed@test.com"
-        val phoneNumber = phoneNumber
-            ?: (faker.phoneNumber.areaCode() + "-" + faker.phoneNumber.exchangeCode() + "-" + faker.phoneNumber.subscriberNumber())
-        return CreateUserRequest(usernameSeed, emailSeed, phoneNumber)
+        return CreateUserRequest(usernameSeed, emailSeed)
     }
 
     suspend fun createUser(username: String? = null,
-                           email: String? = null,
-                           phoneNumber: String? = null): UserDto {
-        return userRepository.create(makeCreateUserRequest(username, email, phoneNumber))
+                           email: String? = null): UserDto {
+        return userRepository.create(makeCreateUserRequest(username, email))
     }
 
     suspend fun createOne(): UserDto {

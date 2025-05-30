@@ -68,47 +68,13 @@ Content-Type: application/json
 
 {
   "username": "john.doe",
-  "email": "john@test.com",
-  "phoneNumber": "555-111-1234"
+  "email": "john@test.com"
 }
 
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.body.username === "john.doe")
-    });
-%}
-
-### Create a User with invalid inputs that will fail validation (will return a 400 with the errors)
-POST http://localhost:{{port}}/users
-Content-Type: application/json
-
-{
-  "username": "jane",
-  "email": "jane@test.com",
-  "phoneNumber": "111-223"
-}
-
-> {%
-    client.test("Request executed with errors", function () {
-        client.assert(response.status === 400, "Response status is not 400");
-    });
-%}
-
-### Create a User with the Accept-Language header set to French and with invalid inputs that will fail validation (will return a 400 with the errors in French)
-POST http://localhost:{{port}}/users
-Content-Type: application/json
-Accept-Language: fr
-
-{
-  "username": "jane",
-  "email": "invalid_email_address",
-  "phoneNumber": "111-223"
-}
-
-> {%
-    client.test("Request executed with errors", function () {
-        client.assert(response.status === 400, "Response status is not 400");
     });
 %}
 
@@ -267,5 +233,43 @@ Content-Type: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Create a Profile
+POST http://localhost:{{port}}/profile
+Content-Type: application/json
+
+{
+  "phoneNumber": "555-111-1234"
+}
+
+### Create a Profile with an invalid phone number that will fail validation (will return a 400 with the errors)
+POST http://localhost:{{port}}/profile
+Content-Type: application/json
+
+{
+  "phoneNumber": "555-111-123"
+}
+
+> {%
+    client.test("Request executed with errors", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+
+### Create a User with the Accept-Language header set to French and with invalid inputs that will fail validation (will return a 400 with the errors in French)
+POST http://localhost:{{port}}/profile
+Content-Type: application/json
+Accept-Language: fr
+
+{
+  "phoneNumber": "111-223"
+}
+
+> {%
+    client.test("Request executed with errors", function () {
+        client.assert(response.status === 400, "Response status is not 400");
     });
 %}

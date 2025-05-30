@@ -35,7 +35,6 @@ class UserFactoryTest() {
             assertNotNull(userDto.id)
             assertNotNull(userDto.username)
             assertNotNull(userDto.email)
-            assertNotNull(userDto.phoneNumber)
         }
     }
 
@@ -55,7 +54,6 @@ class UserFactoryTest() {
                 assertNotNull(userDto.id)
                 assertNotNull(userDto.username)
                 assertNotNull(userDto.email)
-                assertNotNull(userDto.phoneNumber)
             }
         }
     }

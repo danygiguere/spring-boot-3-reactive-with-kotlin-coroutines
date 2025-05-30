@@ -14,7 +14,6 @@ class UserMapper: BiFunction<Row, Any, UserDto> {
                 row.get("id") as Long,
                 row.get("username") as String,
                 row.get("email") as String,
-                row.get("phoneNumber") as String,
             (row.get("createdAt") as ZonedDateTime).toLocalDateTime(),
             (row.get("updatedAt") as ZonedDateTime).toLocalDateTime(),
         ).toUserDto()
