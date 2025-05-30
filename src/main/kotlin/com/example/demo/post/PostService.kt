@@ -2,6 +2,7 @@ package com.example.demo.post
 
 import com.example.demo.image.ImageRepository
 import com.example.demo.post.dtos.*
+import com.example.demo.post.requests.CreatePostRequest
 import com.example.demo.user.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -32,8 +33,11 @@ class PostService(val postRepository: PostRepository,
         return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await())
     }
 
-    suspend fun create(userId: Long, postDto: PostDto): PostDto? =
-            postRepository.create(postDto.copy(userId = userId))
+    suspend fun create(userId: Long, createPostRequest: CreatePostRequest): PostDto? {
+        val post = postRepository.create(userId, createPostRequest)
+        return findById(post.id)
+    }
+
 
     suspend fun update(id: Long, postDto: PostDto): Long =
             postRepository.update(id, postDto)

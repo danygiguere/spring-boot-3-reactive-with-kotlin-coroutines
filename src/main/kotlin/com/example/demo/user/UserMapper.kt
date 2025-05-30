@@ -4,6 +4,7 @@ import com.example.demo.user.dtos.UserDto
 import io.r2dbc.spi.Row
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.function.BiFunction
 
 @Component
@@ -14,8 +15,8 @@ class UserMapper: BiFunction<Row, Any, UserDto> {
                 row.get("username") as String,
                 row.get("email") as String,
                 row.get("phoneNumber") as String,
-            (row.get("createdAt") as LocalDateTime),
-            (row.get("updatedAt") as LocalDateTime)
+            (row.get("createdAt") as ZonedDateTime).toLocalDateTime(),
+            (row.get("updatedAt") as ZonedDateTime).toLocalDateTime(),
         ).toUserDto()
     }
 }

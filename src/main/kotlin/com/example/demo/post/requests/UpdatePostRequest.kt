@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class UpdatePostRequest(
-    val id: Long?,
+    val id: Long,
 
     var userId: Long,
 

@@ -1,6 +1,6 @@
 package com.example.demo.post.requests
 
-import com.example.demo.post.dtos.PostDto
+import com.example.demo.post.PostEntity
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -18,7 +18,7 @@ data class CreatePostRequest(
     val description: String,
 )
 
-fun CreatePostRequest.toPostDto(): PostDto = PostDto(
+fun CreatePostRequest.toEntity(): PostEntity = PostEntity(
     id = null,
     userId = userId,
     title = title,

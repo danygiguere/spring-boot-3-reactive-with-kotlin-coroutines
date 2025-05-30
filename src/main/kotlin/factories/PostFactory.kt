@@ -23,11 +23,11 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     suspend fun createOne(userId: Long): PostDto {
-        return postRepository.create(makeOne(userId))
+        return postRepository.create(userId,makeCreatePostRequest(userId))
     }
 
     suspend fun createMany(quantities: Int, userId: Long): List<PostDto> {
-        return (0 until quantities).map { postRepository.create(makeOne(userId)) }
+        return (0 until quantities).map { postRepository.create(userId,makeCreatePostRequest(userId)) }
     }
 
 }

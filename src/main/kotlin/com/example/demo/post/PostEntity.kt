@@ -10,12 +10,12 @@ data class PostEntity(
     var userId: Long,
     val title: String,
     val description: String,
-    var createdAt: LocalDateTime?,
-    var updatedAt: LocalDateTime?
+    var createdAt: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null
 )
 
 fun PostEntity.toDto(): PostDto = PostDto(
-    id = id,
+    id = id ?: throw IllegalStateException("PostEntity id cannot be null when converting to PostDto"),
     userId = userId,
     title = title,
     description = description,

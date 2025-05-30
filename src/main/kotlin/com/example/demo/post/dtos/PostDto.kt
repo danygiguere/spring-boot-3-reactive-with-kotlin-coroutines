@@ -4,7 +4,7 @@ import com.example.demo.post.PostEntity
 import java.time.LocalDateTime
 
 data class PostDto(
-    val id: Long?,
+    val id: Long,
     var userId: Long,
     val title: String,
     val description: String,
@@ -13,6 +13,7 @@ data class PostDto(
 )
 
 fun PostDto.toEntity(): PostEntity = PostEntity(
+    id = id,
     userId = userId,
     title = title,
     description = description,

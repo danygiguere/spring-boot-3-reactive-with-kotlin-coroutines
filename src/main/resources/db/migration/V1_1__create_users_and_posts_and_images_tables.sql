@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users
      email varchar(255) NOT NULL DEFAULT '',
      phoneNumber varchar(255) NOT NULL DEFAULT '',
      createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
      PRIMARY KEY (id)
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS posts
      title varchar(255) NOT NULL DEFAULT '',
      description varchar(1000) NOT NULL DEFAULT '',
      createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
      PRIMARY KEY (id),
      FOREIGN KEY (userId)
      REFERENCES users(id)

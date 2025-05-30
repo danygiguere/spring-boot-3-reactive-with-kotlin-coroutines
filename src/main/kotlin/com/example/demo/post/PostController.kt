@@ -44,8 +44,8 @@ class PostController(private val postService: PostService) {
     @PostMapping("/posts")
     suspend fun create(@Valid @RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostDto> {
         val userId: Long = 1; // for demo only. The userId needs to be taken from the auth user
-        val postDto = createPostRequest.toPostDto()
-        val response = postService.create(userId, postDto)
+//        val postDto = createPostRequest.toPostDto()
+        val response = postService.create(userId, createPostRequest)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }

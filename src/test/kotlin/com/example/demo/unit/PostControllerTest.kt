@@ -3,6 +3,7 @@ package com.example.demo.unit
 import com.example.demo.post.PostRepository
 import com.example.demo.post.PostService
 import com.example.demo.post.dtos.PostDto
+import com.example.demo.post.requests.CreatePostRequest
 import com.ninjasquad.springmockk.MockkBean
 import factories.PostFactory
 import io.mockk.coEvery
@@ -51,19 +52,21 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         // Given
+        val createPostRequest = CreatePostRequest(1, "T", "D")
         val postDto = PostDto(1, 1, "T", "The Description", null, null)
 
-        coEvery { postService.create(1, postDto) } returns postDto
+        coEvery { postService.create(1, createPostRequest) } returns postDto
 
         // When, Then
         webTestClient.post()
             .uri("/posts")
-            .bodyValue(postDto)
+            .bodyValue(createPostRequest)
             .exchange()
             .expectStatus().isBadRequest
             .expectBody()
             .jsonPath("$.title").isNotEmpty()
             .jsonPath("$.title").isEqualTo("The field Title must be between 6 and 255 characters long")
+            .jsonPath("$.description").isEqualTo("The field Description must be between 6 and 1000 characters long")
     }
 
     @Test
