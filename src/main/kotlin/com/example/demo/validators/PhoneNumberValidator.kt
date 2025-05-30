@@ -21,7 +21,8 @@ class PhoneNumberValidator : ConstraintValidator<IsValidPhoneNumber?, String?> {
         contactField: String?,
         cxt: ConstraintValidatorContext
     ): Boolean {
-        val regex = """[0-9]+""".toRegex()
-        return contactField != null && regex.containsMatchIn(contactField) && contactField.length >= 10 && contactField.length < 14
+        // Accepts 10-13 digits, with optional dashes (e.g., 555-555-1234 or 5555551234)
+        val regex = """^\d{3}-?\d{3}-?\d{4,7}$""".toRegex()
+        return contactField != null && regex.matches(contactField)
     }
 }
