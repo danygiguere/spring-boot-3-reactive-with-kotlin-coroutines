@@ -26,14 +26,8 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     companion object: KLogging()
 
     override fun run(args: ApplicationArguments) {
-        val activeProfiles = args.sourceArgs.filter { it.startsWith("--spring.profiles.active=") }
-            .map { it.substringAfter("=") }
-        val isSeedProfile = activeProfiles.any { it.split(",").contains("seed") }
-                || System.getProperty("spring.profiles.active")?.split(",")?.contains("seed") == true
-                || System.getenv("SPRING_PROFILES_ACTIVE")?.split(",")?.contains("seed") == true
-                || env.activeProfiles.contains("seed")
-
-        if (isSeedProfile) {
+        val shouldSeed = env.getProperty("spring.deleteAndMigrateAndSeedDatabase", Boolean::class.java, false)
+        if (shouldSeed) {
             runBlocking {
                 recreateAndSeedDb()
             }

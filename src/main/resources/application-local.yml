@@ -1,0 +1,37 @@
+spring:
+  deleteAndMigrateAndSeedDatabase: true
+
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306
+    name: docker_db
+    username: root
+    password: root
+    pool:
+      initial-size: 10
+      max-size: 30
+      max-idle-time: 15s
+      validation-query: SELECT 1
+    properties:
+      connect-timeout: 10
+      ssl: false
+      max-create-connection-time: 3
+      max-acquire-time: 5
+      max-life-time: 15
+  #  r2dbc:
+  #    url: r2dbc:h2:mem:///~/db/
+  #    name: testdb
+  #    username: sa
+  #    password:
+  #  flyway:
+  #    url: jdbc:h2:mem:///~/db/testdb
+  #    user: ${spring.r2dbc.username}
+  #    password: ${spring.r2dbc.password}
+  #    baseline-on-migrate: true
+  #    cleanDisabled: false
+  flyway:
+    url: jdbc:mysql://localhost:3306/docker_db
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    baseline-on-migrate: true
+    cleanDisabled: false
+
