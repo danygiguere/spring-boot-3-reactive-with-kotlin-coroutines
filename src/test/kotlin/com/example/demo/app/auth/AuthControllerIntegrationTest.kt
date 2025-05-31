@@ -13,7 +13,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AuthControllerTest(@Autowired val webTestClient: WebTestClient) {
+class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient) {
 
     @Autowired
     lateinit var userRepository: UserRepository

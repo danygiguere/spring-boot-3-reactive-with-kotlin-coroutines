@@ -14,8 +14,9 @@ import org.springframework.test.context.ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PostControllerUnitTest() {
 
-    private val postService: PostService = mockk()
     private lateinit var postController: PostController
+
+    private val postService: PostService = mockk()
 
     @BeforeEach
     fun setUp() {
