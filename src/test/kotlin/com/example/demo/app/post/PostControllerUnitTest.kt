@@ -31,7 +31,6 @@ class PostControllerUnitTest() {
         val postDto = PostFactory(mockk()).makePostDto(1, createPostRequest.userId, createPostRequest.title, createPostRequest.description)
         coEvery { postService.create(1, any()) } returns postDto
 
-        // Mock Authentication with principal as userId string
         val authentication = mockk<Authentication>()
         coEvery { authentication.principal } returns "1"
 
@@ -71,10 +70,15 @@ class PostControllerUnitTest() {
         val postDto = PostFactory(mockk()).makeOne(1)
         val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(postDto.id, postDto.userId)
 
+        coEvery { postService.findById(1) } returns postDto
+
+        val authentication = mockk<Authentication>()
+        coEvery { authentication.principal } returns "1"
+
         coEvery { postService.update(1, updatePostRequest) } returns 1
 
         // When
-        val result = postController.update(postDto.id, updatePostRequest)
+        val result = postController.update(postDto.id, updatePostRequest, authentication)
 
         // Then
         Assertions.assertNotNull(result)

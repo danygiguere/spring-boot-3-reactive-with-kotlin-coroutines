@@ -10,6 +10,7 @@ import mu.KLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import kotlin.toString
 
 
 @RestController
@@ -56,7 +57,19 @@ class PostController(private val postService: PostService) {
     }
 
     @PutMapping("/posts/{id}")
-    suspend fun update(@PathVariable id: Long, @Valid @RequestBody updatePostRequest: UpdatePostRequest): ResponseEntity<Long> {
+    suspend fun update(
+        @PathVariable id: Long,
+        @Valid @RequestBody updatePostRequest: UpdatePostRequest,
+        authentication: Authentication): ResponseEntity<Long> {
+
+        val post = postService.findById(id)
+        if (post == null) {
+            return ResponseEntity.notFound().build()
+        }
+        if (post.userId != authentication.principal.toString().toLong()) {
+            return ResponseEntity.status(403).build() // Forbidden
+        }
+
         val response = postService.update(id, updatePostRequest)
         return ResponseEntity.ok(response)
     }
