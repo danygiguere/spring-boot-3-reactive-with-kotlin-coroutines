@@ -1,8 +1,8 @@
 package com.example.demo.user
 
 import com.example.demo.user.dtos.UserDto
-import com.example.demo.user.requests.CreateUserRequest
-import com.example.demo.user.requests.toUserEntity
+import com.example.demo.auth.requests.RegisterRequest
+import com.example.demo.auth.requests.toUserEntity
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -24,18 +24,24 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .map(userMapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun create(createUserRequest: CreateUserRequest): UserDto =
+    suspend fun register(registerRequest: RegisterRequest): UserDto =
             databaseClient.sql("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("username", createUserRequest.username)
-                    .bind("email", createUserRequest.email)
-                    .bind("password", passwordEncoder.encode(createUserRequest.password))
+                    .bind("username", registerRequest.username)
+                    .bind("email", registerRequest.email)
+                    .bind("password", passwordEncoder.encode(registerRequest.password))
                     .fetch()
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val userEntity = createUserRequest.toUserEntity().copy(id = id)
+                        val userEntity = registerRequest.toUserEntity().copy(id = id)
                         userEntity.toUserDto()
                     }
                     .awaitSingle()
+
+    suspend fun findByEmail(email: String): UserDto? =
+        databaseClient.sql("SELECT * FROM users WHERE email = :email")
+            .bind("email", email)
+            .map(userMapper::apply)
+            .awaitOneOrNull()
 }

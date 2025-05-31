@@ -2,7 +2,7 @@ package factories
 
 import com.example.demo.user.UserRepository
 import com.example.demo.user.dtos.UserDto
-import com.example.demo.user.requests.CreateUserRequest
+import com.example.demo.auth.requests.RegisterRequest
 import io.bloco.faker.Faker
 
 class UserFactory(val userRepository: UserRepository) {
@@ -20,16 +20,16 @@ class UserFactory(val userRepository: UserRepository) {
 
     private fun makeCreateUserRequest(username: String? = null,
                                       email: String? = null,
-                                      password: String? = null): CreateUserRequest {
+                                      password: String? = null): RegisterRequest {
         val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
         val emailSeed = email ?: "$usernameSeed@test.com"
         val passwordSeed = password ?: "secret"
-        return CreateUserRequest(usernameSeed, emailSeed, passwordSeed)
+        return RegisterRequest(usernameSeed, emailSeed, passwordSeed)
     }
 
     suspend fun createUser(username: String? = null,
                            email: String? = null): UserDto {
-        return userRepository.create(makeCreateUserRequest(username, email))
+        return userRepository.register(makeCreateUserRequest(username, email))
     }
 
     suspend fun createOne(): UserDto {

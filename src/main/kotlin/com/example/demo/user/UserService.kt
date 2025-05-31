@@ -3,7 +3,7 @@ package com.example.demo.user
 import com.example.demo.image.ImageRepository
 import com.example.demo.post.PostRepository
 import com.example.demo.user.dtos.*
-import com.example.demo.user.requests.CreateUserRequest
+import com.example.demo.auth.requests.RegisterRequest
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
@@ -29,6 +29,10 @@ class UserService(val userRepository: UserRepository,
         return@coroutineScope user.await()?.toUserWithImagesDto()?.copy(images = images.await())
     }
 
-    suspend fun create(createUserRequest: CreateUserRequest): UserDto? =
-            userRepository.create(createUserRequest)
+    suspend fun findByEmail(email: String): UserDto? =
+        userRepository.findByEmail(email)
+
+    suspend fun register(registerRequest: RegisterRequest): UserDto? =
+            userRepository.register(registerRequest)
+
 }
