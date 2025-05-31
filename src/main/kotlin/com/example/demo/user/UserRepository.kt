@@ -7,11 +7,14 @@ import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Repository
 
 @Repository
 class UserRepository(private val databaseClient: DatabaseClient,
-                     private val userMapper: UserMapper) {
+                     private val userMapper: UserMapper,
+                     private val passwordEncoder: PasswordEncoder
+) {
 
     companion object: KLogging()
 
@@ -26,7 +29,7 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("username", createUserRequest.username)
                     .bind("email", createUserRequest.email)
-                    .bind("password", createUserRequest.password)
+                    .bind("password", passwordEncoder.encode(createUserRequest.password))
                     .fetch()
                     .first()
                     .map { row ->

@@ -37,12 +37,15 @@ dependencies {
 	implementation("org.flywaydb:flyway-core:10.8.1")
 	implementation("org.flywaydb:flyway-mysql:10.8.1")
 	implementation("io.bloco:faker:2.0.4")
+	implementation("com.auth0:java-jwt:4.4.0")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+	testImplementation("org.springframework.security:spring-security-test")
 }
 
 kotlin {
