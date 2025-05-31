@@ -4,6 +4,7 @@
 - This project is just a demo or a starting template to work with Spring boot 3 with Kotlin coroutines and r2dbc and DatabaseClient (https://docs.spring.io/spring-framework/reference/data-access/r2dbc.html)
 - The project is set up to work mysql (you can clone this project to create a dockerized db: https://github.com/danygiguere/docker_db)
 - I have kept the H2 database configuration in the project, but it has discrepancies compoare to the r2dbc:mysql db.
+- There is an automatic re-migration of the db and seed on start up. To disable it, go to application.yml and comment this line: spring.profiles.active=seed.
 - If you are using IntelliJ Ultimate, you can run the requests.http file (in the test folder) to test all the available routes
 - In this demo I haven't used an orm. If you'd like to use an ORM, have a look at CoroutineCrudRepository. It' is a non-blocking reactive interface for generic CRUD operations using Kotlin Coroutines.
 - The app demonstrates:
@@ -21,8 +22,3 @@
   - how to data factories to seed the db and to create dtos in tests
   - how to set up Docker (I figured it out on the Docker branch (https://github.com/danygiguere/spring-boot-3-reactive-with-kotlin-coroutines/tree/Docker) but the H2DatabaseConfiguration script is problematic)
 - I recommend you watch this nice video regarding coroutines and the different strategies available: https://www.youtube.com/watch?v=ahTXElHrV0c
-
-
-### TLDR 
-- Clone the project, run it (it's set up by default with H2), then go to /test/requests.http and run the requests one by one.
-- There is a automatic seed on start up because of this config in application.yml: spring.profiles.active=seed.

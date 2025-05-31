@@ -1,10 +1,9 @@
 package com.example.demo.seeders
 
-import com.example.demo.app.auth.requests.RegisterRequest
-import com.example.demo.configuration.FlywayConfiguration
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.post.PostRepository
 import com.example.demo.app.user.UserRepository
+import com.example.demo.configuration.FlywayConfiguration
 import factories.ImageFactory
 import factories.PostFactory
 import factories.UserFactory
@@ -15,7 +14,6 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
-import kotlin.collections.contains
 
 @Component
 class DataSeeder(val flywayConfiguration: FlywayConfiguration,
