@@ -1,7 +1,11 @@
 package com.example.demo.factories.integration
 
+import com.example.demo.auth.requests.RegisterRequest
 import com.example.demo.user.UserRepository
+import com.example.demo.user.dtos.UserDto
 import factories.UserFactory
+import io.mockk.coEvery
+import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -56,5 +60,20 @@ class UserFactoryTest() {
                 assertNotNull(userDto.email)
             }
         }
+    }
+
+    @Test
+    fun `GIVEN params WHEN createUser is called THEN repository is called and UserDto is returned`() = runTest {
+        // Given
+        val username = "testuser"
+        val email = "testuser@test.com"
+
+        // When
+        val result = userFactory.createUser(username, email)
+
+        // Then
+        assertEquals(username, result.username)
+        assertEquals(email, result.email)
+        assertEquals("secret", result.password)
     }
 }

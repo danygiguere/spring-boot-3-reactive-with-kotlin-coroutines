@@ -26,6 +26,7 @@ data class RegisterRequest(
 fun RegisterRequest.toUserEntity(): UserEntity = UserEntity(
     username = username,
     email = email,
+    password = password,
     createdAt = null,
     updatedAt = null
 )

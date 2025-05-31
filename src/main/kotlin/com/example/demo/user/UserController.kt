@@ -32,10 +32,4 @@ class UserController(private val userService: UserService) {
         else ResponseEntity.notFound().build()
     }
 
-    @PostMapping("/users")
-    suspend fun create(@Valid @RequestBody registerRequest: RegisterRequest): ResponseEntity<UserDto> {
-        val response = userService.register(registerRequest)
-        return if (response != null) ResponseEntity.ok(response)
-        else ResponseEntity.notFound().build()
-    }
 }

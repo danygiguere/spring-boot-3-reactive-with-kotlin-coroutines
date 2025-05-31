@@ -1,6 +1,5 @@
 package factories
 
-import com.example.demo.image.dtos.ImageDto
 import com.example.demo.post.PostRepository
 import com.example.demo.post.dtos.PostDto
 import com.example.demo.post.requests.CreatePostRequest
@@ -10,8 +9,23 @@ class PostFactory(val postRepository: PostRepository) {
 
     val faker = Faker(locale = "en-CA")
 
+    fun makePostDto(
+        id: Long? = null,
+        userId: Long? = null,
+        title: String? = null,
+        description: String? = null,
+        createdAt: java.time.LocalDateTime? = null,
+        updatedAt: java.time.LocalDateTime? = null
+    ): PostDto {
+        val idSeed = id ?: 1L
+        val userIdSeed = userId ?: 1L
+        val titleSeed = title ?: faker.book.title()
+        val descriptionSeed = description ?: faker.lorem.paragraph()
+        return PostDto(idSeed, userIdSeed, titleSeed, descriptionSeed, createdAt, updatedAt)
+    }
+
     fun makeOne(userId: Long): PostDto {
-        return PostDto(1, userId, faker.book.title(), faker.lorem.paragraph(), null, null)
+        return makePostDto(null, userId)
     }
 
     fun makeMany(quantities: Int, userId: Long): List<PostDto> {

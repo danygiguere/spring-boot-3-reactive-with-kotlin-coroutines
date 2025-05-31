@@ -24,6 +24,12 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .map(userMapper::apply)
                     .awaitOneOrNull()
 
+    suspend fun findByEmail(email: String): UserDto? =
+        databaseClient.sql("SELECT * FROM users WHERE email = :email")
+            .bind("email", email)
+            .map(userMapper::apply)
+            .awaitOneOrNull()
+
     suspend fun register(registerRequest: RegisterRequest): UserDto =
             databaseClient.sql("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
@@ -39,9 +45,4 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     }
                     .awaitSingle()
 
-    suspend fun findByEmail(email: String): UserDto? =
-        databaseClient.sql("SELECT * FROM users WHERE email = :email")
-            .bind("email", email)
-            .map(userMapper::apply)
-            .awaitOneOrNull()
 }

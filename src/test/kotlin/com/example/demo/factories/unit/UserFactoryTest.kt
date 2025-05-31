@@ -21,6 +21,35 @@ class UserFactoryTest {
     }
 
     @Test
+    fun `GIVEN no params WHEN makeUserDto is called THEN default UserDto is returned`() {
+
+        // When
+        val userDto = userFactory.makeUserDto()
+
+        // Then
+        assertEquals(1, userDto.id)
+        assertNotNull(userDto.username)
+        assertNotNull(userDto.email)
+        assertNotNull(userDto.password)
+        assertNotNull(userDto.createdAt)
+        assertNotNull(userDto.updatedAt)
+    }
+
+    @Test
+    fun `GIVEN all params WHEN makeUserDto is called THEN UserDto has those values`() {
+        val now = java.time.LocalDateTime.now()
+        // Given, When
+        val userDto = userFactory.makeUserDto(42L, "testuser", "test@email.com", "pw", now, now)
+
+        assertEquals(42L, userDto.id)
+        assertEquals("testuser", userDto.username)
+        assertEquals("test@email.com", userDto.email)
+        assertEquals("pw", userDto.password)
+        assertEquals(now, userDto.createdAt)
+        assertEquals(now, userDto.updatedAt)
+    }
+
+    @Test
     fun `GIVEN no params WHEN makeOne is called THEN a user is returned`() {
         // When
         val userDto = userFactory.makeOne()
@@ -62,5 +91,28 @@ class UserFactoryTest {
             assertNotNull(userDto.username)
             assertNotNull(userDto.email)
         }
+    }
+
+    @Test
+    fun `GIVEN no params WHEN makeRegisterRequest is called THEN default RegisterRequest is returned`() {
+        // When
+        val registerRequest = userFactory.makeRegisterRequest()
+
+        // Then
+        assertNotNull(registerRequest.username)
+        assertNotNull(registerRequest.email)
+        assertNotNull(registerRequest.password)
+    }
+
+    @Test
+    fun `GIVEN all params WHEN makeRegisterRequest is called THEN RegisterRequest has those values`() {
+        // Given, When
+        val registerRequest = userFactory.makeRegisterRequest("customuser",
+            "custom@email.com",
+            "pw")
+
+        assertEquals("customuser", registerRequest.username)
+        assertEquals("custom@email.com", registerRequest.email)
+        assertEquals("pw", registerRequest.password)
     }
 }
