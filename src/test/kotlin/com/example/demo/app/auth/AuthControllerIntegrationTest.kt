@@ -37,9 +37,9 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     @Test
     fun `GIVEN valid credentials WHEN logging in THEN an authorization header and a user are returned`() = runTest {
 
-        val registerRequest = UserFactory(userRepository).createOne()
+        val userDto = UserFactory(userRepository).createOne()
 
-        val loginRequest = UserFactory(userRepository).makeLoginRequest(registerRequest.email, registerRequest.password)
+        val loginRequest = UserFactory(userRepository).makeLoginRequest(userDto.email, userDto.password)
 
         val response = webTestClient.post()
             .uri("/login")
@@ -53,8 +53,8 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
         val authHeader = response.responseHeaders.getFirst("Authorization")
         Assertions.assertNotNull(authHeader)
-        Assertions.assertEquals(registerRequest.username, response.responseBody?.username)
-        Assertions.assertEquals(registerRequest.email, response.responseBody?.email)
+        Assertions.assertEquals(userDto.username, response.responseBody?.username)
+        Assertions.assertEquals(userDto.email, response.responseBody?.email)
     }
 
 }

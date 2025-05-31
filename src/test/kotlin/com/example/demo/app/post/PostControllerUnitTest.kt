@@ -64,7 +64,7 @@ class PostControllerUnitTest() {
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() = runTest {
         // Given
         val postDto = PostFactory(mockk()).makeOne(1)
-        val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(postDto.id, postDto.userId, "new Title", postDto.description )
+        val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(postDto.id, postDto.userId)
 
         coEvery { postService.update(1, updatePostRequest) } returns 1
 

@@ -1,12 +1,15 @@
 package com.example.demo.app.post
 
 import com.example.demo.app.post.dtos.PostDto
+import com.example.demo.security.Tokenizer
 import factories.PostFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
 
@@ -17,8 +20,18 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     @Autowired
     lateinit var postRepository: PostRepository
 
+    @Autowired
+    private lateinit var tokenizer: Tokenizer
+
+    lateinit var bearerToken: String
+
+    @BeforeEach
+    fun setUp() {
+        bearerToken = tokenizer.createBearerToken(1)
+    }
+
     @Test
-    fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
+    fun `GIVEN valid data and jwt WHEN a post is submitted THEN the post is returned`() {
         runTest {
             // Given
             val postDto = PostFactory(postRepository).makeOne(1)
@@ -26,6 +39,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
             // When
             val result = webTestClient.post()
                 .uri("/posts")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
                 .expectStatus().is2xxSuccessful
@@ -40,6 +54,21 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     }
 
     @Test
+    fun `GIVEN no JWT WHEN a post is submitted THEN a 401 is returned`() {
+        runTest {
+            // Given
+            val postDto = PostFactory(postRepository).makeOne(1)
+
+            // When
+            webTestClient.post()
+                .uri("/user/1")
+                .bodyValue(postDto)
+                .exchange()
+                .expectStatus().isEqualTo(401)
+        }
+    }
+
+    @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         runTest {
             // Given
@@ -48,6 +77,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
             // When, Then
             webTestClient.post()
                 .uri("/posts")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
                 .expectStatus().isBadRequest
@@ -109,6 +139,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
             // When
             val result = webTestClient.put()
                 .uri("""/posts/${postDto.id}""")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
                 .expectStatus().is2xxSuccessful
@@ -129,6 +160,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
             // When
             val result = webTestClient.delete()
                 .uri("""/posts/1""")
+                .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .exchange()
                 .expectStatus().is2xxSuccessful
                 .expectBody(Long::class.java)

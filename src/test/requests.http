@@ -1,5 +1,8 @@
 #You must start the app before running this file.
 
+### Set a bearer token with no expiration date for testing purposes
+@bearerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZW1vIiwic3ViIjoiMTIiLCJyb2xlIjoiUk9MRV9VU0VSIiwiZXhwIjoxNzQ4NzUyODU4fQ.OQlCISpFG3wg2TAGpA1P0l9xiYezUj9n0uJLvrX0WU8
+
 ### Set port gloabally and drop and call /demo route
 < {%
     client.global.set("port", "8080")
@@ -71,6 +74,7 @@ Accept: application/json
     });
 %}
 
+
 ### GET User with id 1
 GET http://localhost:{{port}}/users/1
 Accept: application/json
@@ -85,6 +89,7 @@ Accept: application/json
 ### Create a Post
 POST http://localhost:{{port}}/posts
 Content-Type: application/json
+Authorization: {{bearerToken}}
 
 {
   "userId": 1,
@@ -103,6 +108,7 @@ Content-Type: application/json
 ### Create another Post
 POST http://localhost:{{port}}/posts
 Content-Type: application/json
+Authorization: {{bearerToken}}
 
 {
   "userId": 1,
@@ -218,6 +224,7 @@ Accept: application/json
 ### Update Post with id 1
 PUT http://localhost:{{port}}/posts/1
 Content-Type: application/json
+Authorization: {{bearerToken}}
 
 {
   "title": "The new title",

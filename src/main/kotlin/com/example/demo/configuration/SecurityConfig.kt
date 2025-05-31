@@ -7,6 +7,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import com.example.demo.security.SecurityContextRepository
+import org.springframework.http.HttpMethod
 import org.springframework.security.web.server.SecurityWebFilterChain
 
 
@@ -28,11 +29,15 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
             .httpBasic { it.disable() }
             .securityContextRepository(securityContextRepository)
             .authorizeExchange {
-                it.anyExchange().permitAll()
-//                it.pathMatchers("/status/check").permitAll()
-//                    .pathMatchers("/register").permitAll()
-//                    .pathMatchers("/login").permitAll()
-//                    .anyExchange().authenticated()
+                it.pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                    .pathMatchers("/demo/**").permitAll()
+                    .pathMatchers("/users/**").permitAll()
+                    .pathMatchers("/images/**").permitAll()
+                    .pathMatchers("/profile/**").permitAll()
+                    .pathMatchers("/status/check").permitAll()
+                    .pathMatchers("/register").permitAll()
+                    .pathMatchers("/login").permitAll()
+                    .anyExchange().authenticated()
             }
             .build()
     }
