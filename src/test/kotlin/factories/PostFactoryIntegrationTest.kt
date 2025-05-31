@@ -1,7 +1,6 @@
-package com.example.demo.factories.integration
+package factories
 
 import com.example.demo.post.PostRepository
-import factories.PostFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostFactoryTest() {
+@SpringBootTest(
+    classes = [com.example.demo.DemoApplication::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class PostFactoryIntegrationTest() {
 
     @Autowired
     lateinit var postRepository: PostRepository

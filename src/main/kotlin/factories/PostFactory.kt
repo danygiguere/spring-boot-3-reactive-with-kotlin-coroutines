@@ -10,30 +10,36 @@ class PostFactory(val postRepository: PostRepository) {
     val faker = Faker(locale = "en-CA")
 
     fun makePostDto(
-        id: Long? = null,
-        userId: Long? = null,
+        id: Long = 1L,
+        userId: Long = 1L,
         title: String? = null,
         description: String? = null,
         createdAt: java.time.LocalDateTime? = null,
         updatedAt: java.time.LocalDateTime? = null
     ): PostDto {
-        val idSeed = id ?: 1L
-        val userIdSeed = userId ?: 1L
         val titleSeed = title ?: faker.book.title()
         val descriptionSeed = description ?: faker.lorem.paragraph()
-        return PostDto(idSeed, userIdSeed, titleSeed, descriptionSeed, createdAt, updatedAt)
+        return PostDto(id, userId, titleSeed, descriptionSeed, createdAt, updatedAt)
     }
 
     fun makeOne(userId: Long): PostDto {
-        return makePostDto(null, userId)
+        return makePostDto(userId = userId)
     }
 
     fun makeMany(quantities: Int, userId: Long): List<PostDto> {
         return List(quantities) { makeOne(userId).copy(id = it + 1L) }
     }
 
-    fun makeCreatePostRequest(userId: Long): CreatePostRequest {
-        return CreatePostRequest(userId, faker.book.title(), faker.lorem.paragraph())
+    fun makeCreatePostRequest(
+        userId: Long,
+        title: String? = null,
+        description: String? = null
+    ): CreatePostRequest {
+        return CreatePostRequest(
+            userId,
+            title ?: faker.book.title(),
+            description ?: faker.lorem.paragraph()
+        )
     }
 
     suspend fun createOne(userId: Long): PostDto {

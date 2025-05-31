@@ -29,7 +29,7 @@ class UserFactory(val userRepository: UserRepository) {
     }
 
     fun makeMany(quantities: Int): List<UserDto> {
-        return (0 until quantities).map { makeOne(id = it + 1L ) }
+        return (0 until quantities).map { makeOne(it + 1L ) }
     }
 
     fun makeRegisterRequest(username: String? = null,
@@ -37,21 +37,17 @@ class UserFactory(val userRepository: UserRepository) {
                                     password: String? = null): RegisterRequest {
         val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
         val emailSeed = email ?: "$usernameSeed@test.com"
-        val passwordSeed = password ?: "secret"
+        val passwordSeed = password ?: "secret123"
         return RegisterRequest(usernameSeed, emailSeed, passwordSeed)
     }
 
-    suspend fun createUser(username: String? = null,
+    suspend fun createOne(username: String? = null,
                            email: String? = null,
                            password: String? = null): UserDto {
         return userRepository.register(makeRegisterRequest(username, email, password))
     }
 
-    suspend fun createOne(): UserDto {
-        return createUser()
-    }
-
     suspend fun createMany(quantities: Int): List<UserDto> {
-        return (0 until quantities).map { createUser() }
+        return (0 until quantities).map { createOne() }
     }
 }

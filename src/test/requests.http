@@ -24,6 +24,15 @@ Accept-Language: fr
     });
 %}
 
+### Call /demo/blocking
+GET http://localhost:{{port}}/demo/blocking
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
 ### Call /demo/non-parallel route
 GET http://localhost:{{port}}/demo/non-parallel
 
@@ -59,23 +68,6 @@ Accept: application/json
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
-
-### Create a User
-POST http://localhost:{{port}}/users
-Content-Type: application/json
-
-{
-  "username": "john.doe",
-  "email": "john@test.com",
-  "password": "password123"
-}
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.username === "john.doe")
     });
 %}
 
@@ -183,7 +175,7 @@ Accept: application/json
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.body.postId === 1)
-        client.assert(response.body.url === "https://placehold.co/600x400")
+        client.assert(response.body.url.startsWith("https://picsum.photos/seed/"))
     });
 %}
 
@@ -217,7 +209,8 @@ Accept: application/json
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
         client.assert(response.body.id === 1)
-        client.assert(response.body.images[0].url === "https://placehold.co/600x400")
+        client.assert(response.body.images.length > 0)
+        client.assert(response.body.images[0].url.startsWith("https://picsum.photos/seed/"))
     });
 %}
 

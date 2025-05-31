@@ -1,6 +1,5 @@
-package com.example.demo.integration
+package com.example.demo.post
 
-import com.example.demo.post.PostRepository
 import com.example.demo.post.dtos.PostDto
 import factories.PostFactory
 import kotlinx.coroutines.test.runTest
@@ -11,10 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
 
-
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
+class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient) {
 
     @Autowired
     lateinit var postRepository: PostRepository
@@ -23,7 +21,7 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).createOne(1)
+            val postDto = PostFactory(postRepository).makeOne(1)
 
             // When
             val result = webTestClient.post()
@@ -36,9 +34,8 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
                 .responseBody
 
             // Then
-            Assertions.assertTrue {
-                result!!.id != null
-            }
+            Assertions.assertNotNull(result)
+            Assertions.assertEquals(postDto.title, result?.title)
         }
     }
 
@@ -81,22 +78,24 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
     }
 
     @Test
-    fun `WHEN onepost is requested THEN the post is returned`() {
+    fun `WHEN one post is requested THEN the post is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).createOne( 1)
+            val postDto = PostFactory(postRepository).createOne(1)
 
             // When
             val result = webTestClient.get()
                 .uri("""/posts/${postDto.id}""")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(PostDto::class.java)
+                .expectBody(PostDto::class.java)
                 .returnResult()
                 .responseBody
 
             // Then
             Assertions.assertNotNull(result!!)
+            Assertions.assertEquals(postDto.title, result.title)
+            Assertions.assertEquals(postDto.description, result.description)
         }
     }
 

@@ -1,6 +1,5 @@
-package com.example.demo.factories.unit
+package factories
 
-import factories.UserFactory
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -8,10 +7,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
+import java.time.LocalDateTime
 
 @ContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserFactoryTest {
+@SpringBootTest(
+    classes = [com.example.demo.DemoApplication::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class UserFactoryUnitTest {
 
     private lateinit var userFactory: UserFactory
 
@@ -37,7 +39,7 @@ class UserFactoryTest {
 
     @Test
     fun `GIVEN all params WHEN makeUserDto is called THEN UserDto has those values`() {
-        val now = java.time.LocalDateTime.now()
+        val now = LocalDateTime.now()
         // Given, When
         val userDto = userFactory.makeUserDto(42L, "testuser", "test@email.com", "pw", now, now)
 

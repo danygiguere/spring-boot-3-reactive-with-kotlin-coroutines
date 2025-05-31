@@ -7,8 +7,20 @@ import io.bloco.faker.Faker
 class ImageFactory(val imageRepository: ImageRepository) {
 
     val faker = Faker(locale = "en-CA")
+
+    fun makeImageDto(
+        id: Long = 1L,
+        postId: Long = 1L,
+        url: String? = null,
+        createdAt: java.time.LocalDateTime? = null,
+        updatedAt: java.time.LocalDateTime? = null
+    ): ImageDto {
+        val urlSeed = url ?: "https://picsum.photos/seed/${faker.number.number(6)}/600/400"
+        return ImageDto(id, postId, urlSeed, createdAt, updatedAt)
+    }
+
     fun makeOne(postId: Long): ImageDto {
-        return ImageDto(1, postId, "https://placehold.co/600x400", null, null)
+        return makeImageDto(postId = postId)
     }
 
     fun makeMany(quantities: Int, postId: Long): List<ImageDto> {

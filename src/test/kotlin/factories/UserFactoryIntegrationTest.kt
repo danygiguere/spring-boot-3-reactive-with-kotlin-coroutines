@@ -1,11 +1,6 @@
-package com.example.demo.factories.integration
+package factories
 
-import com.example.demo.auth.requests.RegisterRequest
 import com.example.demo.user.UserRepository
-import com.example.demo.user.dtos.UserDto
-import factories.UserFactory
-import io.mockk.coEvery
-import io.mockk.coVerify
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -16,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class UserFactoryTest() {
+@SpringBootTest(
+    classes = [com.example.demo.DemoApplication::class],
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class UserFactoryIntegrationTest() {
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -69,11 +66,11 @@ class UserFactoryTest() {
         val email = "testuser@test.com"
 
         // When
-        val result = userFactory.createUser(username, email)
+        val result = userFactory.createOne(username, email)
 
         // Then
         assertEquals(username, result.username)
         assertEquals(email, result.email)
-        assertEquals("secret", result.password)
+        assertEquals("secret123", result.password)
     }
 }

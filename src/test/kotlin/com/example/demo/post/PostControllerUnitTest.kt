@@ -1,7 +1,5 @@
-package com.example.demo.unit
+package com.example.demo.post
 
-import com.example.demo.post.PostRepository
-import com.example.demo.post.PostService
 import com.example.demo.post.dtos.PostDto
 import com.example.demo.post.requests.CreatePostRequest
 import com.ninjasquad.springmockk.MockkBean
@@ -17,19 +15,16 @@ import org.springframework.test.web.reactive.server.WebTestClient
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
+class PostControllerUnitTest(@Autowired val webTestClient: WebTestClient) {
 
     @MockkBean
     lateinit var postService: PostService
 
-    @Autowired
-    lateinit var postRepository: PostRepository
-
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() {
         // Given
-        val createPostRequest = PostFactory(postRepository).makeCreatePostRequest(1)
-        val postDto = PostFactory(postRepository).makeOne(1)
+        val createPostRequest = PostFactory(mockk()).makeCreatePostRequest(1)
+        val postDto = PostFactory(mockk()).makePostDto(1, createPostRequest.userId, createPostRequest.title, createPostRequest.description)
 
         coEvery { postService.create(1, any()) } returns postDto
 
@@ -44,18 +39,14 @@ class PostControllerTest(@Autowired val webTestClient: WebTestClient) {
                 .responseBody
 
         // Then
-        Assertions.assertTrue {
-            result!!.id != null
-        }
+        Assertions.assertNotNull(result)
+        Assertions.assertEquals(createPostRequest.title, result?.title)
     }
 
     @Test
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         // Given
         val createPostRequest = CreatePostRequest(1, "T", "D")
-        val postDto = PostDto(1, 1, "T", "The Description", null, null)
-
-        coEvery { postService.create(1, createPostRequest) } returns postDto
 
         // When, Then
         webTestClient.post()
