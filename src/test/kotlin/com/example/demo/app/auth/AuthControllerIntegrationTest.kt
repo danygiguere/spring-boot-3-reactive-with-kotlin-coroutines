@@ -1,6 +1,7 @@
 package com.example.demo.app.auth
 
 import com.example.demo.app.user.UserRepository
+import com.example.demo.app.user.dtos.UserDto
 import factories.UserFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -34,28 +35,26 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     }
 
     @Test
-    fun `GIVEN valid credentials WHEN logging in THEN token is returned`() = runTest {
+    fun `GIVEN valid credentials WHEN logging in THEN an authorization header and a user are returned`() = runTest {
 
         val registerRequest = UserFactory(userRepository).createOne()
 
-        // Then login
-        val loginBody = mapOf(
-            "email" to registerRequest.email,
-            "password" to registerRequest.password
-        )
+        val loginRequest = UserFactory(userRepository).makeLoginRequest(registerRequest.email, registerRequest.password)
+
         val response = webTestClient.post()
             .uri("/login")
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(loginBody)
+            .bodyValue(loginRequest)
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectHeader().exists("Authorization")
-            .expectBody()
+            .expectBody(UserDto::class.java)
             .returnResult()
 
         val authHeader = response.responseHeaders.getFirst("Authorization")
         Assertions.assertNotNull(authHeader)
-        Assertions.assertEquals(true, authHeader!!.startsWith("Bearer "))
+        Assertions.assertEquals(registerRequest.username, response.responseBody?.username)
+        Assertions.assertEquals(registerRequest.email, response.responseBody?.email)
     }
 
 }

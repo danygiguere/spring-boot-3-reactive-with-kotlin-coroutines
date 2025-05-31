@@ -1,5 +1,6 @@
 package factories
 
+import com.example.demo.app.auth.requests.LoginRequest
 import com.example.demo.app.user.UserRepository
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.auth.requests.RegisterRequest
@@ -39,6 +40,15 @@ class UserFactory(val userRepository: UserRepository) {
         val emailSeed = email ?: "$usernameSeed@test.com"
         val passwordSeed = password ?: "secret123"
         return RegisterRequest(usernameSeed, emailSeed, passwordSeed)
+    }
+
+    fun makeLoginRequest(
+        email: String? = null,
+        password: String? = null
+    ): LoginRequest {
+        val emailSeed = email ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase() + "@test.com")
+        val passwordSeed = password ?: "secret123"
+        return LoginRequest(emailSeed, passwordSeed)
     }
 
     suspend fun createOne(username: String? = null,
