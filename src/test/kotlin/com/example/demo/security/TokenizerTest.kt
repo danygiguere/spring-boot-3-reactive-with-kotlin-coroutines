@@ -1,8 +1,7 @@
-package com.example.demo.app.security
+package com.example.demo.security
 
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.example.demo.app.user.UserRepository
-import com.example.demo.security.Tokenizer
 import factories.UserFactory
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.test.runTest

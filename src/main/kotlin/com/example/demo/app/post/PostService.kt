@@ -38,11 +38,8 @@ class PostService(val postRepository: PostRepository,
         return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await())
     }
 
-    suspend fun create(userId: Long, createPostRequest: CreatePostRequest): PostDto? {
-        val post = postRepository.create(userId, createPostRequest)
-        return findById(post.id)
-    }
-
+    suspend fun create(userId: Long, createPostRequest: CreatePostRequest): PostDto? =
+        postRepository.create(userId, createPostRequest)
 
     suspend fun update(id: Long, updatePostRequest: UpdatePostRequest): Long =
             postRepository.update(id, updatePostRequest)

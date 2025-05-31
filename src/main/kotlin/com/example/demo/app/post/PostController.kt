@@ -6,11 +6,16 @@ import com.example.demo.app.post.dtos.PostWithUserDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
 import jakarta.validation.Valid
+import mu.KLogging
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+
 
 @RestController
 class PostController(private val postService: PostService) {
+
+    companion object: KLogging()
 
     @GetMapping("/posts")
     suspend fun getAll(): ResponseEntity<List<PostDto>?> {
@@ -41,10 +46,11 @@ class PostController(private val postService: PostService) {
     }
 
     @PostMapping("/posts")
-    suspend fun create(@Valid @RequestBody createPostRequest: CreatePostRequest): ResponseEntity<PostDto> {
-        val userId: Long = 1; // for demo only. The userId needs to be taken from the auth user
-//        val userId = authentication.token.claims["user_id"] as Long
-        val response = postService.create(userId, createPostRequest)
+    suspend fun create(
+        @Valid @RequestBody createPostRequest: CreatePostRequest,
+        authentication: Authentication
+    ): ResponseEntity<PostDto> {
+        val response = postService.create(authentication.principal.toString().toLong(), createPostRequest)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }

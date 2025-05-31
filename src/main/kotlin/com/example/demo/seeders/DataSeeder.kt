@@ -1,5 +1,6 @@
 package com.example.demo.seeders
 
+import com.example.demo.app.auth.requests.RegisterRequest
 import com.example.demo.configuration.FlywayConfiguration
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.post.PostRepository
@@ -48,7 +49,7 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     }
 
     suspend fun seed() {
-        val user = UserFactory(userRepository).createOne()
+        val user = UserFactory(userRepository).createOne("johndoe", "johndoe@test.com", "secret123")
         val post = user.id?.let { PostFactory(postRepository).createOne(it) }
         post?.id?.let { ImageFactory(imageRepository).createOne(it) }
 

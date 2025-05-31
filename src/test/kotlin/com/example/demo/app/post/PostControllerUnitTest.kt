@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.core.Authentication
 import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
@@ -30,8 +31,12 @@ class PostControllerUnitTest() {
         val postDto = PostFactory(mockk()).makePostDto(1, createPostRequest.userId, createPostRequest.title, createPostRequest.description)
         coEvery { postService.create(1, any()) } returns postDto
 
+        // Mock Authentication with principal as userId string
+        val authentication = mockk<Authentication>()
+        coEvery { authentication.principal } returns "1"
+
         // When
-        val result = postController.create(createPostRequest)
+        val result = postController.create(createPostRequest, authentication)
 
         // Then
         Assertions.assertNotNull(result)

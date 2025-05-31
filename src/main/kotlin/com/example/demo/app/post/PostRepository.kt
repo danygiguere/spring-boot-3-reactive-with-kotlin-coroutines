@@ -36,7 +36,7 @@ class PostRepository(private val databaseClient: DatabaseClient,
     suspend fun create(userId: Long, createPostRequest: CreatePostRequest): PostDto =
             databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("userId", createPostRequest.userId)
+                    .bind("userId", userId)
                     .bind("title", createPostRequest.title)
                     .bind("description", createPostRequest.description)
                     .fetch()
