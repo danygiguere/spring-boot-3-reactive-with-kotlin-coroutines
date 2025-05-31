@@ -1,8 +1,8 @@
 package factories
 
-import com.example.demo.user.UserRepository
-import com.example.demo.user.dtos.UserDto
-import com.example.demo.auth.requests.RegisterRequest
+import com.example.demo.app.user.UserRepository
+import com.example.demo.app.user.dtos.UserDto
+import com.example.demo.app.auth.requests.RegisterRequest
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 

@@ -1,6 +1,6 @@
 package factories
 
-import com.example.demo.post.PostRepository
+import com.example.demo.app.post.PostRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

@@ -24,7 +24,7 @@ class PostFactoryUnitTest {
     @Test
     fun `GIVEN param userId = x WHEN makeOne is called THEN a post with userId x is returned`() {
         // Given
-        val userId: Long = 2
+        val userId: Long = 1
 
         // When
         val postDto = postFactory.makeOne(userId)
@@ -37,7 +37,7 @@ class PostFactoryUnitTest {
     fun `GIVEN a quantity and userId = x WHEN makeMany is called THEN a list of posts with userId is returned`() {
         // Given
         val quantity = 3
-        val userId: Long = 3
+        val userId: Long = 1
 
         // When
         val posts = postFactory.makeMany(quantity, userId)

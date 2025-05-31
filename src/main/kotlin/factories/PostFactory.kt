@@ -1,8 +1,9 @@
 package factories
 
-import com.example.demo.post.PostRepository
-import com.example.demo.post.dtos.PostDto
-import com.example.demo.post.requests.CreatePostRequest
+import com.example.demo.app.post.PostRepository
+import com.example.demo.app.post.dtos.PostDto
+import com.example.demo.app.post.requests.CreatePostRequest
+import com.example.demo.app.post.requests.UpdatePostRequest
 import io.bloco.faker.Faker
 
 class PostFactory(val postRepository: PostRepository) {
@@ -36,6 +37,20 @@ class PostFactory(val postRepository: PostRepository) {
         description: String? = null
     ): CreatePostRequest {
         return CreatePostRequest(
+            userId,
+            title ?: faker.book.title(),
+            description ?: faker.lorem.paragraph()
+        )
+    }
+
+    fun makeUpdatePostRequest(
+        id: Long,
+        userId: Long,
+        title: String? = null,
+        description: String? = null
+    ): UpdatePostRequest {
+        return UpdatePostRequest(
+            id,
             userId,
             title ?: faker.book.title(),
             description ?: faker.lorem.paragraph()

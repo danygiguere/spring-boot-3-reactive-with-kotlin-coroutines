@@ -1,9 +1,9 @@
 package com.example.demo.seeders
 
 import com.example.demo.configuration.FlywayConfiguration
-import com.example.demo.image.ImageRepository
-import com.example.demo.post.PostRepository
-import com.example.demo.user.UserRepository
+import com.example.demo.app.image.ImageRepository
+import com.example.demo.app.post.PostRepository
+import com.example.demo.app.user.UserRepository
 import factories.ImageFactory
 import factories.PostFactory
 import factories.UserFactory
