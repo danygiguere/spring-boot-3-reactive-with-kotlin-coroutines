@@ -1,6 +1,7 @@
 package com.example.demo.app.auth.requests
 
 import com.example.demo.app.user.UserEntity
+import com.example.demo.validators.UniqueEmail
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
@@ -15,6 +16,7 @@ data class RegisterRequest(
     @get:NotNull()
     @get:NotEmpty()
     @get:Email(message = "{email}")
+    @get:UniqueEmail
     val email: String,
 
     @get:NotNull()

@@ -17,6 +17,13 @@ spring:
       max-create-connection-time: 3
       max-acquire-time: 5
       max-life-time: 15
+  flyway:
+    url: jdbc:mysql://localhost:3306/docker_db
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    baseline-on-migrate: true
+    cleanDisabled: false
+
   #  r2dbc:
   #    url: r2dbc:h2:mem:///~/db/
   #    name: testdb
@@ -28,10 +35,4 @@ spring:
   #    password: ${spring.r2dbc.password}
   #    baseline-on-migrate: true
   #    cleanDisabled: false
-  flyway:
-    url: jdbc:mysql://localhost:3306/docker_db
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
-    baseline-on-migrate: true
-    cleanDisabled: false
 
