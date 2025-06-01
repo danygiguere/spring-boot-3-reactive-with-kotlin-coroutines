@@ -70,15 +70,10 @@ class PostControllerUnitTest() {
         val postDto = PostFactory(mockk()).makeOne(1)
         val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(postDto.id, postDto.userId)
 
-        coEvery { postService.findById(1) } returns postDto
-
-        val authentication = mockk<Authentication>()
-        coEvery { authentication.principal } returns "1"
-
         coEvery { postService.update(1, updatePostRequest) } returns 1
 
         // When
-        val result = postController.update(postDto.id, updatePostRequest, authentication)
+        val result = postController.update(postDto.id, updatePostRequest)
 
         // Then
         Assertions.assertNotNull(result)
