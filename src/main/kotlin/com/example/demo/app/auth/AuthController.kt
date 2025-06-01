@@ -23,9 +23,6 @@ class AuthController(private val userService: UserService,
 
     @PostMapping("/register")
     suspend fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> {
-        if (userService.findByEmail(request.email) != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.")
-        }
         val newUser = userService.register(request)
         return if (newUser != null) {
             ResponseEntity.ok().body("An email will be sent to you. Please confirm your email by clicking the verification link provided in the email")

@@ -14,6 +14,8 @@ class ApplicationExceptionHandler {
 
     companion object: KLogging()
 
+    class UserAlreadyExistsException(message: String) : RuntimeException(message)
+
     @ExceptionHandler(WebExchangeBindException::class)
     fun handleWebExchangeBindException(e: WebExchangeBindException): ResponseEntity<Any> {
         logger.info("*** WebExchangeBindException: $e")

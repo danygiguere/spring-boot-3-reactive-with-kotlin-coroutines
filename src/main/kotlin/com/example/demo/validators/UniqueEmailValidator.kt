@@ -7,6 +7,7 @@ import kotlin.reflect.KClass
 import com.example.demo.app.user.UserService
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
+import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -20,14 +21,14 @@ annotation class UniqueEmail(
     val payload: Array<KClass<out Payload>> = []
 )
 
+
 @Component
 class UniqueEmailValidator @Autowired constructor(
     private val userService: UserService
 ) : ConstraintValidator<UniqueEmail, String> {
-
-    override fun isValid(email: String?, context: ConstraintValidatorContext): Boolean {
-//        if (email.isNullOrBlank()) return true // Let @NotEmpty/@NotNull handle this
-//        return userService.findByEmail(email) == null
-        return true
+    override fun isValid(value: String?, context: ConstraintValidatorContext): Boolean {
+        if (value == null) return true
+        // Run suspend function in a blocking way for validation
+        return runBlocking { userService.findByEmail(value) == null }
     }
 }
