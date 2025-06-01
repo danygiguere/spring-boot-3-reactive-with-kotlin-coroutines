@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class UniqueEmail(
-    val message: String = "Email already exists.",
+    val message: String = "{enter_unique_email}",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = []
 )
