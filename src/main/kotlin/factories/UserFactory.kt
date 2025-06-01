@@ -39,7 +39,7 @@ class UserFactory(val userRepository: UserRepository) {
         val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
         val emailSeed = email ?: "$usernameSeed@test.com"
         val passwordSeed = password ?: "secret123"
-        return RegisterRequest(usernameSeed, emailSeed, passwordSeed)
+        return RegisterRequest(usernameSeed, emailSeed, passwordSeed, passwordSeed)
     }
 
     fun makeLoginRequest(

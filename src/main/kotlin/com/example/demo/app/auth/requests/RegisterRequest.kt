@@ -22,7 +22,12 @@ data class RegisterRequest(
     @get:NotNull()
     @get:NotEmpty()
     @get:Size(min = 8, max = 25, message = "{password.size}")
-    val password: String
+    val password: String,
+
+    @get:NotNull()
+    @get:NotEmpty()
+    @get:Size(min = 8, max = 25, message = "{password.size}")
+    val password_confirmation: String
 )
 
 fun RegisterRequest.toUserEntity(): UserEntity = UserEntity(
