@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY_GETTER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class IsValidPhoneNumber(
-    val message: String = "{isValidPhoneNumber}",
+    val message: String = "{enter_valid_phone_number}",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Any>> = []
 )
