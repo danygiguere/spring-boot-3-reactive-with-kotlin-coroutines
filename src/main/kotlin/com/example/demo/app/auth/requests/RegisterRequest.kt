@@ -1,12 +1,14 @@
 package com.example.demo.app.auth.requests
 
 import com.example.demo.app.user.UserEntity
+import com.example.demo.validators.FieldsMatch
 import com.example.demo.validators.UniqueEmail
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
+@FieldsMatch(first = "password", second = "password_confirmation", message = "{password_must_match}")
 data class RegisterRequest(
     @get:NotNull()
     @get:NotEmpty()

@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.demo.exception
 
 import jakarta.validation.ConstraintViolationException
 import mu.KLogging
@@ -30,6 +30,8 @@ class ApplicationExceptionHandler {
 //        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 //            .body(mapOf("errors" to errorMap))
     }
+
+
 
     @ExceptionHandler(IllegalStateException::class)
     fun handleIllegalStateException(e: IllegalStateException): String {
