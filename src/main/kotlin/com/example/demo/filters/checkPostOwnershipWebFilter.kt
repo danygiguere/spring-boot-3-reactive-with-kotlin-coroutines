@@ -2,38 +2,11 @@ package com.example.demo.filters
 
 import com.example.demo.app.post.PostService
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import kotlinx.coroutines.reactor.mono
-import org.springframework.context.i18n.LocaleContext
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
-import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.server.WebFilter
-import org.springframework.web.server.WebFilterChain
-import reactor.core.publisher.Mono
-import java.util.Locale
 
-
-@Component
-class GlobalWebFilter(
-    private val postService: PostService
-) : WebFilter {
-    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> = mono {
-
-        setLocaleFromExchange(exchange)
-
-        val path = exchange.request.path.value()
-        val method = exchange.request.method.name()
-
-        if (!checkPostOwnership(path, method, exchange, postService)) {
-            return@mono null
-        }
-        chain.filter(exchange).awaitFirstOrNull()
-    }
-}
-
-private suspend fun checkPostOwnership(
+suspend fun checkPostOwnershipWebFilter(
     path: String,
     method: String,
     exchange: ServerWebExchange,
@@ -61,10 +34,4 @@ private suspend fun checkPostOwnership(
         }
     }
     return true
-}
-
-private fun setLocaleFromExchange(exchange: ServerWebExchange) {
-    val localeContext: LocaleContext = exchange.localeContext
-    val locale = localeContext.locale ?: Locale.ENGLISH
-    LocaleContextHolder.setLocale(locale)
 }
