@@ -20,8 +20,8 @@ class WebFilterConfig(
 
         setLocaleWebFilter(exchange)
 
-        val path = exchange.request.path.value()
-        val method = exchange.request.method.name()
+        val path = exchange.request.path
+        val method = exchange.request.method
 
         if (!checkPostOwnershipWebFilter(path, method, exchange, postService)) {
             return@mono null
