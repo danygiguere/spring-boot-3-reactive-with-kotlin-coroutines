@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import com.example.demo.security.SecurityContextRepository
 import org.springframework.http.HttpMethod
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsWebFilter
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
 
 @EnableWebFluxSecurity
@@ -22,14 +25,29 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
     }
 
     @Bean
+    fun corsWebFilter(): CorsWebFilter {
+        val corsConfig = CorsConfiguration()
+        corsConfig.allowedOrigins = listOf("http://localhost:4200")
+        corsConfig.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        corsConfig.allowedHeaders = listOf("*")
+        corsConfig.allowCredentials = true
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfig)
+        return CorsWebFilter(source)
+    }
+
+    @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
+            .cors { }
             .csrf { it.disable() }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .securityContextRepository(securityContextRepository)
             .authorizeExchange {
-                it.pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                it.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
                     .pathMatchers("/demo/**").permitAll()
                     .pathMatchers("/users/**").permitAll()
                     .pathMatchers("/images/**").permitAll()

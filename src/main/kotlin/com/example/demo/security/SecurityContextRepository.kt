@@ -1,5 +1,9 @@
 package com.example.demo.security
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.mono
+import kotlinx.coroutines.withContext
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext
@@ -16,13 +20,22 @@ class SecurityContextRepository(private val authManager: AuthenticationManager) 
         return Mono.empty()
     }
 
-    override fun load(exchange: ServerWebExchange): Mono<SecurityContext> {
-        return Mono.justOrEmpty(exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION))
-            .filter { header -> header.startsWith("Bearer ") }
-            .flatMap { header ->
-                val token = header.substring(7)
-                val auth = UsernamePasswordAuthenticationToken(token, token)
-                authManager.authenticate(auth).map { SecurityContextImpl(it) }
+    override fun load(exchange: ServerWebExchange): Mono<SecurityContext> = mono {
+        val cookie = exchange.request.cookies["auth"]?.firstOrNull()?.value
+        val decodedCookie = cookie?.let {
+            withContext(Dispatchers.IO) {
+                java.net.URLDecoder.decode(it, Charsets.UTF_8.name())
             }
+        }
+        val jwt = decodedCookie?.takeIf { it.isNotEmpty() } ?: exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION)
+
+        if (jwt != null && jwt.startsWith("Bearer ")) {
+            val token = jwt.substring(7)
+            val auth = UsernamePasswordAuthenticationToken(token, token)
+            val authentication = authManager.authenticate(auth).awaitSingle()
+            SecurityContextImpl(authentication)
+        } else {
+            null
+        }
     }
 }

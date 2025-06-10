@@ -13,6 +13,8 @@
   - how to set an exception handler to manage failed validations in a reactive context
   - how to return translated validation error messages (check the requests.http file for more info)
   - how to create custom validators
+  - how to set up the Security with JWT with an httpOnly cookie
+  - how to use webfilters to block user from updating data that doesn't belong to them (checkPostOwnershipWebFilter)
   - how to do a oneToMany relationship query
   - how to do a belongsTo relationship query
   - how to do a hasManyThrough relationship query
