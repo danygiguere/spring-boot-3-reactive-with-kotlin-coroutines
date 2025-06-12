@@ -5,6 +5,7 @@ import com.example.demo.security.Tokenizer
 import com.example.demo.app.user.UserService
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.auth.requests.RegisterRequest
+import com.example.demo.security.SecurityContextRepository.AuthConstants
 import jakarta.validation.Valid
 import mu.KLogging
 import org.springframework.http.HttpStatus
@@ -45,7 +46,7 @@ class AuthController(private val userService: UserService,
         return if (user != null && passwordMatch) {
             val token = tokenizer.createBearerToken(user.id)
             val urlEncodedToken = java.net.URLEncoder.encode(token, Charsets.UTF_8.name())
-            val cookie = ResponseCookie.from("auth", urlEncodedToken)
+            val cookie = ResponseCookie.from(AuthConstants.AUTH_COOKIE_NAME, urlEncodedToken)
                 .httpOnly(true)
                 .path("/")
                 .sameSite("Lax")

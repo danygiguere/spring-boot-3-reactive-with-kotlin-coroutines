@@ -8,7 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import com.example.demo.security.SecurityContextRepository
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsWebFilter
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
@@ -18,6 +20,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 @Configuration
 class SecurityConfig(private val securityContextRepository: SecurityContextRepository) {
 
+    companion object {
+        private val ALLOWED_ORIGINS = listOf("http://localhost:4200")
+        private val PUBLIC_PATHS = arrayOf(
+            "/demo/**", "/users/**", "/images/**", "/profile/**",
+            "/status/check", "/register", "/login"
+        )
+    }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -26,12 +35,13 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
 
     @Bean
     fun corsWebFilter(): CorsWebFilter {
-        val corsConfig = CorsConfiguration()
-        corsConfig.allowedOrigins = listOf("http://localhost:4200")
-        corsConfig.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
-        corsConfig.allowedHeaders = listOf("*")
-        corsConfig.allowCredentials = true
-
+        val corsConfig = CorsConfiguration().apply {
+            allowedOrigins = ALLOWED_ORIGINS
+            allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            allowedHeaders = listOf("*")
+            exposedHeaders = listOf("Authorization", "Set-Cookie")
+            allowCredentials = true
+        }
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", corsConfig)
         return CorsWebFilter(source)
@@ -40,7 +50,10 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
-            .cors { }
+            .cors { } // Enable CORS
+            .exceptionHandling {
+                it.authenticationEntryPoint(HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
+            }
             .csrf { it.disable() }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
@@ -48,15 +61,10 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
             .authorizeExchange {
                 it.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
-                    .pathMatchers("/demo/**").permitAll()
-                    .pathMatchers("/users/**").permitAll()
-                    .pathMatchers("/images/**").permitAll()
-                    .pathMatchers("/profile/**").permitAll()
-                    .pathMatchers("/status/check").permitAll()
-                    .pathMatchers("/register").permitAll()
-                    .pathMatchers("/login").permitAll()
+                    .pathMatchers(*PUBLIC_PATHS).permitAll()
                     .anyExchange().authenticated()
             }
             .build()
     }
+
 }
