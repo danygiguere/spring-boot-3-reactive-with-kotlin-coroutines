@@ -67,7 +67,7 @@ class AuthController(private val userService: UserService,
          });
          return this.http.post<PostDto>('http://localhost:8080/posts', postDto, { headers });
      */
-    @PostMapping("/login-with-tooken")
+    @PostMapping("/login-with-token")
     suspend fun loginWithToken(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)

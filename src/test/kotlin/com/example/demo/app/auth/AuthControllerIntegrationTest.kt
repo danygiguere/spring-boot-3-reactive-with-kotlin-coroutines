@@ -42,7 +42,7 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         val loginRequest = UserFactory(userRepository).makeLoginRequest(userDto.email, userDto.password)
 
         val response = webTestClient.post()
-            .uri("/login")
+            .uri("/login-with-token")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(loginRequest)
             .exchange()

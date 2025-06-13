@@ -23,7 +23,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
         private val ALLOWED_ORIGINS = listOf("http://localhost:4200")
         private val PUBLIC_PATHS = arrayOf(
             "/demo/**", "/users/**", "/images/**", "/profile/**",
-            "/status/check", "/register", "/login"
+            "/status/check", "/register", "/login", "/login-with-token"
         )
     }
 
@@ -35,7 +35,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
     @Bean
     fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
         val corsConfig = CorsConfiguration().apply {
-            allowedOrigins = listOf("http://localhost:4200")
+            allowedOrigins = ALLOWED_ORIGINS
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true
