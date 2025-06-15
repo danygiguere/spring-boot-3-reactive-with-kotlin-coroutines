@@ -21,6 +21,7 @@ class AuthService(private val tokenizer: Tokenizer) {
 
     fun createRefreshTokenCookie(userId: Long?): ResponseCookie {
         val refreshToken = tokenizer.createRefreshToken(userId)
+        // save refresh token in database. A user can have multiple refresh tokens
         val urlEncodedRefreshToken = java.net.URLEncoder.encode(refreshToken, Charsets.UTF_8.name())
         return ResponseCookie.from(AuthConstants.REFRESH_TOKEN_NAME, urlEncodedRefreshToken)
             .httpOnly(true)

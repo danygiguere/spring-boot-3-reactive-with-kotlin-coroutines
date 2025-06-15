@@ -48,7 +48,6 @@ class AuthController(private val userService: UserService,
         return if (user != null && passwordMatch) {
             val accessTokenCookie = authService.createAccessTokenCookie(user.id)
             val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
-            // save refresh token in database. A user can have multiple refresh tokens
             ResponseEntity.ok()
                 .headers { headers ->
                     headers.add("Set-Cookie", accessTokenCookie.toString())
@@ -85,7 +84,8 @@ class AuthController(private val userService: UserService,
         val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]?.firstOrNull()?.value?.removePrefix("Bearer+")
         val decodedJwt = tokenizer.verifyRefreshToken(refreshToken).awaitSingle()
         val user = userService.findById(decodedJwt.subject.toLong())
-        // get token by user_id and token from the refresh_token table and verify it matches the refreshToken
+        // get token by user_id and token from the refresh_token table
+        // if there is a match
         val match = true
         return if(match) {
             val accessTokenCookie = authService.createAccessTokenCookie(user?.id)
@@ -99,6 +99,13 @@ class AuthController(private val userService: UserService,
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
+    }
+
+    @PostMapping("/logout")
+    suspend fun logout(exchange: ServerWebExchange): ResponseEntity<String> {
+        // Invalidate the cookies by setting their max age to 0
+        // clear all refresh tokens from the database for the user
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build()
     }
 
 }
