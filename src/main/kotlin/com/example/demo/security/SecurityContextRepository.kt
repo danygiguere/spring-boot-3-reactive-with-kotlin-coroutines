@@ -22,14 +22,6 @@ class SecurityContextRepository(private val authManager: AuthenticationManager) 
     }
 
     override fun load(exchange: ServerWebExchange): Mono<SecurityContext> {
-//        var token: String?
-//        val cookie = exchange.request.cookies[AuthConstants.AUTH_COOKIE_NAME]?.firstOrNull()?.value
-//        if(cookie != null) {
-//            token = URLDecoder.decode(cookie, Charsets.UTF_8.name())
-//        } else {
-//            token = exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION)
-//        }
-
         val cookie = exchange.request.cookies[AuthConstants.AUTH_COOKIE_NAME]?.firstOrNull()?.value
         val token = cookie?.let { URLDecoder.decode(it, Charsets.UTF_8.name()) }
             ?: exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION)

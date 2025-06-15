@@ -27,7 +27,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
     @BeforeEach
     fun setUp() {
-        bearerToken = tokenizer.createBearerToken(1)
+        bearerToken = tokenizer.createAccessToken(1)
     }
 
     @Test

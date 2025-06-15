@@ -38,28 +38,28 @@ class TokenizerTest {
     }
 
     @Test
-    fun `GIVEN id with JWT WHEN getById is called THEN a user is returned`() {
+    fun `GIVEN user id WHEN tokenize is called THEN a token returned`() {
         runTest {
             // Given
             val userDto = userFactory.createOne()
 
             // When
-            val bearerToken = tokenizer.tokenize(userDto.id.toString())
+            val token = tokenizer.tokenize(userDto.id.toString())
 
             // Then
-            Assertions.assertNotNull(bearerToken)
+            Assertions.assertNotNull(token)
         }
     }
 
     @Test
-    fun `GIVEN token getById is called THEN a user is returned`() {
+    fun `GIVEN valid bearer WHEN verify is called THEN a DecodedJWT is returned`() {
         runTest {
             // Given
             val userDto = userFactory.createOne()
-            val bearerToken = tokenizer.tokenize(userDto.id.toString())
+            val token = tokenizer.tokenize(userDto.id.toString())
 
             // When
-            val response: DecodedJWT = tokenizer.verify(bearerToken).awaitSingle()
+            val response: DecodedJWT = tokenizer.verify(token).awaitSingle()
 
             // Then
             Assertions.assertNotNull(response)

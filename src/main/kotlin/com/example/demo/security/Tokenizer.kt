@@ -13,22 +13,28 @@ import java.util.*
 @Component
 class Tokenizer {
 
-    @Value("\${app.token.secret}")
-    private val secret: String? = null
-
     @Value("\${app.token.issuer}")
     private val issuer: String? = null
 
-    @Value("\${app.token.expires-minute}")
-    private val expires = 0
+    @Value("\${app.access-token.secret}")
+    private val accessTokenSecret: String? = null
 
-    fun createBearerToken(userId: Long?): String {
+    @Value("\${app.refresh-token.secret}")
+    private val refreshTokenSecret: String? = null
+
+    @Value("\${app.access-token.expires-minute}")
+    private val accessTokenExpiry = 0
+
+    @Value("\${app.refresh-token.expires-minute}")
+    private val refreshTokenExpiry = 0
+
+    fun createAccessToken(userId: Long?): String {
         return "Bearer " + tokenize(userId.toString())
     }
 
     fun tokenize(userId: String?): String {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MINUTE, expires)
+        calendar.add(Calendar.MINUTE, accessTokenExpiry)
         val expiresAt: Date = calendar.time
 
         return JWT.create()
@@ -51,7 +57,7 @@ class Tokenizer {
     }
 
     public fun algorithm(): Algorithm {
-        return Algorithm.HMAC256(secret)
+        return Algorithm.HMAC256(accessTokenSecret)
     }
 
 }
