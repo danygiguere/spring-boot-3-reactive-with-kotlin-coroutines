@@ -38,14 +38,13 @@ class TokenizerTest {
     }
 
     @Test
-    fun `GIVEN user id WHEN tokenize is called THEN a token returned`() {
+    fun `GIVEN user id WHEN createAccessToken is called THEN a token returned`() {
         runTest {
             // Given
             val userDto = userFactory.createOne()
 
             // When
-            val token = tokenizer.tokenize(userDto.id.toString())
-
+            val token = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
             // Then
             Assertions.assertNotNull(token)
         }
@@ -56,10 +55,10 @@ class TokenizerTest {
         runTest {
             // Given
             val userDto = userFactory.createOne()
-            val token = tokenizer.tokenize(userDto.id.toString())
+            val token = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
 
             // When
-            val response: DecodedJWT = tokenizer.verify(token).awaitSingle()
+            val response: DecodedJWT = tokenizer.verifyAccessToken(token).awaitSingle()
 
             // Then
             Assertions.assertNotNull(response)

@@ -23,7 +23,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
         private val ALLOWED_ORIGINS = listOf("http://localhost:4200")
         private val PUBLIC_PATHS = arrayOf(
             "/demo/**", "/users/**", "/images/**", "/profile/**",
-            "/status/check", "/register", "/login", "/login-with-token"
+            "/status/check", "/register", "/login", "/login-with-token", "/refresh-token"
         )
     }
 

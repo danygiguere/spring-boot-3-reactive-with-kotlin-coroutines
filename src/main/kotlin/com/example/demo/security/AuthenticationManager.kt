@@ -15,7 +15,7 @@ class AuthenticationManager(private val tokenizer: Tokenizer) : ReactiveAuthenti
     override fun authenticate(authentication: Authentication): Mono<Authentication> {
         return Mono.justOrEmpty(authentication.credentials)
             .filter { Objects.nonNull(it) }
-            .flatMap { credential -> tokenizer.verify(credential as String) }
+            .flatMap { credential -> tokenizer.verifyAccessToken(credential as String) }
             .flatMap { decodedJWT ->
                 val userId = decodedJWT.subject
                 val role = decodedJWT.getClaim("role").asString()

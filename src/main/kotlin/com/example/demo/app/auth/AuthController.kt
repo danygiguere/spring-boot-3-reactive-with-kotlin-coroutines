@@ -10,7 +10,6 @@ import jakarta.validation.Valid
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseCookie
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,7 +20,8 @@ import org.springframework.web.server.ServerWebExchange
 @RestController
 class AuthController(private val userService: UserService,
                      private val tokenizer: Tokenizer,
-                     private val passwordEncoder: PasswordEncoder) {
+                     private val passwordEncoder: PasswordEncoder,
+    private val authService: AuthService) {
 
     companion object: KLogging()
 
@@ -46,27 +46,14 @@ class AuthController(private val userService: UserService,
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
         return if (user != null && passwordMatch) {
-            val accessToken = tokenizer.createAccessToken(user.id)
-            // val refreshToken = tokenizer.createRefreshToken(user.id)
-            // save refresh token in database. A user must can have multiple refresh tokens
-            val urlEncodedAccessToken = java.net.URLEncoder.encode(accessToken, Charsets.UTF_8.name())
-//            val urlEncodedRefreshToken = java.net.URLEncoder.encode(refreshToken, Charsets.UTF_8.name())
-            val accessTokenCookie = ResponseCookie.from(AuthConstants.ACCESS_TOKEN_NAME, urlEncodedAccessToken)
-                .httpOnly(true)
-                .path("/")
-                .sameSite("Lax")
-                .maxAge(tokenizer.accessTokenExpiry.toLong() * 60)
-                .build()
-            val refreshTokenCookie = ResponseCookie.from(AuthConstants.REFRESH_TOKEN_NAME, urlEncodedAccessToken)
-                .httpOnly(true)
-                .path("/")
-                .sameSite("Lax")
-                .maxAge(tokenizer.refreshTokenExpiry.toLong() * 60) // 30 days
-                .build()
-
+            val accessTokenCookie = authService.createAccessTokenCookie(user.id)
+            val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
+            // save refresh token in database. A user can have multiple refresh tokens
             ResponseEntity.ok()
-                .header("Set-Cookie", accessTokenCookie.toString())
-                .header("Set-Cookie", refreshTokenCookie.toString())
+                .headers { headers ->
+                    headers.add("Set-Cookie", accessTokenCookie.toString())
+                    headers.add("Set-Cookie", refreshTokenCookie.toString())
+                }
                 .body(user)
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
@@ -96,22 +83,18 @@ class AuthController(private val userService: UserService,
     @PostMapping("/refresh-token")
     suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<UserDto> {
         val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]?.firstOrNull()?.value?.removePrefix("Bearer+")
-        val decodedJwt = tokenizer.verify(refreshToken).awaitSingle()
+        val decodedJwt = tokenizer.verifyRefreshToken(refreshToken).awaitSingle()
         val user = userService.findById(decodedJwt.subject.toLong())
         // get token by user_id and token from the refresh_token table and verify it matches the refreshToken
         val match = true
         return if(match) {
-            // create access and refresh tokens
-            val accessToken = tokenizer.createAccessToken(user?.id)
-            val urlEncodedAccessToken = java.net.URLEncoder.encode(accessToken, Charsets.UTF_8.name())
-            val accessTokenCookie = ResponseCookie.from(AuthConstants.ACCESS_TOKEN_NAME, urlEncodedAccessToken)
-                .httpOnly(true)
-                .path("/")
-                .sameSite("Lax")
-                .maxAge(tokenizer.accessTokenExpiry.toLong() * 60)
-                .build()
+            val accessTokenCookie = authService.createAccessTokenCookie(user?.id)
+            val refreshTokenCookie = authService.createRefreshTokenCookie(user?.id)
             ResponseEntity.ok()
-                .header("Set-Cookie", accessTokenCookie.toString())
+                .headers { headers ->
+                    headers.add("Set-Cookie", accessTokenCookie.toString())
+                    headers.add("Set-Cookie", refreshTokenCookie.toString())
+                }
                 .body(user)
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()

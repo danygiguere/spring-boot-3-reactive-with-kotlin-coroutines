@@ -23,18 +23,22 @@ class Tokenizer {
     private val refreshTokenSecret: String? = null
 
     @Value("\${app.access-token.expires-minute}")
-    val accessTokenExpiry = 0
+    public val accessTokenExpiry = 0
 
     @Value("\${app.refresh-token.expires-minute}")
-    val refreshTokenExpiry = 0
+    public val refreshTokenExpiry = 0
 
     fun createAccessToken(userId: Long?): String {
-        return "Bearer " + tokenize(userId.toString())
+        return "Bearer " + tokenize(userId.toString(), accessTokenExpiry, accessTokenSecret.toString())
     }
 
-    fun tokenize(userId: String?): String {
+    fun createRefreshToken(userId: Long?): String {
+        return "Bearer " + tokenize(userId.toString(), refreshTokenExpiry, refreshTokenSecret.toString())
+    }
+
+    fun tokenize(userId: String?, expiry: Int, secret: String): String {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MINUTE, accessTokenExpiry)
+        calendar.add(Calendar.MINUTE, expiry)
         val expiresAt: Date = calendar.time
 
         return JWT.create()
@@ -42,13 +46,21 @@ class Tokenizer {
             .withSubject(userId)
             .withClaim("role", UserRoleEnum.ROLE_USER.toString())
             .withExpiresAt(expiresAt)
-            .sign(algorithm())
+            .sign(algorithm(secret))
     }
 
-    fun verify(token: String?): Mono<DecodedJWT> {
+    fun verifyAccessToken(token: String?): Mono<DecodedJWT> {
+        return verify(token, accessTokenSecret.toString())
+    }
+
+    fun verifyRefreshToken(token: String?): Mono<DecodedJWT> {
+        return verify(token, refreshTokenSecret.toString())
+    }
+
+    private fun verify(token: String?, secret: String): Mono<DecodedJWT> {
         try {
             //TODO verify other params
-            val verifier: JWTVerifier = JWT.require(algorithm()).withIssuer(issuer).build()
+            val verifier: JWTVerifier = JWT.require(algorithm(secret)).withIssuer(issuer).build()
             val response = Mono.just(verifier.verify(token))
             return response
         } catch (e: Exception) {
@@ -56,8 +68,8 @@ class Tokenizer {
         }
     }
 
-    public fun algorithm(): Algorithm {
-        return Algorithm.HMAC256(accessTokenSecret)
+    private fun algorithm(secret: String): Algorithm {
+        return Algorithm.HMAC256(secret)
     }
 
 }
