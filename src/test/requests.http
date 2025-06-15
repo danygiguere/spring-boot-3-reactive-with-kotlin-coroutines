@@ -1,7 +1,7 @@
 #You must start the app before running this file.
 
 ### Set a bearer token with no expiration date for testing purposes
-@bearerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZW1vIiwic3ViIjoiMSIsInJvbGUiOiJST0xFX1VTRVIiLCJleHAiOjc3NDg3Mjg3MDF9.aYcteejo7aq0tKXYUNezSDTEDtdqqZU3DsDeoSQc0lw
+@bearerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZW1vIiwic3ViIjoiMSIsInJvbGUiOiJST0xFX1VTRVIiLCJleHAiOjE3NTAwNTE5NDV9.lgwhLhODN7RR1oefkxEI0IgzcDMbZ2H44mlnSKCk1V0
 
 ### Set port gloabally and drop and call /demo route
 < {%

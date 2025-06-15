@@ -23,10 +23,10 @@ class Tokenizer {
     private val refreshTokenSecret: String? = null
 
     @Value("\${app.access-token.expires-minute}")
-    private val accessTokenExpiry = 0
+    val accessTokenExpiry = 0
 
     @Value("\${app.refresh-token.expires-minute}")
-    private val refreshTokenExpiry = 0
+    val refreshTokenExpiry = 0
 
     fun createAccessToken(userId: Long?): String {
         return "Bearer " + tokenize(userId.toString())

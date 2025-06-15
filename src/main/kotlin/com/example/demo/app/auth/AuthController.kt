@@ -1,12 +1,13 @@
 package com.example.demo.app.auth
 
 import com.example.demo.app.auth.requests.LoginRequest
-import com.example.demo.security.Tokenizer
+import com.example.demo.app.auth.requests.RegisterRequest
 import com.example.demo.app.user.UserService
 import com.example.demo.app.user.dtos.UserDto
-import com.example.demo.app.auth.requests.RegisterRequest
 import com.example.demo.security.SecurityContextRepository.AuthConstants
+import com.example.demo.security.Tokenizer
 import jakarta.validation.Valid
+import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseCookie
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ServerWebExchange
 
 @RestController
 class AuthController(private val userService: UserService,
@@ -44,24 +46,27 @@ class AuthController(private val userService: UserService,
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
         return if (user != null && passwordMatch) {
-            val token = tokenizer.createAccessToken(user.id)
-            val urlEncodedToken = java.net.URLEncoder.encode(token, Charsets.UTF_8.name())
-            val cookie = ResponseCookie.from(AuthConstants.AUTH_COOKIE_NAME, urlEncodedToken)
+            val accessToken = tokenizer.createAccessToken(user.id)
+            // val refreshToken = tokenizer.createRefreshToken(user.id)
+            // save refresh token in database. A user must can have multiple refresh tokens
+            val urlEncodedAccessToken = java.net.URLEncoder.encode(accessToken, Charsets.UTF_8.name())
+//            val urlEncodedRefreshToken = java.net.URLEncoder.encode(refreshToken, Charsets.UTF_8.name())
+            val accessTokenCookie = ResponseCookie.from(AuthConstants.ACCESS_TOKEN_NAME, urlEncodedAccessToken)
                 .httpOnly(true)
                 .path("/")
                 .sameSite("Lax")
+                .maxAge(tokenizer.accessTokenExpiry.toLong() * 60)
+                .build()
+            val refreshTokenCookie = ResponseCookie.from(AuthConstants.REFRESH_TOKEN_NAME, urlEncodedAccessToken)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(tokenizer.refreshTokenExpiry.toLong() * 60) // 30 days
                 .build()
 
-            // val refreshToken = tokenizer.createRefreshToken(user.id)
-            // save refresh token in database. A user must can have multiple refresh tokens
-            // val refreshCookie = ResponseCookie.from(AuthConstants.REFRESH_COOKIE_NAME, refreshToken)
-            //     .httpOnly(true)
-            //     .path("/")
-            //     .sameSite("Lax")
-            //     .maxAge(60 * 60 * 24 * 30) // 30 days
-            //     .build()
             ResponseEntity.ok()
-                .header("Set-Cookie", cookie.toString())
+                .header("Set-Cookie", accessTokenCookie.toString())
+                .header("Set-Cookie", refreshTokenCookie.toString())
                 .body(user)
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
@@ -89,21 +94,28 @@ class AuthController(private val userService: UserService,
     }
 
     @PostMapping("/refresh-token")
-    suspend fun refreshToken(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
-       // validate the refresh token and return a new access token
-        val user = userService.findByEmail(request.email)
-        val userId = 1; // This should be replaced with the actual user ID from the refresh token
-        val token = tokenizer.createAccessToken(userId.toLong())
-        val urlEncodedToken = java.net.URLEncoder.encode(token, Charsets.UTF_8.name())
-        val cookie = ResponseCookie.from(AuthConstants.AUTH_COOKIE_NAME, urlEncodedToken)
-            .httpOnly(true)
-            .path("/")
-            .sameSite("Lax")
-            .build()
-        ResponseEntity.ok()
-            .header("Set-Cookie", cookie.toString())
-            .body(user)
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build()
+    suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<UserDto> {
+        val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]?.firstOrNull()?.value?.removePrefix("Bearer+")
+        val decodedJwt = tokenizer.verify(refreshToken).awaitSingle()
+        val user = userService.findById(decodedJwt.subject.toLong())
+        // get token by user_id and token from the refresh_token table and verify it matches the refreshToken
+        val match = true
+        return if(match) {
+            // create access and refresh tokens
+            val accessToken = tokenizer.createAccessToken(user?.id)
+            val urlEncodedAccessToken = java.net.URLEncoder.encode(accessToken, Charsets.UTF_8.name())
+            val accessTokenCookie = ResponseCookie.from(AuthConstants.ACCESS_TOKEN_NAME, urlEncodedAccessToken)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(tokenizer.accessTokenExpiry.toLong() * 60)
+                .build()
+            ResponseEntity.ok()
+                .header("Set-Cookie", accessTokenCookie.toString())
+                .body(user)
+        } else {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        }
     }
 
 }

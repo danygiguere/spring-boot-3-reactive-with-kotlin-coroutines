@@ -14,7 +14,8 @@ import java.net.URLDecoder
 class SecurityContextRepository(private val authManager: AuthenticationManager) : ServerSecurityContextRepository {
 
     object AuthConstants {
-        const val AUTH_COOKIE_NAME = "auth"
+        const val ACCESS_TOKEN_NAME = "access_token"
+        const val REFRESH_TOKEN_NAME = "refresh_token"
     }
 
     override fun save(exchange: ServerWebExchange, context: SecurityContext): Mono<Void> {
@@ -22,7 +23,7 @@ class SecurityContextRepository(private val authManager: AuthenticationManager) 
     }
 
     override fun load(exchange: ServerWebExchange): Mono<SecurityContext> {
-        val cookie = exchange.request.cookies[AuthConstants.AUTH_COOKIE_NAME]?.firstOrNull()?.value
+        val cookie = exchange.request.cookies[AuthConstants.ACCESS_TOKEN_NAME]?.firstOrNull()?.value
         val token = cookie?.let { URLDecoder.decode(it, Charsets.UTF_8.name()) }
             ?: exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION)
 
