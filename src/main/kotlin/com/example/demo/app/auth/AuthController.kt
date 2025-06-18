@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ServerWebExchange
+import kotlin.text.get
+import kotlin.toString
 
 @RestController
 class AuthController(private val userService: UserService,
@@ -47,11 +49,13 @@ class AuthController(private val userService: UserService,
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
         return if (user != null && passwordMatch) {
             val accessTokenCookie = authService.createAccessTokenCookie(user.id)
+            val accessTokenExpiresAtCookie = authService.createAccessTokenExpiresAtCookie(accessTokenCookie.maxAge)
             val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
             ResponseEntity.ok()
                 .headers { headers ->
                     headers.add("Set-Cookie", accessTokenCookie.toString())
                     headers.add("Set-Cookie", refreshTokenCookie.toString())
+                    headers.add("Set-Cookie", accessTokenExpiresAtCookie.toString())
                 }
                 .body(user)
         } else {
@@ -81,24 +85,36 @@ class AuthController(private val userService: UserService,
 
     @PostMapping("/refresh-token")
     suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<UserDto> {
-        val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]?.firstOrNull()?.value?.removePrefix("Bearer+")
-        val decodedJwt = tokenizer.verifyRefreshToken(refreshToken).awaitSingle()
-        val user = userService.findById(decodedJwt.subject.toLong())
-        // get token by user_id and token from the refresh_token table
-        // if there is a match
-        val match = true
-        return if(match) {
-            val accessTokenCookie = authService.createAccessTokenCookie(user?.id)
-            val refreshTokenCookie = authService.createRefreshTokenCookie(user?.id)
-            ResponseEntity.ok()
-                .headers { headers ->
-                    headers.add("Set-Cookie", accessTokenCookie.toString())
-                    headers.add("Set-Cookie", refreshTokenCookie.toString())
-                }
-                .body(user)
-        } else {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]
+            ?.firstOrNull()?.value?.removePrefix("Bearer+")
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val decodedJwt = try {
+            tokenizer.verifyRefreshToken(refreshToken).awaitSingle()
+        } catch (ex: Exception) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
+
+        val userId = decodedJwt.subject?.toLongOrNull()
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val user = userService.findById(userId)
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        // TODO: Check refresh token validity in DB
+
+        val accessTokenCookie = authService.createAccessTokenCookie(user.id)
+        val accessTokenExpiresAtCookie = authService.createAccessTokenExpiresAtCookie(accessTokenCookie.maxAge)
+        val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
+
+        return ResponseEntity.ok()
+            .headers { headers ->
+                headers.add("Set-Cookie", accessTokenCookie.toString())
+                headers.add("Set-Cookie", refreshTokenCookie.toString())
+                headers.add("Set-Cookie", accessTokenExpiresAtCookie.toString())
+            }
+            .body(user)
     }
 
     @PostMapping("/logout")
