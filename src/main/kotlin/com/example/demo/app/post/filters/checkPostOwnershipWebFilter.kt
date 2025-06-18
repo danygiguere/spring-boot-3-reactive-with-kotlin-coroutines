@@ -1,4 +1,4 @@
-package com.example.demo.filters
+package com.example.demo.app.post.filters
 
 import com.example.demo.app.post.PostService
 import kotlinx.coroutines.reactive.awaitFirstOrNull
