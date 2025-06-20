@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ServerWebExchange
-import kotlin.text.get
-import kotlin.toString
 
 @RestController
 class AuthController(private val userService: UserService,
@@ -119,9 +117,15 @@ class AuthController(private val userService: UserService,
 
     @PostMapping("/logout")
     suspend fun logout(exchange: ServerWebExchange): ResponseEntity<String> {
-        // Invalidate the cookies by setting their max age to 0
-        // clear all refresh tokens from the database for the user
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build()
+        val accessTokenCookie = authService.invalidateAccessTokenCookie()
+        val refreshTokenCookie = authService.invalidateRefreshTokenCookie()
+        val accessTokenExpiresAtCookie = authService.invalidateAccessTokenExpiresAtCookie()
+        return ResponseEntity.ok()
+            .headers { headers ->
+                headers.add("Set-Cookie", accessTokenCookie.toString())
+                headers.add("Set-Cookie", refreshTokenCookie.toString())
+                headers.add("Set-Cookie", accessTokenExpiresAtCookie.toString())
+            }
+            .body("User logged out successfully")
     }
-
 }

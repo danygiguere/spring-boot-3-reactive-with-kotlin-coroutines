@@ -56,6 +56,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .securityContextRepository(securityContextRepository)
+            .logout { it.disable() }
             .authorizeExchange {
                 it.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()

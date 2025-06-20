@@ -15,11 +15,12 @@ class SecurityContextRepository(private val authManager: AuthenticationManager) 
 
     object AuthConstants {
         const val ACCESS_TOKEN_NAME = "access_token"
+        const val ACCESS_TOKEN_EXPIRES_AT_NAME = "access_token_expires_at"
         const val REFRESH_TOKEN_NAME = "refresh_token"
     }
 
     override fun save(exchange: ServerWebExchange, context: SecurityContext): Mono<Void> {
-        return Mono.empty()
+        return Mono.empty();
     }
 
     override fun load(exchange: ServerWebExchange): Mono<SecurityContext> {

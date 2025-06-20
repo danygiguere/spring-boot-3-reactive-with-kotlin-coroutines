@@ -5,10 +5,6 @@ import com.example.demo.security.Tokenizer
 import org.springframework.http.ResponseCookie
 import org.springframework.stereotype.Service
 import java.time.Duration
-import java.util.Calendar
-import java.util.Date
-import kotlin.text.toInt
-import kotlin.toString
 
 @Service
 class AuthService(private val tokenizer: Tokenizer) {
@@ -39,10 +35,37 @@ class AuthService(private val tokenizer: Tokenizer) {
     fun createAccessTokenExpiresAtCookie(expiry: Duration): ResponseCookie {
         val safeExpiry = expiry.minusSeconds(0) // subtract 10 seconds to avoid clock skew
         val expiresAtTimestamp = System.currentTimeMillis() + safeExpiry.toMillis()
-        return ResponseCookie.from("access_token_expires_at", expiresAtTimestamp.toString())
+        return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_EXPIRES_AT_NAME, expiresAtTimestamp.toString())
             .httpOnly(false)
             .path("/")
             .sameSite("Lax")
+            .build()
+    }
+
+    fun invalidateAccessTokenCookie(): ResponseCookie {
+        return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_NAME, "")
+            .httpOnly(true)
+            .path("/")
+            .sameSite("Lax")
+            .maxAge(0)
+            .build()
+    }
+
+    fun invalidateRefreshTokenCookie(): ResponseCookie {
+        return ResponseCookie.from(AuthConstants.REFRESH_TOKEN_NAME, "")
+            .httpOnly(true)
+            .path("/")
+            .sameSite("Lax")
+            .maxAge(0)
+            .build()
+    }
+
+    fun invalidateAccessTokenExpiresAtCookie(): ResponseCookie {
+        return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_EXPIRES_AT_NAME, "")
+            .httpOnly(true)
+            .path("/")
+            .sameSite("Lax")
+            .maxAge(0)
             .build()
     }
 
