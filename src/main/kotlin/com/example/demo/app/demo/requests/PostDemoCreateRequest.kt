@@ -1,37 +1,38 @@
 package com.example.demo.app.demo.requests
 
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.time.LocalDate
 
 data class PostDemoCreateRequest(
-    @field:Valid
-    val userId: String,
+    @get:NotNull()
+    val userId: String?,
+
+    @get:NotNull(message = "{name.not_null}")
+    @get:Size(min = 6, max = 255, message = "{name.size}")
+    val name: String?,
 
     @field:Valid
-    @get:Size(min = 6, max = 255, message = "{title.size}")
-    val name: String,
-
-    @field:Valid
-    val profile: Profile
+    @get:NotNull()
+    val profile: Profile?
 ) {
     data class Profile(
         @field:Valid
-        val address: Address,
+        @get:NotNull()
+        val address: Address?,
 
         val description: String? = null,  // This can be null
 
-        @field:Valid
-        val dateOfBirth: LocalDate
+        @get:NotNull()
+        val dateOfBirth: LocalDate?
     ) {
         data class Address(
-            @field:Valid
-            @get:Size(min = 6, max = 255, message = "{title.size}")
-            val street: String,
+            @get:NotNull()
+            val street: String?,
 
-            @field:Valid
-            @get:Size(min = 6, max = 255, message = "{title.size}")
-            val postalCode: String,
+            @get:NotNull()
+            val postalCode: String?,
         )
     }
 }
