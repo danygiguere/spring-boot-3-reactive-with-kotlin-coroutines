@@ -6,9 +6,6 @@ import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.PostWithImagesDto
 import com.example.demo.app.post.dtos.PostWithUserDto
 import com.example.demo.app.post.dtos.UpdatePostDto
-import com.example.demo.app.post.dtos.toPostWithImagesDto
-import com.example.demo.app.post.dtos.toPostWithUserDto
-import com.example.demo.app.post.requests.UpdatePostRequest
 import com.example.demo.app.user.UserRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

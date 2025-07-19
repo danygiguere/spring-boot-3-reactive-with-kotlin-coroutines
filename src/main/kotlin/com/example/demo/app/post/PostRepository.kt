@@ -4,7 +4,6 @@ import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.dtos.toEntity
-import com.example.demo.app.post.requests.UpdatePostRequest
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient

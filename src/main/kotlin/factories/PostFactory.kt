@@ -7,6 +7,7 @@ import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
 import io.bloco.faker.Faker
+import java.time.LocalDateTime
 
 class PostFactory(val postRepository: PostRepository) {
 
@@ -22,7 +23,9 @@ class PostFactory(val postRepository: PostRepository) {
     ): PostDto {
         val titleSeed = title ?: faker.book.title()
         val descriptionSeed = description ?: faker.lorem.paragraph()
-        return PostDto(id, userId, titleSeed, descriptionSeed, createdAt, updatedAt)
+        val createdAtSeed = createdAt ?: LocalDateTime.now()
+        val updatedAtSeed = updatedAt ?: LocalDateTime.now()
+        return PostDto(id, userId, titleSeed, descriptionSeed, createdAtSeed, updatedAtSeed)
     }
 
     fun makeCreatePostDto(
