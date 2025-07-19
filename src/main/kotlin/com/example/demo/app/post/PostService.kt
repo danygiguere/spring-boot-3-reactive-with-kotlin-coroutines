@@ -5,6 +5,7 @@ import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.PostWithImagesDto
 import com.example.demo.app.post.dtos.PostWithUserDto
+import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.dtos.toPostWithImagesDto
 import com.example.demo.app.post.dtos.toPostWithUserDto
 import com.example.demo.app.post.requests.UpdatePostRequest
@@ -41,8 +42,9 @@ class PostService(val postRepository: PostRepository,
     suspend fun create(createPostDto: CreatePostDto): PostDto? =
         postRepository.create(createPostDto)
 
-    suspend fun update(id: Long, updatePostRequest: UpdatePostRequest): Long =
-            postRepository.update(id, updatePostRequest)
+
+    suspend fun update(updatePostDto: UpdatePostDto): Long =
+            postRepository.update(updatePostDto)
 
     suspend fun delete(id: Long): Long =
             postRepository.delete(id)

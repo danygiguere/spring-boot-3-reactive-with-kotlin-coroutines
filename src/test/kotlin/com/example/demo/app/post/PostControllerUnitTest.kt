@@ -29,8 +29,8 @@ class PostControllerUnitTest() {
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() = runTest {
         // Given
-        val createPostRequest = PostFactory(mockk()).makeCreatePostRequest(1)
-        val postDto = PostFactory(mockk()).makePostDto(1, createPostRequest.userId, createPostRequest.title, createPostRequest.description)
+        val createPostRequest = PostFactory(mockk()).makeCreatePostRequest()
+        val postDto = PostFactory(mockk()).makePostDto(1, 1, createPostRequest.title, createPostRequest.description)
         coEvery { postService.create(any()) } returns postDto
 
         val authentication = mockk<Authentication>()
@@ -69,13 +69,17 @@ class PostControllerUnitTest() {
     @Test
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() = runTest {
         // Given
-        val postDto = PostFactory(mockk()).makeOne(1)
-        val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(postDto.id, postDto.userId)
+        val userId = 1L
+        val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest(userId)
+        val updatePostDto = PostFactory(mockk()).makeUpdatePostDto(updatePostRequest.id!!, userId,updatePostRequest.title, updatePostRequest.description)
 
-        coEvery { postService.update(1, updatePostRequest) } returns 1
+        val authentication = mockk<Authentication>()
+        coEvery { authentication.principal } returns userId
+
+        coEvery { postService.update( updatePostDto) } returns 1
 
         // When
-        val result = postController.update(postDto.id, updatePostRequest)
+        val result = postController.update(updatePostRequest, authentication)
 
         // Then
         Assertions.assertNotNull(result)

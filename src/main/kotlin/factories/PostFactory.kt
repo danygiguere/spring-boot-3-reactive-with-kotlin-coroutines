@@ -3,6 +3,7 @@ package factories
 import com.example.demo.app.post.PostRepository
 import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
+import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
 import io.bloco.faker.Faker
@@ -34,6 +35,17 @@ class PostFactory(val postRepository: PostRepository) {
         return CreatePostDto( userId, titleSeed, descriptionSeed)
     }
 
+    fun makeUpdatePostDto(
+        id: Long = 1L,
+        userId: Long = 1L,
+        title: String? = null,
+        description: String? = null
+    ): UpdatePostDto {
+        val titleSeed = title ?: faker.book.title()
+        val descriptionSeed = description ?: faker.lorem.paragraph()
+        return UpdatePostDto(id, userId, titleSeed, descriptionSeed)
+    }
+
     fun makeOne(userId: Long): PostDto {
         return makePostDto(userId = userId)
     }
@@ -43,12 +55,10 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     fun makeCreatePostRequest(
-        userId: Long,
         title: String? = null,
         description: String? = null
     ): CreatePostRequest {
         return CreatePostRequest(
-            userId,
             title ?: faker.book.title(),
             description ?: faker.lorem.paragraph()
         )
@@ -56,13 +66,11 @@ class PostFactory(val postRepository: PostRepository) {
 
     fun makeUpdatePostRequest(
         id: Long,
-        userId: Long,
         title: String? = null,
         description: String? = null
     ): UpdatePostRequest {
         return UpdatePostRequest(
             id,
-            userId,
             title ?: faker.book.title(),
             description ?: faker.lorem.paragraph()
         )

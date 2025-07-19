@@ -7,6 +7,7 @@ import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.PostWithImagesDto
 import com.example.demo.app.post.dtos.PostWithUserDto
+import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
 import jakarta.validation.Valid
@@ -57,8 +58,8 @@ class PostController(private val postService: PostService,
         val createPostDto = request.let {
             CreatePostDto(
                 userId = authentication.principal.toString().toLong(),
-                title = it.title,
-                description = it.description
+                title = it.title!!,
+                description = it.description!!
             )
         }
         val response = postService.create(createPostDto)
@@ -100,9 +101,17 @@ class PostController(private val postService: PostService,
 
     @PutMapping("/posts/{id}")
     suspend fun update(
-        @PathVariable id: Long,
-        @Valid @RequestBody updatePostRequest: UpdatePostRequest): ResponseEntity<Long> {
-        val response = postService.update(id, updatePostRequest)
+        @Valid @RequestBody request: UpdatePostRequest,
+        authentication: Authentication): ResponseEntity<Long> {
+        val updatePostDto = request.let {
+            UpdatePostDto(
+                id = it.id!!,
+                userId = authentication.principal.toString().toLong(),
+                title = it.title!!,
+                description = it.description!!
+            )
+        }
+        val response = postService.update(updatePostDto)
         return ResponseEntity.ok(response)
     }
 

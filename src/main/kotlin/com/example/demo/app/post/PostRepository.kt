@@ -2,6 +2,7 @@ package com.example.demo.app.post
 
 import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
+import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.dtos.toEntity
 import com.example.demo.app.post.requests.UpdatePostRequest
 import kotlinx.coroutines.flow.toList
@@ -48,11 +49,11 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     }
                     .awaitSingle()
 
-    suspend fun update(id: Long, updatePostRequest: UpdatePostRequest): Long =
+    suspend fun update(updatePostDto: UpdatePostDto): Long =
             databaseClient.sql("UPDATE posts SET title = :title, description = :description WHERE id = :id")
-                    .bind("id", id)
-                    .bind("title", updatePostRequest.title)
-                    .bind("description", updatePostRequest.description)
+                    .bind("id", updatePostDto.id)
+                    .bind("title", updatePostDto.title)
+                    .bind("description", updatePostDto.description)
                     .fetch().awaitRowsUpdated()
 
     suspend fun delete(id: Long): Long =
