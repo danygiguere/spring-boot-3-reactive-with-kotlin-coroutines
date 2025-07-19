@@ -2,6 +2,7 @@ package factories
 
 import com.example.demo.app.image.dtos.ImageDto
 import com.example.demo.app.image.ImageRepository
+import com.example.demo.app.image.dtos.CreateImageDto
 import io.bloco.faker.Faker
 
 class ImageFactory(val imageRepository: ImageRepository) {
@@ -19,6 +20,14 @@ class ImageFactory(val imageRepository: ImageRepository) {
         return ImageDto(id, postId, urlSeed, createdAt, updatedAt)
     }
 
+    fun makeCreateImageDto(
+        postId: Long = 1L,
+        url: String? = null
+    ): CreateImageDto {
+        val urlSeed = url ?: "https://picsum.photos/seed/${faker.number.number(6)}/600/400"
+        return CreateImageDto(postId, urlSeed)
+    }
+
     fun makeOne(postId: Long): ImageDto {
         return makeImageDto(postId = postId)
     }
@@ -28,10 +37,10 @@ class ImageFactory(val imageRepository: ImageRepository) {
     }
 
     suspend fun createOne(postId: Long): ImageDto {
-        return imageRepository.create(makeOne(postId))
+        return imageRepository.create(makeCreateImageDto(postId))
     }
 
     suspend fun createMany(quantities: Int, postId: Long): List<ImageDto> {
-        return (0 until quantities).map { imageRepository.create(makeOne(postId)) }
+        return (0 until quantities).map { imageRepository.create(makeCreateImageDto(postId)) }
     }
 }

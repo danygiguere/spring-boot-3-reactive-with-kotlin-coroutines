@@ -1,5 +1,6 @@
 package com.example.demo.app.post
 
+import com.example.demo.app.image.ImageService
 import factories.PostFactory
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -18,10 +19,11 @@ class PostControllerUnitTest() {
     private lateinit var postController: PostController
 
     private val postService: PostService = mockk()
+    private val imageService: ImageService = mockk()
 
     @BeforeEach
     fun setUp() {
-        postController = PostController(postService)
+        postController = PostController(postService, imageService)
     }
 
     @Test
@@ -29,7 +31,7 @@ class PostControllerUnitTest() {
         // Given
         val createPostRequest = PostFactory(mockk()).makeCreatePostRequest(1)
         val postDto = PostFactory(mockk()).makePostDto(1, createPostRequest.userId, createPostRequest.title, createPostRequest.description)
-        coEvery { postService.create(1, any()) } returns postDto
+        coEvery { postService.create(any()) } returns postDto
 
         val authentication = mockk<Authentication>()
         coEvery { authentication.principal } returns "1"

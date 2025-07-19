@@ -1,5 +1,6 @@
 package com.example.demo.app.image
 
+import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -23,8 +24,8 @@ class ImageController(private val imageService: ImageService) {
     }
 
     @PostMapping("/images")
-    suspend fun create(@Valid @RequestBody imageDto: ImageDto): ResponseEntity<ImageDto> {
-        val response = imageService.create(imageDto)
+    suspend fun create(@Valid @RequestBody createImageDto: CreateImageDto): ResponseEntity<ImageDto> {
+        val response = imageService.create(createImageDto)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }

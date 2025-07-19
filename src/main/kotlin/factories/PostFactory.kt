@@ -1,6 +1,7 @@
 package factories
 
 import com.example.demo.app.post.PostRepository
+import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
@@ -21,6 +22,16 @@ class PostFactory(val postRepository: PostRepository) {
         val titleSeed = title ?: faker.book.title()
         val descriptionSeed = description ?: faker.lorem.paragraph()
         return PostDto(id, userId, titleSeed, descriptionSeed, createdAt, updatedAt)
+    }
+
+    fun makeCreatePostDto(
+        userId: Long = 1L,
+        title: String? = null,
+        description: String? = null
+    ): CreatePostDto {
+        val titleSeed = title ?: faker.book.title()
+        val descriptionSeed = description ?: faker.lorem.paragraph()
+        return CreatePostDto( userId, titleSeed, descriptionSeed)
     }
 
     fun makeOne(userId: Long): PostDto {
@@ -58,11 +69,11 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     suspend fun createOne(userId: Long): PostDto {
-        return postRepository.create(userId,makeCreatePostRequest(userId))
+        return postRepository.create(makeCreatePostDto(userId))
     }
 
     suspend fun createMany(quantities: Int, userId: Long): List<PostDto> {
-        return (0 until quantities).map { postRepository.create(userId,makeCreatePostRequest(userId)) }
+        return (0 until quantities).map { postRepository.create(makeCreatePostDto(userId)) }
     }
 
 }

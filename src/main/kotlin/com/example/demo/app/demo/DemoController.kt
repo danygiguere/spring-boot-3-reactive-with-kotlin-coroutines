@@ -1,7 +1,5 @@
 package com.example.demo.app.demo
 
-import com.example.demo.app.demo.requests.PostDemoCreateRequest
-import jakarta.validation.Valid
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -11,10 +9,7 @@ import kotlinx.coroutines.runBlocking
 import mu.KLogging
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.context.support.ResourceBundleMessageSource
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
@@ -103,13 +98,6 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
             sum+= number
         }
         return sum
-    }
-
-    @PostMapping("/demo/create")
-    suspend fun create(
-        @Valid @RequestBody request: PostDemoCreateRequest
-    ): ResponseEntity<PostDemoCreateRequest> {
-        return ResponseEntity.ok(request)
     }
 
 }

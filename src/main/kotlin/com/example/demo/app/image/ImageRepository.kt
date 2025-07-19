@@ -1,5 +1,6 @@
 package com.example.demo.app.image
 
+import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
 import com.example.demo.app.image.dtos.toEntity
 import kotlinx.coroutines.flow.toList
@@ -42,16 +43,16 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .flow().toList()
 
-    suspend fun create(imageDto: ImageDto): ImageDto =
+    suspend fun create(createImageDto: CreateImageDto): ImageDto =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("postId", imageDto.postId)
-                    .bind("url", imageDto.url)
+                    .bind("postId", createImageDto.postId)
+                    .bind("url", createImageDto.url)
                     .fetch()
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val postEntity = imageDto.toEntity().copy(id = id)
+                        val postEntity = createImageDto.toEntity().copy(id = id)
                         postEntity.toDto()
                     }
                     .awaitSingle()

@@ -1,9 +1,9 @@
 package com.example.demo.app.post
 
+import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
-import com.example.demo.app.post.requests.CreatePostRequest
+import com.example.demo.app.post.dtos.toEntity
 import com.example.demo.app.post.requests.UpdatePostRequest
-import com.example.demo.app.post.requests.toEntity
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
@@ -33,17 +33,17 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .map(postMapper::apply)
                 .flow().toList()
 
-    suspend fun create(userId: Long, createPostRequest: CreatePostRequest): PostDto =
+    suspend fun create(createPostDto: CreatePostDto): PostDto =
             databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("userId", userId)
-                    .bind("title", createPostRequest.title)
-                    .bind("description", createPostRequest.description)
+                    .bind("userId", createPostDto.userId)
+                    .bind("title", createPostDto.title)
+                    .bind("description", createPostDto.description)
                     .fetch()
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val postEntity = createPostRequest.toEntity().copy(id = id)
+                        val postEntity = createPostDto.toEntity().copy(id = id)
                         postEntity.toDto()
                     }
                     .awaitSingle()
