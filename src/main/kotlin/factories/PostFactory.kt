@@ -80,11 +80,15 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     suspend fun createOne(userId: Long): PostDto {
-        return postRepository.create(makeCreatePostDto(userId))
+        val id = postRepository.create(makeCreatePostDto(userId))
+        return postRepository.findById(id) ?: throw IllegalStateException("Failed to create post")
     }
 
     suspend fun createMany(quantities: Int, userId: Long): List<PostDto> {
-        return (0 until quantities).map { postRepository.create(makeCreatePostDto(userId)) }
+        return (0 until quantities).map {
+            val id =  postRepository.create(makeCreatePostDto(userId))
+            postRepository.findById(id) ?: throw IllegalStateException("Failed to create post")
+        }
     }
 
 }

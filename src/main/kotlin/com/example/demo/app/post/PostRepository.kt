@@ -3,7 +3,6 @@ package com.example.demo.app.post
 import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.UpdatePostDto
-import com.example.demo.app.post.dtos.toEntity
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
@@ -33,20 +32,16 @@ class PostRepository(private val databaseClient: DatabaseClient,
                     .map(postMapper::apply)
                 .flow().toList()
 
-    suspend fun create(createPostDto: CreatePostDto): PostDto =
-            databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
-                    .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-                    .bind("userId", createPostDto.userId)
-                    .bind("title", createPostDto.title)
-                    .bind("description", createPostDto.description)
-                    .fetch()
-                    .first()
-                    .map { row ->
-                        val id = row["id"] as Long
-                        val postEntity = createPostDto.toEntity().copy(id = id)
-                        postEntity.toDto()
-                    }
-                    .awaitSingle()
+    suspend fun create(createPostDto: CreatePostDto): Long =
+        databaseClient.sql("INSERT INTO posts (userId, title, description) VALUES (:userId, :title, :description)")
+            .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
+            .bind("userId", createPostDto.userId)
+            .bind("title", createPostDto.title)
+            .bind("description", createPostDto.description)
+            .fetch()
+            .first()
+            .map { row -> (row["id"] as Number).toLong() }
+            .awaitSingle()
 
     suspend fun update(updatePostDto: UpdatePostDto): Long =
             databaseClient.sql("UPDATE posts SET title = :title, description = :description WHERE id = :id")

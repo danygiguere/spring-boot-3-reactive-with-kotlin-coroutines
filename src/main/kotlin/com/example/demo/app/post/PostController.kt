@@ -62,9 +62,8 @@ class PostController(private val postService: PostService,
                 description = it.description!!
             )
         }
-        val response = postService.create(createPostDto)
-        return if (response != null) ResponseEntity.ok(response)
-        else ResponseEntity.notFound().build()
+        val post = postService.create(createPostDto)
+        return ResponseEntity.ok(post)
     }
 
     @PostMapping("/posts-with-image")
@@ -82,13 +81,13 @@ class PostController(private val postService: PostService,
         val postCreated = postService.create(createPostDto)
         val createImageDto = request.let {
             CreateImageDto(
-                postId = postCreated?.id!!,
+                postId = postCreated.id,
                 url = it.image?.url!!,
             )
         }
         val imageCreated = imageService.create(createImageDto)
         val response = PostWithImagesDto(
-            id = postCreated?.id!!,
+            id = postCreated.id,
             userId = postCreated.userId,
             title = postCreated.title,
             description = postCreated.description,
