@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 data class UpdatePostRequest(
-    val id: Long?,
-
     @get:NotNull()
     @get:NotEmpty()
     @get:Size(min = 6, max = 255, message = "{title.size}")

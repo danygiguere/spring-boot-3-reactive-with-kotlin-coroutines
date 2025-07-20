@@ -100,11 +100,12 @@ class PostController(private val postService: PostService,
 
     @PutMapping("/posts/{id}")
     suspend fun update(
+        @PathVariable id: Long,
         @Valid @RequestBody request: UpdatePostRequest,
         authentication: Authentication): ResponseEntity<Long> {
         val updatePostDto = request.let {
             UpdatePostDto(
-                id = it.id!!,
+                id = id,
                 userId = authentication.principal.toString().toLong(),
                 title = it.title!!,
                 description = it.description!!

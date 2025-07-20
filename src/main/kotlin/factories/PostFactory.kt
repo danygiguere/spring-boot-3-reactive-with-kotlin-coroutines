@@ -68,12 +68,10 @@ class PostFactory(val postRepository: PostRepository) {
     }
 
     fun makeUpdatePostRequest(
-        id: Long,
         title: String? = null,
         description: String? = null
     ): UpdatePostRequest {
         return UpdatePostRequest(
-            id,
             title ?: faker.book.title(),
             description ?: faker.lorem.paragraph()
         )
