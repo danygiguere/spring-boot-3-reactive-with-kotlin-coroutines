@@ -4,6 +4,7 @@ import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
 import com.example.demo.app.image.dtos.toEntity
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
@@ -43,18 +44,14 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .flow().toList()
 
-    suspend fun create(createImageDto: CreateImageDto): ImageDto =
+    suspend fun create(createImageDto: CreateImageDto): Long =
             databaseClient.sql("INSERT INTO images (postId, url) VALUES (:postId, :url)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("postId", createImageDto.postId)
                     .bind("url", createImageDto.url)
                     .fetch()
                     .first()
-                    .map { row ->
-                        val id = row["id"] as Long
-                        val postEntity = createImageDto.toEntity().copy(id = id)
-                        postEntity.toDto()
-                    }
+                    .map { row -> (row["id"] as Number).toLong() }
                     .awaitSingle()
 
     suspend fun update(id: Long, imageDto: ImageDto): Long =

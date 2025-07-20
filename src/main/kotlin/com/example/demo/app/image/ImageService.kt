@@ -13,9 +13,10 @@ class ImageService(val repository: ImageRepository) {
     suspend fun findById(id: Long): ImageDto? =
             repository.findById(id)
 
-    suspend fun create(createImageDto: CreateImageDto): ImageDto? =
-            repository.create(createImageDto)
-
+    suspend fun create(createImageDto: CreateImageDto): ImageDto? {
+        val id = repository.create(createImageDto)
+        return repository.findById(id)
+    }
     suspend fun update(id: Long, imageDto: ImageDto): Long =
             repository.update(id, imageDto)
 
