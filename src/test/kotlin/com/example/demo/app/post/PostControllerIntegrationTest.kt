@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.time.LocalDateTime
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -72,7 +73,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         runTest {
             // Given
-            val postDto = PostDto(1, 1, "T", "D", null, null)
+            val postDto = PostDto(1, 1, "T", "D", LocalDateTime.now(), LocalDateTime.now())
 
             // When, Then
             webTestClient.post()

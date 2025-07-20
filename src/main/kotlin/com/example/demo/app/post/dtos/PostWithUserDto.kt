@@ -4,11 +4,11 @@ import com.example.demo.app.user.dtos.UserDto
 import java.time.LocalDateTime
 
 data class PostWithUserDto(
-    val id: Long?,
+    val id: Long,
     var userId: Long,
     val title: String,
     val description: String,
-    var createdAt: LocalDateTime?,
-    var updatedAt: LocalDateTime?,
+    var createdAt: LocalDateTime,
+    var updatedAt: LocalDateTime,
     var user: UserDto? = null
 )

@@ -1,7 +1,6 @@
 package com.example.demo.app.post
 
 import com.example.demo.app.post.dtos.CreatePostDto
-import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.UpdatePostDto
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.awaitSingle
@@ -12,24 +11,23 @@ import org.springframework.r2dbc.core.flow
 import org.springframework.stereotype.Repository
 
 @Repository
-class PostRepository(private val databaseClient: DatabaseClient,
-                     private val postMapper: PostMapper) {
+class PostRepository(private val databaseClient: DatabaseClient) {
 
-    suspend fun findAll(): List<PostDto>? =
+    suspend fun findAll(): List<PostEntity>? =
         databaseClient.sql("SELECT * FROM posts")
-            .map(postMapper::apply)
+            .map { row, _ -> row.toPostEntity() }
             .flow().toList()
 
-    suspend fun findById(id: Long): PostDto? =
+    suspend fun findById(id: Long): PostEntity? =
             databaseClient.sql("SELECT * FROM posts WHERE id = :id")
                     .bind("id", id)
-                    .map(postMapper::apply)
+                    .map { row, _ -> row.toPostEntity() }
                     .awaitOneOrNull()
 
-    suspend fun findByUserId(userId: Long): List<PostDto>? =
+    suspend fun findByUserId(userId: Long): List<PostEntity>? =
             databaseClient.sql("SELECT * FROM posts WHERE userId = :userId")
                     .bind("userId", userId)
-                    .map(postMapper::apply)
+                    .map { row, _ -> row.toPostEntity() }
                 .flow().toList()
 
     suspend fun create(createPostDto: CreatePostDto): Long =

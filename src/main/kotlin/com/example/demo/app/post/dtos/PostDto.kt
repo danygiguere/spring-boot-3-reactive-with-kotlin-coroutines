@@ -7,6 +7,6 @@ data class PostDto(
     var userId: Long,
     val title: String,
     val description: String,
-    var createdAt: LocalDateTime?,
-    var updatedAt: LocalDateTime?
+    var createdAt: LocalDateTime,
+    var updatedAt: LocalDateTime
 )

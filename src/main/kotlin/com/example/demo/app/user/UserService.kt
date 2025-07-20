@@ -3,6 +3,7 @@ package com.example.demo.app.user
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.post.PostRepository
 import com.example.demo.app.auth.requests.RegisterRequest
+import com.example.demo.app.post.toPostDtos
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.user.dtos.UserWithImagesDto
 import com.example.demo.app.user.dtos.UserWithPostsDto
@@ -22,7 +23,7 @@ class UserService(val userRepository: UserRepository,
     // oneToMany relationship query example
     suspend fun findByIdWithPosts(id: Long): UserWithPostsDto? = coroutineScope {
         val user = async{findById(id)}
-        val posts = async{postRepository.findByUserId(id)}
+        val posts = async{postRepository.findByUserId(id)?.toPostDtos()}
         return@coroutineScope user.await()?.toUserWithPostsDto()?.copy(posts = posts.await())
     }
 

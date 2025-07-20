@@ -17,10 +17,10 @@ class PostService(val postRepository: PostRepository,
                   private val imageRepository: ImageRepository) {
 
     suspend fun findAll(): List<PostDto>? =
-            postRepository.findAll()
+            postRepository.findAll()?.toPostDtos()
 
     suspend fun findById(id: Long): PostDto? =
-            postRepository.findById(id)
+            postRepository.findById(id)?.toPostDto()
 
     // oneToMany relationship query example
     suspend fun findByIdWithImages(id: Long): PostWithImagesDto? = coroutineScope {
@@ -38,10 +38,8 @@ class PostService(val postRepository: PostRepository,
 
     suspend fun create(createPostDto: CreatePostDto): PostDto {
         val id = postRepository.create(createPostDto)
-        return postRepository.findById(id) ?: throw IllegalStateException("Failed to create post")
+        return postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
     }
-
-
 
     suspend fun update(updatePostDto: UpdatePostDto): Long =
             postRepository.update(updatePostDto)

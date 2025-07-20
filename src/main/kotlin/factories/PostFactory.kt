@@ -6,6 +6,7 @@ import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.requests.CreatePostRequest
 import com.example.demo.app.post.requests.UpdatePostRequest
+import com.example.demo.app.post.toPostDto
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 
@@ -79,13 +80,13 @@ class PostFactory(val postRepository: PostRepository) {
 
     suspend fun createOne(userId: Long): PostDto {
         val id = postRepository.create(makeCreatePostDto(userId))
-        return postRepository.findById(id) ?: throw IllegalStateException("Failed to create post")
+        return postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun createMany(quantities: Int, userId: Long): List<PostDto> {
         return (0 until quantities).map {
             val id =  postRepository.create(makeCreatePostDto(userId))
-            postRepository.findById(id) ?: throw IllegalStateException("Failed to create post")
+            postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
         }
     }
 
