@@ -1,9 +1,8 @@
 package factories
 
-import com.example.demo.app.image.dtos.ImageDto
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.image.dtos.CreateImageDto
-import com.example.demo.app.post.toPostDto
+import com.example.demo.app.image.dtos.ImageDto
 import io.bloco.faker.Faker
 
 class ImageFactory(val imageRepository: ImageRepository) {

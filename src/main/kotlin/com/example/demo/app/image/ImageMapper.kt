@@ -17,7 +17,7 @@ class ImageMapper: BiFunction<Row, Any, ImageDto> {
                 row.get("url") as String,
             (row.get("createdAt") as ZonedDateTime).toLocalDateTime(),
             (row.get("updatedAt") as ZonedDateTime).toLocalDateTime(),
-        ).toDto()
+        ).toImageDto()
     }
 }
 

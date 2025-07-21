@@ -3,6 +3,7 @@ package com.example.demo.app.user
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.post.PostRepository
 import com.example.demo.app.auth.requests.RegisterRequest
+import com.example.demo.app.image.toImageDtos
 import com.example.demo.app.post.toPostDtos
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.user.dtos.UserWithImagesDto
@@ -30,7 +31,7 @@ class UserService(val userRepository: UserRepository,
     // hasManyThrough relationship query example
     suspend fun findByIdWithImages(id: Long): UserWithImagesDto? = coroutineScope {
         val user = async{findById(id)}
-        val images = async {imageRepository.findByUserIdThroughPosts(id)}
+        val images = async {imageRepository.findByUserIdThroughPosts(id)?.toImageDtos()}
         return@coroutineScope user.await()?.toUserWithImagesDto()?.copy(images = images.await())
     }
 

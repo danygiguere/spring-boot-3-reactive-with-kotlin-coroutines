@@ -1,6 +1,7 @@
 package com.example.demo.app.post
 
 import com.example.demo.app.image.ImageRepository
+import com.example.demo.app.image.toImageDtos
 import com.example.demo.app.post.dtos.CreatePostDto
 import com.example.demo.app.post.dtos.PostDto
 import com.example.demo.app.post.dtos.PostWithImagesDto
@@ -25,7 +26,7 @@ class PostService(val postRepository: PostRepository,
     // oneToMany relationship query example
     suspend fun findByIdWithImages(id: Long): PostWithImagesDto? = coroutineScope {
         val post = async{findById(id)}
-        val images = async{imageRepository.findByPostId(id)}
+        val images = async{imageRepository.findByPostId(id)?.toImageDtos()}
         return@coroutineScope post.await()?.toPostWithImagesDto()?.copy(images = images.await())
     }
 

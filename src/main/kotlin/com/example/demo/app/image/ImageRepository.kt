@@ -2,9 +2,7 @@ package com.example.demo.app.image
 
 import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
-import com.example.demo.app.image.dtos.toEntity
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.r2dbc.core.awaitOneOrNull
@@ -16,9 +14,9 @@ import org.springframework.stereotype.Repository
 class ImageRepository(private val databaseClient: DatabaseClient,
                       private val imageMapper: ImageMapper) {
 
-    suspend fun findAll(): List<ImageDto>? =
+    suspend fun findAll(): List<ImageEntity>? =
             databaseClient.sql("SELECT * FROM images")
-                    .map(imageMapper::apply)
+                     .map { row, _ -> row.toImageEntity() }
                     .flow().toList()
 
     suspend fun findById(id: Long): ImageDto? =
@@ -27,13 +25,13 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                     .map(imageMapper::apply)
                     .awaitOneOrNull()
 
-    suspend fun findByPostId(postId: Long): List<ImageDto>? =
+    suspend fun findByPostId(postId: Long): List<ImageEntity>? =
             databaseClient.sql("SELECT * FROM images WHERE postId = :postId")
                     .bind("postId", postId)
-                    .map(imageMapper::apply)
+                    .map { row, _ -> row.toImageEntity() }
                     .flow().toList()
 
-    suspend fun findByUserIdThroughPosts(userId: Long): List<ImageDto>? =
+    suspend fun findByUserIdThroughPosts(userId: Long): List<ImageEntity>? =
             databaseClient.sql("""
                 SELECT images.* FROM images 
                 INNER JOIN posts 
@@ -41,7 +39,7 @@ class ImageRepository(private val databaseClient: DatabaseClient,
                 WHERE posts.userId IN (:userId);
             """.trimIndent())
                     .bind("userId", userId)
-                    .map(imageMapper::apply)
+                    .map { row, _ -> row.toImageEntity() }
                     .flow().toList()
 
     suspend fun create(createImageDto: CreateImageDto): Long =
