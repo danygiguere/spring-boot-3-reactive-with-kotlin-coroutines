@@ -3,6 +3,7 @@ package com.example.demo.app.user
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.auth.requests.RegisterRequest
 import com.example.demo.app.auth.requests.toUserEntity
+import com.example.demo.app.post.toPostEntity
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -18,16 +19,16 @@ class UserRepository(private val databaseClient: DatabaseClient,
 
     companion object: KLogging()
 
-    suspend fun findById(id: Long): UserDto? =
+    suspend fun findById(id: Long): UserEntity? =
             databaseClient.sql("SELECT * FROM users WHERE id = :id")
                     .bind("id", id)
-                    .map(userMapper::apply)
+                    .map { row, _ -> row.toUserEntity() }
                     .awaitOneOrNull()
 
-    suspend fun findByEmail(email: String): UserDto? =
+    suspend fun findByEmail(email: String): UserEntity? =
         databaseClient.sql("SELECT * FROM users WHERE email = :email")
             .bind("email", email)
-            .map(userMapper::apply)
+            .map { row, _ -> row.toUserEntity() }
             .awaitOneOrNull()
 
     suspend fun register(registerRequest: RegisterRequest): UserDto =

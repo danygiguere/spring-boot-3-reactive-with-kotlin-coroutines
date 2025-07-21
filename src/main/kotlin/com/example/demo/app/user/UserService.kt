@@ -19,7 +19,7 @@ class UserService(val userRepository: UserRepository,
                   private val postRepository: PostRepository,
                   private val imageRepository: ImageRepository) {
     suspend fun findById(id: Long): UserDto? =
-            userRepository.findById(id)
+            userRepository.findById(id)?.toUserDto()
 
     // oneToMany relationship query example
     suspend fun findByIdWithPosts(id: Long): UserWithPostsDto? = coroutineScope {
@@ -36,7 +36,7 @@ class UserService(val userRepository: UserRepository,
     }
 
     suspend fun findByEmail(email: String): UserDto? =
-        userRepository.findByEmail(email)
+        userRepository.findByEmail(email)?.toUserDto()
 
     suspend fun register(registerRequest: RegisterRequest): UserDto? =
             userRepository.register(registerRequest)

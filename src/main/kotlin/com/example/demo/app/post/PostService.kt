@@ -10,6 +10,7 @@ import com.example.demo.app.post.dtos.UpdatePostDto
 import com.example.demo.app.post.dtos.toPostWithImagesDto
 import com.example.demo.app.post.dtos.toPostWithUserDto
 import com.example.demo.app.user.UserRepository
+import com.example.demo.app.user.toUserDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
@@ -36,7 +37,7 @@ class PostService(val postRepository: PostRepository,
     suspend fun findByIdWithUser(id: Long): PostWithUserDto? = coroutineScope {
         val post = async{findById(id)}
         val user = async{userRepository.findById(id)}
-        return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await())
+        return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await()?.toUserDto())
     }
 
     suspend fun create(createPostDto: CreatePostDto): PostDto {
