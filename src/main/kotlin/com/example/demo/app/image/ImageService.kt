@@ -2,6 +2,7 @@ package com.example.demo.app.image
 
 import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
+import com.example.demo.app.image.dtos.UpdateImageDto
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,8 +20,8 @@ class ImageService(val repository: ImageRepository) {
 //        return repository.findById(id)
         return repository.findById(id)?.toImageDto()
     }
-    suspend fun update(id: Long, imageDto: ImageDto): Long =
-            repository.update(id, imageDto)
+    suspend fun update(updateImageDto: UpdateImageDto): Long =
+            repository.update(updateImageDto)
 
     suspend fun delete(id: Long): Long =
             repository.delete(id)

@@ -2,6 +2,7 @@ package com.example.demo.app.image
 
 import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
+import com.example.demo.app.image.dtos.UpdateImageDto
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.r2dbc.core.DatabaseClient
@@ -51,10 +52,10 @@ class ImageRepository(private val databaseClient: DatabaseClient) {
                     .map { row -> (row["id"] as Number).toLong() }
                     .awaitSingle()
 
-    suspend fun update(id: Long, imageDto: ImageDto): Long =
+    suspend fun update(updateImageDto: UpdateImageDto): Long =
             databaseClient.sql("UPDATE images SET url = :url WHERE id = :id")
-                    .bind("id", id)
-                    .bind("url", imageDto.url)
+                    .bind("id", updateImageDto.id)
+                    .bind("url", updateImageDto.url)
                     .fetch().awaitRowsUpdated()
 
     suspend fun delete(id: Long): Long =

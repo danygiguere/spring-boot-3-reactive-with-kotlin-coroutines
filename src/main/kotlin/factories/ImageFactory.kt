@@ -5,6 +5,7 @@ import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
 import com.example.demo.app.image.toImageDto
 import io.bloco.faker.Faker
+import java.time.LocalDateTime
 
 class ImageFactory(val imageRepository: ImageRepository) {
 
@@ -18,7 +19,9 @@ class ImageFactory(val imageRepository: ImageRepository) {
         updatedAt: java.time.LocalDateTime? = null
     ): ImageDto {
         val urlSeed = url ?: "https://picsum.photos/seed/${faker.number.number(6)}/600/400"
-        return ImageDto(id, postId, urlSeed, createdAt, updatedAt)
+        val createdAtSeed = createdAt ?: LocalDateTime.now()
+        val updatedAtSeed = updatedAt ?: LocalDateTime.now()
+        return ImageDto(id, postId, urlSeed, createdAtSeed, updatedAtSeed)
     }
 
     fun makeCreateImageDto(
