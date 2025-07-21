@@ -1,12 +1,12 @@
 package factories
 
-import com.example.demo.app.post.PostRepository
-import com.example.demo.app.post.dtos.CreatePostDto
-import com.example.demo.app.post.dtos.PostDto
-import com.example.demo.app.post.dtos.UpdatePostDto
-import com.example.demo.app.post.requests.CreatePostRequest
-import com.example.demo.app.post.requests.UpdatePostRequest
-import com.example.demo.app.post.toPostDto
+import com.example.demo.feature.post.PostRepository
+import com.example.demo.feature.post.dtos.CreatePostDto
+import com.example.demo.feature.post.dtos.PostDto
+import com.example.demo.feature.post.dtos.UpdatePostDto
+import com.example.demo.feature.post.requests.CreatePostRequest
+import com.example.demo.feature.post.requests.UpdatePostRequest
+import com.example.demo.feature.post.toPostDto
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 

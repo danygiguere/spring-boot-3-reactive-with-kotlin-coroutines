@@ -4,7 +4,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
-import com.example.demo.app.user.UserService
+import com.example.demo.feature.user.UserService
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import kotlinx.coroutines.runBlocking

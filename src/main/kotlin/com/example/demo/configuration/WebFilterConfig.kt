@@ -1,7 +1,7 @@
 package com.example.demo.configuration
 
-import com.example.demo.app.post.PostService
-import com.example.demo.app.post.filters.checkPostOwnershipWebFilter
+import com.example.demo.feature.post.PostService
+import com.example.demo.feature.post.filters.checkPostOwnershipWebFilter
 import com.example.demo.filters.setLocaleWebFilter
 import org.springframework.stereotype.Component
 import org.springframework.web.server.CoWebFilter

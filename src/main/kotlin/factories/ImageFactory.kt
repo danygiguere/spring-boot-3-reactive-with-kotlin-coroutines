@@ -1,9 +1,9 @@
 package factories
 
-import com.example.demo.app.image.ImageRepository
-import com.example.demo.app.image.dtos.CreateImageDto
-import com.example.demo.app.image.dtos.ImageDto
-import com.example.demo.app.image.toImageDto
+import com.example.demo.feature.image.ImageRepository
+import com.example.demo.feature.image.dtos.CreateImageDto
+import com.example.demo.feature.image.dtos.ImageDto
+import com.example.demo.feature.image.toImageDto
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 

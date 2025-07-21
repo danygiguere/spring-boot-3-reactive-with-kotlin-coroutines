@@ -1,7 +1,7 @@
 package factories
 
-import com.example.demo.app.image.ImageRepository
-import com.example.demo.app.post.PostRepository
+import com.example.demo.feature.image.ImageRepository
+import com.example.demo.feature.post.PostRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
