@@ -1,5 +1,4 @@
 package com.example.demo.app.image
-import com.example.demo.app.image.dtos.ImageDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
@@ -13,12 +12,3 @@ data class ImageEntity(
     var updatedAt: LocalDateTime? = null
 )
 
-//fun ImageEntity.toDto(): ImageDto = ImageDto(
-//    id = id,
-//    postId = postId,
-//    url = url,
-//    createdAt = createdAt,
-//    updatedAt = updatedAt
-//)
-
-fun List<ImageEntity>.toImageDtos(): List<ImageDto> = this.map { it.toImageDto() }

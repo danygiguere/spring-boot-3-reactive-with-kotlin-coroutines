@@ -11,18 +11,17 @@ import org.springframework.r2dbc.core.flow
 import org.springframework.stereotype.Repository
 
 @Repository
-class ImageRepository(private val databaseClient: DatabaseClient,
-                      private val imageMapper: ImageMapper) {
+class ImageRepository(private val databaseClient: DatabaseClient) {
 
     suspend fun findAll(): List<ImageEntity>? =
             databaseClient.sql("SELECT * FROM images")
                      .map { row, _ -> row.toImageEntity() }
                     .flow().toList()
 
-    suspend fun findById(id: Long): ImageDto? =
+    suspend fun findById(id: Long): ImageEntity? =
             databaseClient.sql("SELECT * FROM images WHERE id = :id")
                     .bind("id", id)
-                    .map(imageMapper::apply)
+                    .map { row, _ -> row.toImageEntity() }
                     .awaitOneOrNull()
 
     suspend fun findByPostId(postId: Long): List<ImageEntity>? =

@@ -3,6 +3,7 @@ package factories
 import com.example.demo.app.image.ImageRepository
 import com.example.demo.app.image.dtos.CreateImageDto
 import com.example.demo.app.image.dtos.ImageDto
+import com.example.demo.app.image.toImageDto
 import io.bloco.faker.Faker
 
 class ImageFactory(val imageRepository: ImageRepository) {
@@ -38,13 +39,13 @@ class ImageFactory(val imageRepository: ImageRepository) {
 
     suspend fun createOne(postId: Long): ImageDto {
         val id = imageRepository.create(makeCreateImageDto(postId))
-        return imageRepository.findById(id = id) ?: throw IllegalStateException("Failed to get image")
+        return imageRepository.findById(id = id)?.toImageDto() ?: throw IllegalStateException("Failed to get image")
     }
 
     suspend fun createMany(quantities: Int, postId: Long): List<ImageDto> {
         return (0 until quantities).map {
             val id =  imageRepository.create(makeCreateImageDto(postId))
-            imageRepository.findById(id) ?: throw IllegalStateException("Failed to get post")
+            imageRepository.findById(id)?.toImageDto() ?: throw IllegalStateException("Failed to get post")
         }
     }
 }
