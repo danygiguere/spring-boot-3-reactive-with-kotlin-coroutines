@@ -39,6 +39,6 @@ class UserService(val userRepository: UserRepository,
         userRepository.findByEmail(email)?.toUserDto()
 
     suspend fun register(registerRequest: RegisterRequest): UserDto? =
-            userRepository.register(registerRequest)
+            userRepository.register(registerRequest).toUserDto()
 
 }

@@ -4,6 +4,7 @@ import com.example.demo.app.auth.requests.LoginRequest
 import com.example.demo.app.user.UserRepository
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.auth.requests.RegisterRequest
+import com.example.demo.app.user.toUserDto
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 
@@ -54,7 +55,7 @@ class UserFactory(val userRepository: UserRepository) {
     suspend fun createOne(username: String? = null,
                            email: String? = null,
                            password: String? = null): UserDto {
-        return userRepository.register(makeRegisterRequest(username, email, password))
+        return userRepository.register(makeRegisterRequest(username, email, password)).toUserDto()
     }
 
     suspend fun createMany(quantities: Int): List<UserDto> {

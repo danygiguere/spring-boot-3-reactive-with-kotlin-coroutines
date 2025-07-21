@@ -3,7 +3,6 @@ package com.example.demo.app.user
 import com.example.demo.app.user.dtos.UserDto
 import com.example.demo.app.auth.requests.RegisterRequest
 import com.example.demo.app.auth.requests.toUserEntity
-import com.example.demo.app.post.toPostEntity
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class UserRepository(private val databaseClient: DatabaseClient,
-                     private val userMapper: UserMapper,
                      private val passwordEncoder: PasswordEncoder
 ) {
 
@@ -31,7 +29,7 @@ class UserRepository(private val databaseClient: DatabaseClient,
             .map { row, _ -> row.toUserEntity() }
             .awaitOneOrNull()
 
-    suspend fun register(registerRequest: RegisterRequest): UserDto =
+    suspend fun register(registerRequest: RegisterRequest): UserEntity =
             databaseClient.sql("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
                     .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
                     .bind("username", registerRequest.username)
@@ -41,8 +39,7 @@ class UserRepository(private val databaseClient: DatabaseClient,
                     .first()
                     .map { row ->
                         val id = row["id"] as Long
-                        val userEntity = registerRequest.toUserEntity().copy(id = id)
-                        userEntity.toUserDto()
+                        registerRequest.toUserEntity().copy(id = id)
                     }
                     .awaitSingle()
 
