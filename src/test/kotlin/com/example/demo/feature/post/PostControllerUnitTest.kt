@@ -2,6 +2,7 @@ package com.example.demo.feature.post
 
 import com.example.demo.feature.image.ImageService
 import factories.PostFactory
+import fixtures.Fixtures
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -49,7 +50,8 @@ class PostControllerUnitTest() {
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() = runTest {
         // Given
-        val posts = PostFactory(mockk()).makeMany(3, 1)
+        val posts = Fixtures.postDto.createMany(3)
+
         coEvery { postService.findAll() } returns posts
 
         // When
