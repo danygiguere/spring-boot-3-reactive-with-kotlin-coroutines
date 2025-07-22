@@ -57,3 +57,8 @@ kotlin {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.test {
+	useJUnitPlatform()
+	systemProperty("spring.profiles.active", "test")
+}
