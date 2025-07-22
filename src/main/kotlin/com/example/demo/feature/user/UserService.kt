@@ -38,7 +38,7 @@ class UserService(val userRepository: UserRepository,
     suspend fun findByEmail(email: String): UserDto? =
         userRepository.findByEmail(email)?.toUserDto()
 
-    suspend fun register(registerRequest: RegisterRequest): UserDto? {
+    suspend fun create(registerRequest: RegisterRequest): UserDto? {
         val id = userRepository.register(registerRequest)
         return findById(id) ?: throw IllegalStateException("Failed to get user")
     }

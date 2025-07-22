@@ -27,7 +27,7 @@ class AuthController(private val userService: UserService,
 
     @PostMapping("/register")
     suspend fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> {
-        val newUser = userService.register(request)
+        val newUser = userService.create(request)
         return if (newUser != null) {
             ResponseEntity.ok().body("An email will be sent to you. Please confirm your email by clicking the verification link provided in the email")
         } else {
