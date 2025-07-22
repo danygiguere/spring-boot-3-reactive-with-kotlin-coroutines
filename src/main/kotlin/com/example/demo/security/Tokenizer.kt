@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
+import com.example.demo.feature.auth.enums.JWTTypeEnum
 import com.example.demo.feature.user.UserRoleEnum
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -29,14 +30,14 @@ class Tokenizer {
     public val refreshTokenExpiry = 0
 
     fun createAccessToken(userId: Long?): String {
-        return "Bearer " + tokenize(userId.toString(), accessTokenExpiry, accessTokenSecret.toString())
+        return "Bearer " + tokenize(userId.toString(), accessTokenExpiry, accessTokenSecret.toString(), JWTTypeEnum.ACCESS_TOKEN)
     }
 
     fun createRefreshToken(userId: Long?): String {
-        return "Bearer " + tokenize(userId.toString(), refreshTokenExpiry, refreshTokenSecret.toString())
+        return "Bearer " + tokenize(userId.toString(), refreshTokenExpiry, refreshTokenSecret.toString(), JWTTypeEnum.REFRESH_TOKEN)
     }
 
-    fun tokenize(userId: String?, expiry: Int, secret: String): String {
+    fun tokenize(userId: String?, expiry: Int, secret: String, type: JWTTypeEnum): String {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MINUTE, expiry)
         val expiresAt: Date = calendar.time
@@ -45,6 +46,7 @@ class Tokenizer {
             .withIssuer(issuer)
             .withSubject(userId)
             .withClaim("role", UserRoleEnum.ROLE_USER.toString())
+            .withClaim("type", type.toString())
             .withExpiresAt(expiresAt)
             .sign(algorithm(secret))
     }
