@@ -19,8 +19,8 @@ class PostFactory(val postRepository: PostRepository) {
         userId: Long = 1L,
         title: String? = null,
         description: String? = null,
-        createdAt: java.time.LocalDateTime? = null,
-        updatedAt: java.time.LocalDateTime? = null
+        createdAt: LocalDateTime? = null,
+        updatedAt: LocalDateTime? = null
     ): PostDto {
         val titleSeed = title ?: faker.book.title()
         val descriptionSeed = description ?: faker.lorem.paragraph()

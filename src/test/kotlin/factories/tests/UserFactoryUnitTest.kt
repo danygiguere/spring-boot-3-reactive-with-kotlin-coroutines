@@ -1,5 +1,7 @@
-package factories
+package factories.tests
 
+import com.example.demo.DemoApplication
+import factories.UserFactory
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -11,7 +13,7 @@ import java.time.LocalDateTime
 
 @ContextConfiguration
 @SpringBootTest(
-    classes = [com.example.demo.DemoApplication::class],
+    classes = [DemoApplication::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserFactoryUnitTest {
 

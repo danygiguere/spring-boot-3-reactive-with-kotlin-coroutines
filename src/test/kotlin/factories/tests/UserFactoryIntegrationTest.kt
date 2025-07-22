@@ -1,6 +1,8 @@
-package factories
+package factories.tests
 
+import com.example.demo.DemoApplication
 import com.example.demo.feature.user.UserRepository
+import factories.UserFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration
 @SpringBootTest(
-    classes = [com.example.demo.DemoApplication::class],
+    classes = [DemoApplication::class],
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserFactoryIntegrationTest() {
 

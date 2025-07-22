@@ -15,8 +15,8 @@ class ImageFactory(val imageRepository: ImageRepository) {
         id: Long = 1L,
         postId: Long = 1L,
         url: String? = null,
-        createdAt: java.time.LocalDateTime? = null,
-        updatedAt: java.time.LocalDateTime? = null
+        createdAt: LocalDateTime? = null,
+        updatedAt: LocalDateTime? = null
     ): ImageDto {
         val urlSeed = url ?: "https://picsum.photos/seed/${faker.number.number(6)}/600/400"
         val createdAtSeed = createdAt ?: LocalDateTime.now()
