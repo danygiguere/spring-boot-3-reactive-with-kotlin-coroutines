@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class TestDatabaseConfig {
-    @Value("\${spring.r2dbc.name}")
+    @Value("\${spring.r2dbc.name:}")
     private lateinit var dbName: String
 
     @PostConstruct
     fun abortIfNotTestDatabase() {
-        if (!dbName.contains("test")) {
+        if (!dbName.contains("test", ignoreCase = true)) {
             throw IllegalStateException("Tests must use a test database! Current DB: $dbName")
         }
     }

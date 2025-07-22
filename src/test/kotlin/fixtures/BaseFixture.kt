@@ -14,7 +14,8 @@ abstract class BaseFixture<T> {
     protected val defaultId: Long = 1L
     protected val defaultDate: LocalDateTime = LocalDateTime.now()
     protected val defaultString: String = "test"
-    protected val defaultEmail: String = "test@example.com"
+    protected val defaultUsername = faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase()
+    protected val defaultEmail: String = "$defaultUsername@example.com"
 
     /**
      * Creates a builder for the fixture
