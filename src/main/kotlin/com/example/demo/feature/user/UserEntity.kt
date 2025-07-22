@@ -29,10 +29,10 @@ fun Row.toUserEntity(): UserEntity = UserEntity(
 
 
 fun UserEntity.toUserDto(): UserDto = UserDto(
-    id = id,
+    id = id ?: throw IllegalStateException("UserEntity id cannot be null when converting to UserDto"),
     username = username,
     email = email,
     password = password,
-    createdAt = createdAt,
-    updatedAt = updatedAt
+    createdAt = createdAt ?: throw IllegalStateException("UserEntity createdAt cannot be null when converting to UserDto"),
+    updatedAt = updatedAt ?: throw IllegalStateException("UserEntity updatedAt cannot be null when converting to UserDto")
 )

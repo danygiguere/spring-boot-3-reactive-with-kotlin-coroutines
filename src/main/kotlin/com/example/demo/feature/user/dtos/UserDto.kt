@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDateTime
 
 data class UserDto(
-        val id: Long?,
+        val id: Long,
         val username: String,
         val email: String,
         @JsonIgnore()
         val password: String?,
-        var createdAt: LocalDateTime?,
-        var updatedAt: LocalDateTime?
+        var createdAt: LocalDateTime,
+        var updatedAt: LocalDateTime
 )
 
 fun UserDto.toUserWithPostsDto(): UserWithPostsDto = UserWithPostsDto(

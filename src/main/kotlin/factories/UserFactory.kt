@@ -55,7 +55,8 @@ class UserFactory(val userRepository: UserRepository) {
     suspend fun createOne(username: String? = null,
                            email: String? = null,
                            password: String? = null): UserDto {
-        return userRepository.register(makeRegisterRequest(username, email, password)).toUserDto()
+        val id = userRepository.register(makeRegisterRequest(username, email, password))
+        return userRepository.findById(id)?.copy(password = null)?.toUserDto() ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun createMany(quantities: Int): List<UserDto> {

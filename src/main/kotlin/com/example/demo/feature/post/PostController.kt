@@ -80,21 +80,25 @@ class PostController(private val postService: PostService,
         }
         val postCreated = postService.create(createPostDto)
         val createImageDto = request.let {
-            CreateImageDto(
-                postId = postCreated.id,
-                url = it.image?.url!!,
+            postCreated?.id?.let { postId ->
+                CreateImageDto(
+                    postId = postId,
+                    url = it.image?.url!!,
+                )
+            }
+        }
+        val imageCreated = createImageDto?.let { imageService.create(it) }
+        val response = postCreated?.let {
+            PostWithImagesDto(
+                id = it.id,
+                userId = postCreated.userId,
+                title = postCreated.title,
+                description = postCreated.description,
+                createdAt = postCreated.createdAt,
+                updatedAt = postCreated.updatedAt,
+                images = imageCreated?.let { listOf(it) } ?: emptyList()
             )
         }
-        val imageCreated = imageService.create(createImageDto)
-        val response = PostWithImagesDto(
-            id = postCreated.id,
-            userId = postCreated.userId,
-            title = postCreated.title,
-            description = postCreated.description,
-            createdAt = postCreated.createdAt,
-            updatedAt = postCreated.updatedAt,
-            images = imageCreated?.let { listOf(it) } ?: emptyList()
-        )
         return ResponseEntity.ok(response)
     }
 

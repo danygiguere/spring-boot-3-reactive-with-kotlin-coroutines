@@ -40,9 +40,9 @@ class PostService(val postRepository: PostRepository,
         return@coroutineScope post.await()?.toPostWithUserDto()?.copy(user = user.await()?.toUserDto())
     }
 
-    suspend fun create(createPostDto: CreatePostDto): PostDto {
+    suspend fun create(createPostDto: CreatePostDto): PostDto? {
         val id = postRepository.create(createPostDto)
-        return postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
+        return findById(id) ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun update(updatePostDto: UpdatePostDto): Long =

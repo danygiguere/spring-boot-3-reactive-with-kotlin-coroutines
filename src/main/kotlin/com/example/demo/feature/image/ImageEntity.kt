@@ -27,10 +27,10 @@ fun List<ImageEntity>.toImageDtos(): List<ImageDto> = this.map { it.toImageDto()
 
 
 fun ImageEntity.toImageDto(): ImageDto = ImageDto(
-    id = id ?: throw IllegalStateException("PostEntity id cannot be null when converting to PostDto"),
+    id = id ?: throw IllegalStateException("ImageEntity id cannot be null when converting to ImageDto"),
     postId = postId,
     url = url,
-    createdAt = createdAt ?: throw IllegalStateException("PostEntity createdAt cannot be null when converting to PostDto"),
-    updatedAt = updatedAt ?: throw IllegalStateException("PostEntity updatedAt cannot be null when converting to PostDto")
+    createdAt = createdAt ?: throw IllegalStateException("ImageEntity createdAt cannot be null when converting to ImageDto"),
+    updatedAt = updatedAt ?: throw IllegalStateException("ImageEntity updatedAt cannot be null when converting to ImageDto")
 )
 
