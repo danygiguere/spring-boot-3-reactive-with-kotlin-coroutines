@@ -1,4 +1,4 @@
-package com.example.demo.seeders
+package com.example.demo
 
 import com.example.demo.feature.image.ImageRepository
 import com.example.demo.feature.post.PostRepository
