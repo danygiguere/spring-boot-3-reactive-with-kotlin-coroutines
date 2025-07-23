@@ -1,6 +1,7 @@
 package com.example.demo.feature.user
 
 import com.example.demo.feature.auth.requests.RegisterRequest
+import com.example.demo.feature.user.dtos.CreateUserDto
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging
 import org.springframework.r2dbc.core.DatabaseClient
@@ -28,12 +29,12 @@ class UserRepository(
             .map { row, _ -> row.toUserEntity() }
             .awaitOneOrNull()
 
-    suspend fun register(registerRequest: RegisterRequest): Long =
+    suspend fun create(createUserDto: CreateUserDto): Long =
         databaseClient.sql("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
             .filter { statement, _ -> statement.returnGeneratedValues("id").execute() }
-            .bind("username", registerRequest.username)
-            .bind("email", registerRequest.email)
-            .bind("password", passwordEncoder.encode(registerRequest.password))
+            .bind("username", createUserDto.username)
+            .bind("email", createUserDto.email)
+            .bind("password", passwordEncoder.encode(createUserDto.password))
             .fetch()
             .first()
             .map { row -> (row["id"] as Number).toLong() }

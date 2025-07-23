@@ -5,6 +5,7 @@ import com.example.demo.feature.post.PostRepository
 import com.example.demo.feature.auth.requests.RegisterRequest
 import com.example.demo.feature.image.toImageDtos
 import com.example.demo.feature.post.toPostDtos
+import com.example.demo.feature.user.dtos.CreateUserDto
 import com.example.demo.feature.user.dtos.UserDto
 import com.example.demo.feature.user.dtos.UserWithImagesDto
 import com.example.demo.feature.user.dtos.UserWithPostsDto
@@ -38,8 +39,8 @@ class UserService(val userRepository: UserRepository,
     suspend fun findByEmail(email: String): UserDto? =
         userRepository.findByEmail(email)?.toUserDto()
 
-    suspend fun create(registerRequest: RegisterRequest): UserDto? {
-        val id = userRepository.register(registerRequest)
+    suspend fun create(createUserDto: CreateUserDto): UserDto? {
+        val id = userRepository.create(createUserDto)
         return findById(id) ?: throw IllegalStateException("Failed to get user")
     }
 

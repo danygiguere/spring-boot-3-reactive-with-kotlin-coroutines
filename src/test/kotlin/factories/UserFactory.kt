@@ -4,7 +4,9 @@ import com.example.demo.feature.auth.requests.LoginRequest
 import com.example.demo.feature.user.UserRepository
 import com.example.demo.feature.user.dtos.UserDto
 import com.example.demo.feature.auth.requests.RegisterRequest
+import com.example.demo.feature.user.dtos.CreateUserDto
 import com.example.demo.feature.user.toUserDto
+import fixtures.Fixtures
 import io.bloco.faker.Faker
 import java.time.LocalDateTime
 
@@ -43,6 +45,15 @@ class UserFactory(val userRepository: UserRepository) {
         return RegisterRequest(usernameSeed, emailSeed, passwordSeed, passwordSeed)
     }
 
+    fun makeCreateUserDto(username: String? = null,
+                            email: String? = null,
+                            password: String? = null): CreateUserDto {
+        val usernameSeed = username ?: (faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase())
+        val emailSeed = email ?: "$usernameSeed@test.com"
+        val passwordSeed = password ?: "secret123"
+        return CreateUserDto(usernameSeed, emailSeed, passwordSeed)
+    }
+
     fun makeLoginRequest(
         email: String? = null,
         password: String? = null
@@ -55,11 +66,20 @@ class UserFactory(val userRepository: UserRepository) {
     suspend fun createOne(username: String? = null,
                            email: String? = null,
                            password: String? = null): UserDto {
-        val id = userRepository.register(makeRegisterRequest(username, email, password))
+        val id = userRepository.create(makeCreateUserDto(username, email, password))
         return userRepository.findById(id)?.copy(password = null)?.toUserDto() ?: throw IllegalStateException("Failed to get post")
     }
 
+    suspend fun createOne(): UserDto {
+        val registerRequest = Fixtures.createUserDtoFixture.createDefault()
+        val id = userRepository.create(registerRequest)
+        return userRepository.findById(id)?.copy(password = null)?.toUserDto()
+            ?: throw IllegalStateException("Failed to create user")
+    }
+
     suspend fun createMany(quantities: Int): List<UserDto> {
-        return (0 until quantities).map { createOne() }
+        return (0 until quantities).map {
+            createOne()
+        }
     }
 }

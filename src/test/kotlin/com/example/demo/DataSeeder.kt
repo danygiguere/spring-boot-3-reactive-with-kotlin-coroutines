@@ -42,6 +42,7 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
 
     suspend fun seed() {
         val user = UserFactory(userRepository).createOne("johndoe", "johndoe@test.com", "secret123")
+//        val user = UserFactory(userRepository).createOne()
         val post = user.id?.let { PostFactory(postRepository).createOne(it) }
         post?.id?.let { ImageFactory(imageRepository).createOne(it) }
 

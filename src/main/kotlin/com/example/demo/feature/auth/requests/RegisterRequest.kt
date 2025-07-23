@@ -1,6 +1,9 @@
 package com.example.demo.feature.auth.requests
 
 import com.example.demo.feature.user.UserEntity
+import com.example.demo.feature.user.dtos.CreateUserDto
+import com.example.demo.feature.user.dtos.UserDto
+import com.example.demo.feature.user.dtos.UserWithPostsDto
 import com.example.demo.validators.FieldsMatch
 import com.example.demo.validators.UniqueEmail
 import jakarta.validation.constraints.Email
@@ -32,10 +35,8 @@ data class RegisterRequest(
     val password_confirmation: String
 )
 
-fun RegisterRequest.toUserEntity(): UserEntity = UserEntity(
+fun RegisterRequest.toCreateUserDto(): CreateUserDto = CreateUserDto(
     username = username,
     email = email,
-    password = password,
-    createdAt = null,
-    updatedAt = null
+    password = password
 )

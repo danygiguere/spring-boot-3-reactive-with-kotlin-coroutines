@@ -2,6 +2,7 @@ package com.example.demo.feature.auth
 
 import com.example.demo.feature.auth.requests.LoginRequest
 import com.example.demo.feature.auth.requests.RegisterRequest
+import com.example.demo.feature.auth.requests.toCreateUserDto
 import com.example.demo.feature.user.UserService
 import com.example.demo.feature.user.dtos.UserDto
 import com.example.demo.security.SecurityContextRepository.AuthConstants
@@ -27,7 +28,7 @@ class AuthController(private val userService: UserService,
 
     @PostMapping("/register")
     suspend fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> {
-        val newUser = userService.create(request)
+        val newUser = userService.create(request.toCreateUserDto())
         return if (newUser != null) {
             ResponseEntity.ok().body("An email will be sent to you. Please confirm your email by clicking the verification link provided in the email")
         } else {

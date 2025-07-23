@@ -11,6 +11,7 @@ object Fixtures {
     val userWithImagesDto = UserFixtures.UserWithImagesDtoFixture
     val loginRequest = UserFixtures.LoginRequestFixture
     val registerRequest = UserFixtures.RegisterRequestFixture
+    val createUserDtoFixture = UserFixtures.CreateUserDtoFixture
 
     // Post
     val postDto = PostFixtures.PostDtoFixture

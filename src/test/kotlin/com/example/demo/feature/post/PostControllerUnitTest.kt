@@ -1,7 +1,6 @@
 package com.example.demo.feature.post
 
 import com.example.demo.feature.image.ImageService
-import factories.PostFactory
 import fixtures.Fixtures
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -30,8 +29,8 @@ class PostControllerUnitTest() {
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() = runTest {
         // Given
-        val createPostRequest = PostFactory(mockk()).makeCreatePostRequest()
-        val postDto = PostFactory(mockk()).makePostDto(1, 1, createPostRequest.title, createPostRequest.description)
+        val createPostRequest = Fixtures.createPostRequest.createDefault()
+        val postDto = Fixtures.postDto.createDefault()
         coEvery { postService.create(any()) } returns postDto
 
         val authentication = mockk<Authentication>()
@@ -73,8 +72,12 @@ class PostControllerUnitTest() {
         // Given
         val userId = 1L
         val postId = 1L
-        val updatePostRequest = PostFactory(mockk()).makeUpdatePostRequest()
-        val updatePostDto = PostFactory(mockk()).makeUpdatePostDto(postId, userId,updatePostRequest.title, updatePostRequest.description)
+
+        val updatePostRequest = Fixtures.updatePostRequest.createDefault()
+        val updatePostDto = Fixtures.updatePostDto.createDefault().copy(
+            title = updatePostRequest.title!!,
+            description = updatePostRequest.description!!
+        )
 
         val authentication = mockk<Authentication>()
         coEvery { authentication.principal } returns userId

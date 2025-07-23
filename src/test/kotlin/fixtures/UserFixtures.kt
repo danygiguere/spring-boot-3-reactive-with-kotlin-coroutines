@@ -5,6 +5,7 @@ import com.example.demo.feature.user.dtos.UserWithPostsDto
 import com.example.demo.feature.user.dtos.UserWithImagesDto
 import com.example.demo.feature.auth.requests.LoginRequest
 import com.example.demo.feature.auth.requests.RegisterRequest
+import com.example.demo.feature.user.dtos.CreateUserDto
 import java.time.LocalDateTime
 
 object UserFixtures {
@@ -81,5 +82,18 @@ object UserFixtures {
         }
 
         override fun createDefault(): RegisterRequest = builder()
+    }
+
+    object CreateUserDtoFixture : BaseFixture<CreateUserDto>() {
+        override fun builder(): CreateUserDto {
+            val username = faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase()
+            return CreateUserDto(
+                username = username,
+                email = "$username@test.com",
+                password = password
+            )
+        }
+
+        override fun createDefault(): CreateUserDto = builder()
     }
 }
