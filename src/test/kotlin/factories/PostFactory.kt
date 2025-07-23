@@ -1,91 +1,30 @@
 package factories
 
 import com.example.demo.feature.post.PostRepository
-import com.example.demo.feature.post.dtos.CreatePostDto
 import com.example.demo.feature.post.dtos.PostDto
-import com.example.demo.feature.post.dtos.UpdatePostDto
-import com.example.demo.feature.post.requests.CreatePostRequest
-import com.example.demo.feature.post.requests.UpdatePostRequest
 import com.example.demo.feature.post.toPostDto
-import io.bloco.faker.Faker
-import java.time.LocalDateTime
+import fixtures.Fixtures
 
 class PostFactory(val postRepository: PostRepository) {
 
-    val faker = Faker(locale = "en-CA")
-
-    fun makePostDto(
-        id: Long = 1L,
-        userId: Long = 1L,
-        title: String? = null,
-        description: String? = null,
-        createdAt: LocalDateTime? = null,
-        updatedAt: LocalDateTime? = null
-    ): PostDto {
-        val titleSeed = title ?: faker.book.title()
-        val descriptionSeed = description ?: faker.lorem.paragraph()
-        val createdAtSeed = createdAt ?: LocalDateTime.now()
-        val updatedAtSeed = updatedAt ?: LocalDateTime.now()
-        return PostDto(id, userId, titleSeed, descriptionSeed, createdAtSeed, updatedAtSeed)
-    }
-
-    fun makeCreatePostDto(
-        userId: Long = 1L,
-        title: String? = null,
-        description: String? = null
-    ): CreatePostDto {
-        val titleSeed = title ?: faker.book.title()
-        val descriptionSeed = description ?: faker.lorem.paragraph()
-        return CreatePostDto( userId, titleSeed, descriptionSeed)
-    }
-
-    fun makeUpdatePostDto(
-        id: Long = 1L,
-        userId: Long = 1L,
-        title: String? = null,
-        description: String? = null
-    ): UpdatePostDto {
-        val titleSeed = title ?: faker.book.title()
-        val descriptionSeed = description ?: faker.lorem.paragraph()
-        return UpdatePostDto(id, userId, titleSeed, descriptionSeed)
-    }
-
-    fun makeOne(userId: Long): PostDto {
-        return makePostDto(userId = userId)
-    }
-
-    fun makeMany(quantities: Int, userId: Long): List<PostDto> {
-        return List(quantities) { makeOne(userId).copy(id = it + 1L) }
-    }
-
-    fun makeCreatePostRequest(
-        title: String? = null,
-        description: String? = null
-    ): CreatePostRequest {
-        return CreatePostRequest(
-            title ?: faker.book.title(),
-            description ?: faker.lorem.paragraph()
-        )
-    }
-
-    fun makeUpdatePostRequest(
-        title: String? = null,
-        description: String? = null
-    ): UpdatePostRequest {
-        return UpdatePostRequest(
-            title ?: faker.book.title(),
-            description ?: faker.lorem.paragraph()
-        )
+    suspend fun createOne(): PostDto {
+        val createPostDto = Fixtures.createPostDto.createDefault()
+        val id = postRepository.create(createPostDto)
+        return postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun createOne(userId: Long): PostDto {
-        val id = postRepository.create(makeCreatePostDto(userId))
+        val createPostDto = Fixtures.createPostDto.createDefault()
+            .copy(userId = userId)
+        val id = postRepository.create(createPostDto)
         return postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun createMany(quantities: Int, userId: Long): List<PostDto> {
         return (0 until quantities).map {
-            val id =  postRepository.create(makeCreatePostDto(userId))
+            val createPostDto = Fixtures.createPostDto.createDefault()
+                .copy(userId = userId)
+            val id = postRepository.create(createPostDto)
             postRepository.findById(id)?.toPostDto() ?: throw IllegalStateException("Failed to get post")
         }
     }

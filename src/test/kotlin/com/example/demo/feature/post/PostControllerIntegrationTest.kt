@@ -3,6 +3,7 @@ package com.example.demo.feature.post
 import com.example.demo.feature.post.dtos.PostDto
 import com.example.demo.security.Tokenizer
 import factories.PostFactory
+import fixtures.Fixtures
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -35,7 +36,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN valid data and jwt WHEN a post is submitted THEN the post is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).makeOne(1)
+            val postDto = Fixtures.postDto.createDefault()
 
             // When
             val result = webTestClient.post()
@@ -58,7 +59,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN no JWT WHEN a post is submitted THEN a 401 is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).makeOne(1)
+            val postDto = Fixtures.postDto.createDefault()
 
             // When
             webTestClient.post()

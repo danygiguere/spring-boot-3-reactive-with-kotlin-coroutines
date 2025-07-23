@@ -73,6 +73,5 @@ class UserFactoryIntegrationTest() {
         // Then
         assertEquals(username, result.username)
         assertEquals(email, result.email)
-        assertEquals(null, result.password) // password is JsonIgnore
     }
 }

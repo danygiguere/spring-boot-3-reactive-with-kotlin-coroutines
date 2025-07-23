@@ -41,17 +41,16 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     }
 
     suspend fun seed() {
-        val user = UserFactory(userRepository).createOne("johndoe", "johndoe@test.com", "secret123")
-//        val user = UserFactory(userRepository).createOne()
-        val post = user.id?.let { PostFactory(postRepository).createOne(it) }
-        post?.id?.let { ImageFactory(imageRepository).createOne(it) }
+        val user = UserFactory(userRepository).createOne("johndoe", "johndoe@test.com")
+        val post = user.id.let { PostFactory(postRepository).createOne(it) }
+        post.id.let { ImageFactory(imageRepository).createOne(it) }
 
         val users = UserFactory(userRepository).createMany(9)
         for (singleUser in users) {
-            singleUser.id?.let { userId ->
+            singleUser.id.let { userId ->
                 val posts = PostFactory(postRepository).createMany(2, userId)
                 for (singlePost in posts) {
-                    singlePost.id?.let { postId ->
+                    singlePost.id.let { postId ->
                         ImageFactory(imageRepository).createMany(2, postId)
                     }
                 }
