@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
@@ -65,13 +66,17 @@ class UserFactoryIntegrationTest() {
     fun `GIVEN params WHEN createUser is called THEN repository is called and UserDto is returned`() = runTest {
         // Given
         val username = "testuser"
-        val email = "testuser@test.com"
 
         // When
-        val result = userFactory.createOne(username, email)
+        val result = userFactory.createOne(username)
 
         // Then
+        assertNotNull(result.id)
         assertEquals(username, result.username)
-        assertEquals(email, result.email)
+        assertNotNull(result.email)
+        assertNull(result.password)
+        assertNotNull(result.createdAt)
+        assertNotNull(result.updatedAt)
+
     }
 }

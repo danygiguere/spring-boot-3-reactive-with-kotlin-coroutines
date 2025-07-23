@@ -15,11 +15,11 @@ class UserFactory(val userRepository: UserRepository) {
             ?: throw IllegalStateException("Failed to create user")
     }
 
-    suspend fun createOne(username: String,
-                           email: String): UserDto {
+    suspend fun createOne(username: String): UserDto {
+        val email = "${username}@test.com"
         val password = "secret123"
         val id = userRepository.create(CreateUserDto(username, email, password))
-        return userRepository.findById(id)?.copy(password = password)?.toUserDto() ?: throw IllegalStateException("Failed to get post")
+        return userRepository.findById(id)?.copy(password = null)?.toUserDto() ?: throw IllegalStateException("Failed to get post")
     }
 
     suspend fun createMany(quantities: Int): List<UserDto> {
