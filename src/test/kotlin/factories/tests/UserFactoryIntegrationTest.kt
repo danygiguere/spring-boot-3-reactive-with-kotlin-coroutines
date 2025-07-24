@@ -65,14 +65,12 @@ class UserFactoryIntegrationTest() {
     @Test
     fun `GIVEN params WHEN createUser is called THEN repository is called and UserDto is returned`() = runTest {
         // Given
-        val username = "testuser"
-
         // When
-        val result = userFactory.createOne(username)
+        val result = userFactory.createOne()
 
         // Then
         assertNotNull(result.id)
-        assertEquals(username, result.username)
+        assertNotNull(result.username)
         assertNotNull(result.email)
         assertNull(result.password)
         assertNotNull(result.createdAt)

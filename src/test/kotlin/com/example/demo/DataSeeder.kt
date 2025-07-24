@@ -41,11 +41,7 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     }
 
     suspend fun seed() {
-        val user = UserFactory(userRepository).createOne("johndoe")
-        val post = user.id.let { PostFactory(postRepository).createOne(it) }
-        post.id.let { ImageFactory(imageRepository).createOne(it) }
-
-        val users = UserFactory(userRepository).createMany(9)
+        val users = UserFactory(userRepository).createMany(10)
         for (singleUser in users) {
             singleUser.id.let { userId ->
                 val posts = PostFactory(postRepository).createMany(2, userId)
