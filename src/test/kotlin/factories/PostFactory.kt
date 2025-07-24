@@ -1,7 +1,6 @@
 package factories
 
 import com.example.demo.feature.post.PostRepository
-import com.example.demo.feature.post.dtos.CreatePostDto
 import com.example.demo.feature.post.dtos.PostDto
 import com.example.demo.feature.post.toPostDto
 import fixtures.Fixtures

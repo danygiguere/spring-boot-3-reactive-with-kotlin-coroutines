@@ -1,6 +1,5 @@
 package com.example.demo.feature.image.dtos
 
-import com.example.demo.feature.image.ImageEntity
 import java.time.LocalDateTime
 
 data class ImageDto(
@@ -9,9 +8,4 @@ data class ImageDto(
     val url: String,
     var createdAt: LocalDateTime,
     var updatedAt: LocalDateTime
-)
-
-fun ImageDto.toEntity(): ImageEntity = ImageEntity(
-    postId = postId,
-    url = url
 )

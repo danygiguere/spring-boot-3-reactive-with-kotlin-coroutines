@@ -8,7 +8,6 @@ import org.springframework.web.server.CoWebFilter
 import org.springframework.web.server.CoWebFilterChain
 import org.springframework.web.server.ServerWebExchange
 
-
 @Component
 class WebFilterConfig(
     private val postService: PostService

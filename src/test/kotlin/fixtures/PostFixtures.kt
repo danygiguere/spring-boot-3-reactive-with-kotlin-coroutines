@@ -11,6 +11,7 @@ import com.example.demo.feature.post.requests.PostCreatePostWithImageRequest
 import java.time.LocalDateTime
 
 object PostFixtures {
+
     object PostDtoFixture : BaseFixture<PostDto>() {
         override fun builder(): PostDto {
             return PostDto(

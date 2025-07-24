@@ -9,7 +9,9 @@ import com.example.demo.feature.user.dtos.CreateUserDto
 import java.time.LocalDateTime
 
 object UserFixtures {
+
     val password = "secret123"
+
     object UserDtoFixture : BaseFixture<UserDto>() {
         override fun builder(): UserDto {
             val username = faker.name.firstName().lowercase() + "." + faker.name.lastName().lowercase()

@@ -12,16 +12,6 @@ data class PostDto(
     var updatedAt: LocalDateTime
 )
 
-
-fun PostDto.toEntity(): PostEntity = PostEntity(
-    id = id,
-    userId = userId,
-    title = title,
-    description = description,
-    createdAt = createdAt,
-    updatedAt = updatedAt
-)
-
 fun PostDto.toPostWithImagesDto(): PostWithImagesDto = PostWithImagesDto(
     id = id,
     userId = userId,

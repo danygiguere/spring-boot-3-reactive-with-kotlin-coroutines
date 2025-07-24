@@ -1,17 +1,13 @@
 package fixtures
 
 import io.bloco.faker.Faker
-import java.time.LocalDateTime
-import java.util.*
 
 /**
  * Base fixture class that provides common functionality for all fixtures
  */
 abstract class BaseFixture<T> {
     protected val faker = Faker(locale = "en-CA")
-    protected val random = Random()
     protected val defaultId: Long = 1L
-
 
     /**
      * Creates a builder for the fixture

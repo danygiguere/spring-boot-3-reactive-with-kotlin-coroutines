@@ -1,9 +1,6 @@
 package com.example.demo.feature.auth.requests
 
-import com.example.demo.feature.user.UserEntity
 import com.example.demo.feature.user.dtos.CreateUserDto
-import com.example.demo.feature.user.dtos.UserDto
-import com.example.demo.feature.user.dtos.UserWithPostsDto
 import com.example.demo.validators.FieldsMatch
 import com.example.demo.validators.UniqueEmail
 import jakarta.validation.constraints.Email

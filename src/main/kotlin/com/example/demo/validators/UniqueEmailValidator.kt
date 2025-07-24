@@ -21,7 +21,6 @@ annotation class UniqueEmail(
     val payload: Array<KClass<out Payload>> = []
 )
 
-
 @Component
 class UniqueEmailValidator @Autowired constructor(
     private val userService: UserService

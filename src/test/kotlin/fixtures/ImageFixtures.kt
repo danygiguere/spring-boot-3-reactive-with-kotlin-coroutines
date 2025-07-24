@@ -6,6 +6,7 @@ import com.example.demo.feature.image.dtos.UpdateImageDto
 import java.time.LocalDateTime
 
 object ImageFixtures {
+
     object ImageDtoFixture : BaseFixture<ImageDto>() {
         override fun builder(): ImageDto {
             return ImageDto(

@@ -1,6 +1,5 @@
 package com.example.demo.feature.user
 
-import com.example.demo.feature.auth.requests.RegisterRequest
 import com.example.demo.feature.user.dtos.CreateUserDto
 import kotlinx.coroutines.reactor.awaitSingle
 import mu.KLogging

@@ -1,4 +1,3 @@
-// src/test/kotlin/fixtures/Fixtures.kt
 package fixtures
 
 /**
@@ -28,23 +27,3 @@ object Fixtures {
     val createImageDto = ImageFixtures.CreateImageDtoFixture
     val updateImageDto = ImageFixtures.UpdateImageDtoFixture
 }
-
-// Example 1: Create a default user DTO
-//val user = Fixtures.userDto.createDefault()
-
-// Example 2: Create a custom user DTO
-//val customUser = Fixtures.userDto.builder()
-//    .copy(username = "customUser")
-//    .copy(email = "custom@example.com")
-//    .build()
-
-// Example 3: Create multiple posts
-//val posts = Fixtures.postDto.createMany(5)
-
-// Example 4: Create a post with a custom title
-//val customPost = Fixtures.postDto.builder()
-//    .copy(title = "Custom Title")
-//    .build()
-
-// Example 5: Create a login request
-//val loginRequest = Fixtures.loginRequest.createDefault()

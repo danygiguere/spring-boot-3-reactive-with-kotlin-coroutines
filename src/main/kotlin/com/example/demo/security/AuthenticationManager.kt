@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 import java.util.*
 
-
 @Component
 class AuthenticationManager(private val tokenizer: Tokenizer) : ReactiveAuthenticationManager {
 

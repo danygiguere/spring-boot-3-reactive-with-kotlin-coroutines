@@ -2,7 +2,6 @@ package com.example.demo.feature.user
 
 import com.example.demo.feature.image.ImageRepository
 import com.example.demo.feature.post.PostRepository
-import com.example.demo.feature.auth.requests.RegisterRequest
 import com.example.demo.feature.image.toImageDtos
 import com.example.demo.feature.post.toPostDtos
 import com.example.demo.feature.user.dtos.CreateUserDto

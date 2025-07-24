@@ -14,7 +14,6 @@ import org.springframework.security.web.server.authentication.HttpStatusServerEn
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 
-
 @EnableWebFluxSecurity
 @Configuration
 class SecurityConfig(private val securityContextRepository: SecurityContextRepository) {
