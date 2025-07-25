@@ -8,7 +8,6 @@ import org.springframework.core.env.Environment
 @Configuration
 class FlywayConfiguration(private val env: Environment) {
 
-    val cleanDisabled = env.getRequiredProperty("spring.flyway.cleanDisabled");
     @Bean(initMethod = "migrate")
     fun flyway(): Flyway {
         return Flyway.configure()
@@ -18,7 +17,7 @@ class FlywayConfiguration(private val env: Environment) {
                         env.getRequiredProperty("spring.flyway.user"),
                         env.getRequiredProperty("spring.flyway.password")
                 )
-                .cleanDisabled(cleanDisabled.toBoolean())
+                .cleanDisabled(env.getProperty("spring.flyway.clean-disabled", Boolean::class.java, true))
                 .load()
     }
 }

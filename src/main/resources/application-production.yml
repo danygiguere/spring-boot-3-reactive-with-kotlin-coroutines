@@ -1,0 +1,15 @@
+app:
+  token:
+    issuer: ${spring.application.name}
+  access-token:
+    secret: ${APP_ACCESS_TOKEN_SECRET}
+    expires-minute: 5
+  refresh-token:
+    secret:  ${APP_REFRESH_TOKEN_SECRET}
+    expires-minute: 20
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG

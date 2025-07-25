@@ -22,4 +22,4 @@
   - how to create unit tests in a reactive context
   - how to do webclient calls with Kotlin Coroutines
   - how to create Fixtures and factories to seed the db, and to create dtos data for tests
-  - how to set up Docker (I figured it out on the Docker branch (https://github.com/danygiguere/spring-boot-3-reactive-with-kotlin-coroutines/tree/Docker))
+  - how to run the project in a Docker container using docker-compose
