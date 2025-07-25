@@ -22,4 +22,4 @@
   - how to create unit tests in a reactive context
   - how to do webclient calls with Kotlin Coroutines
   - how to create Fixtures and factories to seed the db, and to create dtos data for tests
-  - how to run the project in a Docker container using docker-compose
+  - how to run the project in a Docker container using docker-compose (you need to make a copy of .env.example and rename the copy to .env, add your db credentials and then run docker-compose up)

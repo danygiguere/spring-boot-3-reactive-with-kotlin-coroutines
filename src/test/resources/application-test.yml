@@ -23,3 +23,19 @@ spring:
     password: ${spring.r2dbc.password}
     baseline-on-migrate: true
     cleanDisabled: false
+
+app:
+  token:
+    issuer: ${spring.application.name}
+  access-token:
+    secret: RANDOM_SECRET_FOR_ACCESS_TOKEN
+    expires-minute: 5
+  refresh-token:
+    secret: OTHER_RANDOM_SECRET_FOR_REFRESH_TOKEN
+    expires-minute: 20
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
