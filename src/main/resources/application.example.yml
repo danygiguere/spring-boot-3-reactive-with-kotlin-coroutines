@@ -1,11 +1,12 @@
 spring:
   application:
     name: demo
+
   r2dbc:
-    url:
-    name:
-    username:
-    password:
+    url: r2dbc:mysql://${app.db.url}:${app.db.port}${app.db.params}
+    name: ${app.db.name}
+    username: ${app.db.username}
+    password: ${app.db.password}
     pool:
       initial-size: 10
       max-size: 30
@@ -17,21 +18,29 @@ spring:
       max-create-connection-time: 3
       max-acquire-time: 5
       max-life-time: 15
+
   flyway:
-    url:
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
+    url: jdbc:mysql://${app.db.url}:${app.db.port}/${app.db.name}
+    user: ${app.db.username}
+    password: ${app.db.password}
     baseline-on-migrate: true
     cleanDisabled: false
 
 app:
+  db:
+    name: docker_db
+    username: root
+    password: root
+    port: 3306
+    params:
+    url: localhost
   token:
     issuer: ${spring.application.name}
   access-token:
-    secret:
+    secret: RANDOM_SECRET_FOR_ACCESS_TOKEN
     expires-minute: 5
   refresh-token:
-    secret:
+    secret: OTHER_RANDOM_SECRET_FOR_REFRESH_TOKEN
     expires-minute: 20
 
 logging:
