@@ -42,4 +42,4 @@ out/
 
 .env
 
-application.yml
+application-secrets.yml

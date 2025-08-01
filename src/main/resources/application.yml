@@ -2,6 +2,17 @@ spring:
   application:
     name: demo
 
+  config:
+    import:
+      - classpath:application-secrets.yml
+
+  flyway:
+    url: jdbc:mysql://${app.db.url}:${app.db.port}/${app.db.name}${app.db.params}
+    user: ${app.db.username}
+    password: ${app.db.password}
+    baseline-on-migrate: true
+    cleanDisabled: false
+
   r2dbc:
     url: r2dbc:mysql://${app.db.url}:${app.db.port}${app.db.params}
     name: ${app.db.name}
@@ -19,21 +30,7 @@ spring:
       max-acquire-time: 5
       max-life-time: 15
 
-  flyway:
-    url: jdbc:mysql://${app.db.url}:${app.db.port}/${app.db.name}
-    user: ${app.db.username}
-    password: ${app.db.password}
-    baseline-on-migrate: true
-    cleanDisabled: false
-
 app:
-  db:
-    name: docker_db
-    username: root
-    password: root
-    port: 3306
-    params:
-    url: localhost
   token:
     issuer: ${spring.application.name}
   access-token:
