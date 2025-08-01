@@ -50,6 +50,7 @@
     - Create a service in ECS
         - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-service.html
         - To create a service, go to the task definition page, click your definition, then click Deploy and Create service
+        - Choose the lastes task definition, under Compute configuration (advanced), click the Launch type Compute Options. Under Desired tasks, choose 0 and then click create.
         - Once the service is created, you can go to the ECS dashboard, click on the cluster, then click on the service
         - From there you can see the logs and if you click on the Tasks tab, you can see the status of the task and stop it if needed
         - If you click on the task, you'll find the app Public IP under Configuration but you won't be able to acces it yet from the internet
