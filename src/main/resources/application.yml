@@ -34,10 +34,10 @@ app:
   token:
     issuer: ${spring.application.name}
   access-token:
-    secret: RANDOM_SECRET_FOR_ACCESS_TOKEN
+    secret: ${app.access-token}
     expires-minute: 5
   refresh-token:
-    secret: OTHER_RANDOM_SECRET_FOR_REFRESH_TOKEN
+    secret: ${app.refresh-token}
     expires-minute: 20
 
 logging:
