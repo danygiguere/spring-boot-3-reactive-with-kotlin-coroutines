@@ -8,28 +8,28 @@
 - I recommend you watch this video regarding coroutines : https://www.youtube.com/watch?v=ahTXElHrV0c
 
 ### The app demonstrates:
-  - how to create controllers, dtos, entities, and repositories with Kotlin coroutines
-  - how to set up Flyway to manage migrations
-  - how to set an exception handler to manage failed validations
-  - how to return translated validation error messages
-  - how to create custom validators
-  - how to set up the Security with JWT with an httpOnly cookie
-  - how to use webfilters to block user from updating data that doesn't belong to them (checkPostOwnershipWebFilter)
-  - how to do a oneToMany relationship query
-  - how to do a belongsTo relationship query
-  - how to do a hasManyThrough relationship query
-  - how to run suspend functions in parallel with async/await
-  - how to create unit tests in a reactive context
-  - how to do webclient calls with Kotlin Coroutines
-  - how to create Fixtures and factories to seed the db, and to create dtos data for tests
-  - how to run the project in a Docker container using docker-compose (you need to make a copy of .env.example and rename the copy to .env, add your db credentials and then run docker-compose up)
+    - how to create controllers, dtos, entities, and repositories with Kotlin coroutines
+    - how to set up Flyway to manage migrations
+    - how to set an exception handler to manage failed validations
+    - how to return translated validation error messages
+    - how to create custom validators
+    - how to set up the Security with JWT with an httpOnly cookie
+    - how to use webfilters to block user from updating data that doesn't belong to them (checkPostOwnershipWebFilter)
+    - how to do a oneToMany relationship query
+    - how to do a belongsTo relationship query
+    - how to do a hasManyThrough relationship query
+    - how to run suspend functions in parallel with async/await
+    - how to create unit tests in a reactive context
+    - how to do webclient calls with Kotlin Coroutines
+    - how to create Fixtures and factories to seed the db, and to create dtos data for tests
+    - how to run the project in a Docker container using docker-compose (you need to make a copy of .env.example and rename the copy to .env, add your db credentials and then run docker-compose up)
 
 ### Installation
     - Add your credentials in the application-secrets.yml file
     - Start the project with ./gradlew bootRun or ./gradlew bootRun -Dspring.profiles.active=local
 
 ### Docker
-    - This is has a Dockerfile and a docker-compose.yml for deployement on AWS ECS
+    - This project has a Dockerfile and a docker-compose.yml for deployement on AWS ECS
     - To test locally, you can add the credentials in the .env file and run docker-compose up
 
 ### ASW ECS instructions
