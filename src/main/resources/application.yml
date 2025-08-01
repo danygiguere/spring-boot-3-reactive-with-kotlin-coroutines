@@ -7,17 +7,16 @@ spring:
       - classpath:application-secrets.yml
 
   flyway:
-    url: jdbc:mysql://${app.db.url}:${app.db.port}/${app.db.name}${app.db.params}
-    user: ${app.db.username}
-    password: ${app.db.password}
+    url: ${secrets.spring.flyway.url}
+    user: ${secrets.spring.flyway.user}
+    password: ${secrets.spring.flyway.password}
     baseline-on-migrate: true
     cleanDisabled: false
 
   r2dbc:
-    url: r2dbc:mysql://${app.db.url}:${app.db.port}${app.db.params}
-    name: ${app.db.name}
-    username: ${app.db.username}
-    password: ${app.db.password}
+    url: ${secrets.spring.r2dbc.url}
+    username: ${secrets.spring.r2dbc.username}
+    password: ${secrets.spring.r2dbc.password}
     pool:
       initial-size: 10
       max-size: 30
@@ -34,10 +33,10 @@ app:
   token:
     issuer: ${spring.application.name}
   access-token:
-    secret: ${app.access-token}
+    secret: ${secrets.app.access-token.secret}
     expires-minute: 5
   refresh-token:
-    secret: ${app.refresh-token}
+    secret: ${secrets.app.refresh-token.secret}
     expires-minute: 20
 
 logging:

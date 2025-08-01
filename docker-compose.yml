@@ -9,14 +9,14 @@ services:
 
     environment:
       - SPRING_PROFILES_ACTIVE=production
-      - spring.flyway.cleanDisabled=true
-      - spring.flyway.url=jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_NAME}${DB_PARAMS}
-      - spring.r2dbc.url=r2dbc:mysql://${DB_URL}:${DB_PORT}/${DB_NAME}${DB_PARAMS}
-      - spring.flyway.user=${DB_USERNAME}
-      - spring.flyway.password=${DB_PASSWORD}
-      - spring.r2dbc.username=${DB_USERNAME}
-      - spring.r2dbc.password=${DB_PASSWORD}
-      - app.access-token-secret=${ACCESS_TOKEN_SECRET}
-      - app.refresh-token-secret=${REFERESH_TOKEN_SECRET}
+      - SPRING_FLYWAY_CLEANDISABLED=${SPRING_FLYWAY_CLEANDISABLED}
+      - SPRING_FLYWAY_URL=${SPRING_FLYWAY_URL}
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_FLYWAY_USER=${SPRING_FLYWAY_USER}
+      - SPRING_FLYWAY_PASSWORD=${SPRING_FLYWAY_PASSWORD}
+      - SPRING_R2DBC_USERNAME=${SPRING_R2DBC_USERNAME}
+      - SPRING_R2DBC_PASSWORD=${SPRING_R2DBC_PASSWORD}
+      - APP_ACCESS_TOKEN_SECRET=${APP_ACCESS_TOKEN_SECRET}
+      - APP_REFRESH_TOKEN_SECRET=${APP_REFRESH_TOKEN_SECRET}
 
     restart: unless-stopped
