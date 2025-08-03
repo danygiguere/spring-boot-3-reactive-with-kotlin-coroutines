@@ -1,7 +1,10 @@
 package com.example.demo.feature.post
 
 import com.example.demo.feature.image.ImageService
-import fixtures.Fixtures
+import fixture.feature.post.CreatePostRequestFixture
+import fixture.feature.post.PostDtoFixture
+import fixture.feature.post.UpdatePostDtoFixture
+import fixture.feature.post.UpdatePostRequestFixture
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -29,8 +32,8 @@ class PostControllerUnitTest() {
     @Test
     fun `GIVEN valid data WHEN a post is submitted THEN the post is returned`() = runTest {
         // Given
-        val createPostRequest = Fixtures.createPostRequest.createDefault()
-        val postDto = Fixtures.postDto.createDefault()
+        val createPostRequest = CreatePostRequestFixture.createOne()
+        val postDto = PostDtoFixture.createOne()
         coEvery { postService.create(any()) } returns postDto
 
         val authentication = mockk<Authentication>()
@@ -49,7 +52,7 @@ class PostControllerUnitTest() {
     @Test
     fun `WHEN posts are requested THEN the posts are returned`() = runTest {
         // Given
-        val posts = Fixtures.postDto.createMany(3)
+        val posts = PostDtoFixture.createMany(3)
 
         coEvery { postService.findAll() } returns posts
 
@@ -73,11 +76,11 @@ class PostControllerUnitTest() {
         val userId = 1L
         val postId = 1L
 
-        val updatePostRequest = Fixtures.updatePostRequest.createDefault()
-        val updatePostDto = Fixtures.updatePostDto.createDefault().copy(
-            title = updatePostRequest.title!!,
+        val updatePostRequest = UpdatePostRequestFixture.createOne()
+        val updatePostDto = UpdatePostDtoFixture.createOne {
+            title = updatePostRequest.title!!
             description = updatePostRequest.description!!
-        )
+        }
 
         val authentication = mockk<Authentication>()
         coEvery { authentication.principal } returns userId

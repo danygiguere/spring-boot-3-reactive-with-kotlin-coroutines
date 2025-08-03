@@ -2,8 +2,9 @@ package com.example.demo.feature.auth
 
 import com.example.demo.feature.user.UserRepository
 import com.example.demo.feature.user.dtos.UserDto
-import factories.UserFactory
-import fixtures.Fixtures
+import factory.UserFactory
+import fixture.feature.auth.LoginRequestFixture
+import fixture.feature.auth.RegisterRequestFixture
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -23,7 +24,7 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     @Test
     fun `GIVEN valid data WHEN registering THEN user is created`() = runTest {
 
-        val registerRequest = Fixtures.registerRequest.createDefault()
+        val registerRequest = RegisterRequestFixture.createOne()
 
         webTestClient.post()
             .uri("/register")
@@ -39,10 +40,10 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN valid credentials WHEN logging in THEN an authorization header and a user are returned`() = runTest {
 
         val userDto = UserFactory(userRepository).createOne()
-        val loginRequest = Fixtures.loginRequest.createDefault().copy(
-            email = userDto.email,
+        val loginRequest = LoginRequestFixture.createOne {
+            email = userDto.email
             password = "secret123"
-        )
+        }
 
         val response = webTestClient.post()
             .uri("/login-with-token")

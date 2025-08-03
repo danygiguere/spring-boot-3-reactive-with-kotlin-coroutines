@@ -4,9 +4,12 @@ import com.example.demo.feature.image.ImageRepository
 import com.example.demo.feature.post.PostRepository
 import com.example.demo.feature.user.UserRepository
 import com.example.demo.configuration.FlywayConfiguration
-import factories.ImageFactory
-import factories.PostFactory
-import factories.UserFactory
+import factory.ImageFactory
+import factory.PostFactory
+import factory.UserFactory
+import fixture.feature.image.CreateImageDtoFixture
+import fixture.feature.post.CreatePostDtoFixture
+import fixture.feature.user.CreateUserDtoFixture
 import kotlinx.coroutines.runBlocking
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,9 +44,13 @@ class DataSeeder(val flywayConfiguration: FlywayConfiguration,
     }
 
     suspend fun seed() {
-        UserFactory(userRepository).createMany(10).forEach { user ->
-            PostFactory(postRepository).createMany(2, user.id).forEach { post ->
-                ImageFactory(imageRepository).createMany(2, post.id)
+        CreateUserDtoFixture.createMany(10).forEach { user ->
+        val user = UserFactory(userRepository).createOne(user)
+            CreatePostDtoFixture.createMany(2) { userId = user.id }.forEach { post ->
+                val post = PostFactory(postRepository).createOne()
+                CreateImageDtoFixture.createMany(2) { postId = post.id }.forEach { image ->
+                    ImageFactory(imageRepository).createOne(image)
+                }
             }
         }
     }

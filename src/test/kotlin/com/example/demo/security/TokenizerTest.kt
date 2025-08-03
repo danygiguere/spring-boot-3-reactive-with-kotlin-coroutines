@@ -2,11 +2,10 @@ package com.example.demo.security
 
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.example.demo.feature.user.UserRepository
-import factories.UserFactory
+import factory.UserFactory
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
@@ -27,21 +26,14 @@ class TokenizerTest {
     @Autowired
     private lateinit var tokenizer: Tokenizer
 
-    private lateinit var userFactory: UserFactory
-
     @Autowired
     lateinit var environment: Environment
-
-    @BeforeEach
-    fun setUp() {
-        userFactory = UserFactory(userRepository)
-    }
 
     @Test
     fun `GIVEN user id WHEN createAccessToken is called THEN a token returned`() {
         runTest {
             // Given
-            val userDto = userFactory.createOne()
+            val userDto = UserFactory(userRepository).createOne()
 
             // When
             val token = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
@@ -54,7 +46,7 @@ class TokenizerTest {
     fun `GIVEN valid bearer WHEN verify is called THEN a DecodedJWT is returned`() {
         runTest {
             // Given
-            val userDto = userFactory.createOne()
+            val userDto = UserFactory(userRepository).createOne()
             val token = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
 
             // When

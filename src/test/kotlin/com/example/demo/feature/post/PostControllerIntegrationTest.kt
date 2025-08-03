@@ -2,8 +2,8 @@ package com.example.demo.feature.post
 
 import com.example.demo.feature.post.dtos.PostDto
 import com.example.demo.security.Tokenizer
-import factories.PostFactory
-import fixtures.Fixtures
+import factory.PostFactory
+import fixture.feature.post.PostDtoFixture
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
-import java.time.LocalDateTime
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,7 +35,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN valid data and jwt WHEN a post is submitted THEN the post is returned`() {
         runTest {
             // Given
-            val postDto = Fixtures.postDto.createDefault()
+            val postDto = PostDtoFixture.createOne()
 
             // When
             val result = webTestClient.post()
@@ -59,7 +58,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN no JWT WHEN a post is submitted THEN a 401 is returned`() {
         runTest {
             // Given
-            val postDto = Fixtures.postDto.createDefault()
+            val postDto = PostDtoFixture.createOne()
 
             // When
             webTestClient.post()
@@ -74,7 +73,10 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN invalid data WHEN a post is submitted THEN a validation error is returned`() {
         runTest {
             // Given
-            val postDto = PostDto(1, 1, "T", "D", LocalDateTime.now(), LocalDateTime.now())
+            val postDto = PostDtoFixture.createOne {
+                title = "T"
+                description = "D"
+            }
 
             // When, Then
             webTestClient.post()
@@ -94,7 +96,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `WHEN posts are requested THEN the posts are returned`() {
         runTest {
             // Given
-            PostFactory(postRepository).createMany(3, 1)
+            PostFactory(postRepository).createMany(3)
 
             // When
             val result = webTestClient.get()
@@ -114,7 +116,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `WHEN one post is requested THEN the post is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).createOne(1)
+            val postDto = PostFactory(postRepository).createOne()
 
             // When
             val result = webTestClient.get()
@@ -136,7 +138,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
     fun `GIVEN valid data WHEN a post is updated THEN 1 is returned`() {
         runTest {
             // Given
-            val postDto = PostFactory(postRepository).createOne(1)
+            val postDto = PostFactory(postRepository).createOne()
 
             // When
             val result = webTestClient.put()
