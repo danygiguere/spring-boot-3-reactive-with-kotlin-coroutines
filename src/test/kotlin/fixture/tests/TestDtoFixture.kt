@@ -11,7 +11,7 @@ object TestDtoFixture : Fixture<TestDto, TestDtoFixture.Builder>() {
     class Builder {
         var username: String = "${faker.name.firstName().lowercase()}.${faker.name.lastName().lowercase()}"
         var email: String = "${username}@example.com"
-        var password: String = "${faker.internet.password(minLength = 12, maxLength = 30)}!1Aa"
+        var password: String = "secret123"
 
         fun build(): TestDto = TestDto(
             username = username,

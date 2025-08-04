@@ -28,11 +28,9 @@ class SecurityContextRepository(private val authManager: AuthenticationManager) 
         val token = cookie?.let { URLDecoder.decode(it, Charsets.UTF_8.name()) }
             ?: exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION)
 
-        // TODO: check the token variable here
         return Mono.justOrEmpty(token)
-            .filter { header -> header.startsWith("Bearer ") }
-            .flatMap { header ->
-                val token = header.substring(7)
+            .flatMap {
+                val token = token?.substring(7)
                 val auth = UsernamePasswordAuthenticationToken(token, token)
                 authManager.authenticate(auth).map { SecurityContextImpl(it) }
             }

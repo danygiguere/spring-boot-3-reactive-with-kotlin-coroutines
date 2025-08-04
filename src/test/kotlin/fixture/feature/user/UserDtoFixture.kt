@@ -14,7 +14,7 @@ object UserDtoFixture : Fixture<UserDto, UserDtoFixture.Builder>() {
         var id: Long = 1
         var username: String = "${faker.name.firstName().lowercase()}.${faker.name.lastName().lowercase()}"
         var email: String = "${username}@example.com"
-        var password: String = "${faker.internet.password(minLength = 12, maxLength = 30)}!1Aa"
+        var password: String = "secret123"
         var createdAt: LocalDateTime = LocalDateTime.now()
         var updatedAt: LocalDateTime = LocalDateTime.now()
 

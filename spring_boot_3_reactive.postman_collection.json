@@ -1,13 +1,13 @@
 {
 	"info": {
 		"_postman_id": "93e03255-2cea-4501-960b-258213ecee93",
-		"name": "Spring Boot 3 Reactive",
+		"name": "spring_boot_3_reactive",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1510588"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/demo",
+			"name": "/demo",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -21,12 +21,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/demo",
-					"protocol": "http",
+					"raw": "{{domain}}/demo",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"demo"
 					]
@@ -35,7 +33,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/users/1",
+			"name": "/users/1",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -43,12 +41,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/1",
-					"protocol": "http",
+					"raw": "{{domain}}/users/1",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"users",
 						"1"
@@ -58,7 +54,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/posts",
+			"name": "/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -66,12 +62,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/posts",
-					"protocol": "http",
+					"raw": "{{domain}}/posts",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"posts"
 					]
@@ -80,7 +74,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/posts/:id",
+			"name": "/posts/:id",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -103,7 +97,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/posts",
+			"name": "/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -120,12 +114,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/posts",
-					"protocol": "http",
+					"raw": "{{domain}}/posts",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"posts"
 					]
@@ -134,7 +126,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/posts",
+			"name": "/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -151,12 +143,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/posts/1",
-					"protocol": "http",
+					"raw": "{{domain}}/posts/1",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"posts",
 						"1"
@@ -166,7 +156,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/profile",
+			"name": "/profile",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -190,12 +180,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/profile",
-					"protocol": "http",
+					"raw": "{{domain}}/profile",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"profile"
 					]
@@ -204,7 +192,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/register",
+			"name": "/register",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -227,12 +215,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/register",
-					"protocol": "http",
+					"raw": "{{domain}}/register",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"register"
 					]
@@ -241,7 +227,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/login",
+			"name": "/login",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -258,12 +244,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
-					"protocol": "http",
+					"raw": "{{domain}}/login",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"login"
 					]
@@ -272,7 +256,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/login-with-token",
+			"name": "/login-with-token",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -289,12 +273,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login-with-token",
-					"protocol": "http",
+					"raw": "{{domain}}/login-with-token",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"login-with-token"
 					]
@@ -303,7 +285,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/refresh-token",
+			"name": "/refresh-token",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -320,12 +302,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/refresh-token",
-					"protocol": "http",
+					"raw": "{{domain}}/refresh-token",
 					"host": [
-						"localhost"
+						"{{domain}}"
 					],
-					"port": "8080",
 					"path": [
 						"refresh-token"
 					]

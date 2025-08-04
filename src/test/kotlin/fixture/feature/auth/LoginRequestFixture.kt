@@ -11,7 +11,7 @@ object LoginRequestFixture : Fixture<LoginRequest, LoginRequestFixture.Builder>(
 
     class Builder {
         var email: String = "${faker.name.firstName().lowercase()}.${faker.name.lastName().lowercase()}@example.com"
-        var password: String = "${faker.internet.password(minLength = 12, maxLength = 30)}!1Aa"
+        var password: String = "secret123"
 
         fun build(): LoginRequest = LoginRequest(
             email = email,

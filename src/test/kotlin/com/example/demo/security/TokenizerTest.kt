@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.env.Environment
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 
 @ContextConfiguration
 @ExtendWith(MockitoExtension::class, SpringExtension::class)
@@ -58,4 +59,23 @@ class TokenizerTest {
             Assertions.assertEquals(response.issuer,  environment.getProperty("app.token.issuer"))
         }
     }
+
+    @Test
+    fun `GIVEN a tampered JWT token WHEN verify is called THEN empty Mono is returned`() = runTest {
+        // Given
+        val userDto = UserFactory(userRepository).createOne()
+        val validToken = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
+        
+        // Tamper with the token by changing a character in the middle
+        val tamperedToken = validToken.replaceRange(10, 15, "HACKED")
+        
+        // When/Then
+        val result = kotlin.runCatching {
+            tokenizer.verifyAccessToken(tamperedToken).awaitSingleOrNull()
+        }
+        
+        // Verify the result is null (empty Mono)
+        Assertions.assertNull(result.getOrNull(), "Expected null for tampered token")
+    }
+
 }
