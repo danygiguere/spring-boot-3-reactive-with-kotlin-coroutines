@@ -60,8 +60,3 @@
         - Choose Custom TCP and enter the app port and under source, choose Anywhere-IPv4
         - Create another rule but for Anywhere-IPv6
         - You should now be able to access the Public IP from the internet
-
-
-
-       
-

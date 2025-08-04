@@ -65,16 +65,13 @@ class TokenizerTest {
         // Given
         val userDto = UserFactory(userRepository).createOne()
         val validToken = tokenizer.createAccessToken(userDto.id).removePrefix("Bearer ")
-        
-        // Tamper with the token by changing a character in the middle
-        val tamperedToken = validToken.replaceRange(10, 15, "HACKED")
+        val tamperedToken = validToken.replaceRange(4, 5, "HACKED")
         
         // When/Then
         val result = kotlin.runCatching {
             tokenizer.verifyAccessToken(tamperedToken).awaitSingleOrNull()
         }
-        
-        // Verify the result is null (empty Mono)
+
         Assertions.assertNull(result.getOrNull(), "Expected null for tampered token")
     }
 
