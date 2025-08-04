@@ -32,7 +32,7 @@
     - This project has a Dockerfile and a docker-compose.yml for deployement on AWS ECS
     - To test locally, you can add the credentials in the .env file and run docker-compose up
 
-### ASW ECS instructions
+### ASW ECS (Serverless Fargate) instructions
     - Make sure you have the AWS CLI installed on your machine
     - run gradle clean build
     - to build the image, run docker buildx build --no-cache --pull --platform linux/amd64 -t imagename . 
