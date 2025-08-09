@@ -52,6 +52,7 @@ class AuthController(private val userService: UserService,
             val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
             ResponseEntity.ok()
                 .headers { headers ->
+                    headers.add("Authorization", tokenizer.createAccessToken(user.id))
                     headers.add("Set-Cookie", accessTokenCookie.toString())
                     headers.add("Set-Cookie", refreshTokenCookie.toString())
                     headers.add("Set-Cookie", accessTokenExpiresAtCookie.toString())
