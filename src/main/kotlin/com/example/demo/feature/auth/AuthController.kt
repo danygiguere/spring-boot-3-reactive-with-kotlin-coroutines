@@ -1,5 +1,6 @@
 package com.example.demo.feature.auth
 
+import com.example.demo.feature.auth.dtos.AuthDto
 import com.example.demo.feature.auth.requests.LoginRequest
 import com.example.demo.feature.auth.requests.RegisterRequest
 import com.example.demo.feature.auth.requests.toCreateUserDto
@@ -38,12 +39,31 @@ class AuthController(private val userService: UserService,
     }
 
     /*
+        Use this endpoint to log in and return the token in the response header
+        then from javascript you can simply call this api with the token in the Authorization header.
+        const headers = new HttpHeaders({
+           'Authorization': 'Bearer ...'
+        });
+        return this.http.post<PostDto>('http://localhost:8080/posts', postDto, { headers });
+    */
+    @PostMapping("/login")
+    suspend fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<AuthDto> {
+        val user = userService.findByEmail(request.email)
+        val passwordMatch = passwordEncoder.matches(request.password, user?.password)
+        return if (user != null && passwordMatch) {
+            ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, tokenizer.createAccessToken(user.id)))
+        } else {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        }
+    }
+
+    /*
         Use this endpoint to log in and set a cookie with the token
         then from javascript you can simply call this api with withCredentials set to true.
         Like: this.http.post<PostDto>('http://localhost:8080/posts', postDto, { withCredentials: true });
      */
-    @PostMapping("/login")
-    suspend fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
+    @PostMapping("/login/cookie")
+    suspend fun loginCookie(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
         return if (user != null && passwordMatch) {
@@ -52,7 +72,6 @@ class AuthController(private val userService: UserService,
             val refreshTokenCookie = authService.createRefreshTokenCookie(user.id)
             ResponseEntity.ok()
                 .headers { headers ->
-                    headers.add("Authorization", tokenizer.createAccessToken(user.id))
                     headers.add("Set-Cookie", accessTokenCookie.toString())
                     headers.add("Set-Cookie", refreshTokenCookie.toString())
                     headers.add("Set-Cookie", accessTokenExpiresAtCookie.toString())
@@ -63,28 +82,32 @@ class AuthController(private val userService: UserService,
         }
     }
 
-    /*
-         Use this endpoint to log in and return the token in the response header
-         then from javascript you can simply call this api with the token in the Authorization header.
-         const headers = new HttpHeaders({
-            'Authorization': 'Bearer ...'
-         });
-         return this.http.post<PostDto>('http://localhost:8080/posts', postDto, { headers });
-     */
-    @PostMapping("/login-with-token")
-    suspend fun loginWithToken(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
-        val user = userService.findByEmail(request.email)
-        val passwordMatch = passwordEncoder.matches(request.password, user?.password)
-        return if (user != null && passwordMatch) {
-            ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(user)
+    @PostMapping("/refresh-token")
+    suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<AuthDto> {
 
-        } else {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]
+            ?.firstOrNull()?.value?.removePrefix("Bearer+")
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val decodedJwt = try {
+            tokenizer.verifyRefreshToken(refreshToken).awaitSingle()
+        } catch (ex: Exception) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
+
+        val userId = decodedJwt.subject?.toLongOrNull()
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        val user = userService.findById(userId)
+            ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+
+        // TODO: Check refresh token validity in DB
+
+        return ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, tokenizer.createAccessToken(user.id)))
     }
 
-    @PostMapping("/refresh-token")
-    suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<UserDto> {
+    @PostMapping("/refresh-token/cookie")
+    suspend fun refreshTokenCookie(exchange: ServerWebExchange): ResponseEntity<UserDto> {
 
         val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]
             ?.firstOrNull()?.value?.removePrefix("Bearer+")

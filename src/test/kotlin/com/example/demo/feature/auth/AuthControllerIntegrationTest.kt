@@ -1,7 +1,7 @@
 package com.example.demo.feature.auth
 
+import com.example.demo.feature.auth.dtos.AuthDto
 import com.example.demo.feature.user.UserRepository
-import com.example.demo.feature.user.dtos.UserDto
 import factory.UserFactory
 import fixture.feature.auth.LoginRequestFixture
 import fixture.feature.auth.RegisterRequestFixture
@@ -52,13 +52,15 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectHeader().exists("Authorization")
-            .expectBody(UserDto::class.java)
+            .expectBody(AuthDto::class.java)
             .returnResult()
 
         val authHeader = response.responseHeaders.getFirst("Authorization")
         Assertions.assertNotNull(authHeader)
-        Assertions.assertEquals(userDto.username, response.responseBody?.username)
-        Assertions.assertEquals(userDto.email, response.responseBody?.email)
+        Assertions.assertEquals(userDto.username, response.responseBody?.user?.username)
+        Assertions.assertEquals(userDto.email, response.responseBody?.user?.email)
+        Assertions.assertNotNull(response.responseBody?.token)
+        Assertions.assertEquals(authHeader, response.responseBody?.token)
     }
 
 }
