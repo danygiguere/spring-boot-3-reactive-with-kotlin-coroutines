@@ -19,7 +19,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 class SecurityConfig(private val securityContextRepository: SecurityContextRepository) {
 
     companion object {
-        private val ALLOWED_ORIGINS = listOf("http://localhost:4200")
+        private val ALLOWED_ORIGINS = listOf("http://localhost", "http://localhost:80", "http://localhost:4200")
         private val PUBLIC_PATHS = arrayOf(
             "/demo/**", "/users/**", "/images/**", "/profile/**",
             "/status/check", "/register", "/login", "/login/cookie", "/refresh-token", "/refresh-token/cookie"
