@@ -46,7 +46,7 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         }
 
         val response = webTestClient.post()
-            .uri("/login-with-token")
+            .uri("/login")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(loginRequest)
             .exchange()
@@ -59,8 +59,8 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         Assertions.assertNotNull(authHeader)
         Assertions.assertEquals(userDto.username, response.responseBody?.user?.username)
         Assertions.assertEquals(userDto.email, response.responseBody?.user?.email)
-        Assertions.assertNotNull(response.responseBody?.token)
-        Assertions.assertEquals(authHeader, response.responseBody?.token)
+        Assertions.assertNotNull(response.responseBody?.accessToken)
+        Assertions.assertEquals(authHeader, response.responseBody?.accessToken)
     }
 
 }

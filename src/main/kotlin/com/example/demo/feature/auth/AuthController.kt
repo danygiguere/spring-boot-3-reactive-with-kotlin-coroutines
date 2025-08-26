@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ServerWebExchange
+import java.time.Duration
 
 @RestController
 class AuthController(private val userService: UserService,
@@ -50,8 +51,11 @@ class AuthController(private val userService: UserService,
     suspend fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<AuthDto> {
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
+        val accessToken = tokenizer.createAccessToken(user?.id)
+        val refreshToken = tokenizer.createRefreshToken(user?.id)
+        val expiresAtTimestamp = authService.createExpireAtTimestamp(Duration.ofSeconds(tokenizer.accessTokenExpiry * 60L - 1))
         return if (user != null && passwordMatch) {
-            ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, tokenizer.createAccessToken(user.id)))
+            ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, accessToken, refreshToken, expiresAtTimestamp))
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
         }
@@ -103,7 +107,11 @@ class AuthController(private val userService: UserService,
 
         // TODO: Check refresh token validity in DB
 
-        return ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, tokenizer.createAccessToken(user.id)))
+        val accessToken = tokenizer.createAccessToken(user.id)
+        val newRefreshToken = tokenizer.createRefreshToken(user.id)
+        val expiresAtTimestamp = authService.createExpireAtTimestamp(Duration.ofSeconds(tokenizer.accessTokenExpiry * 60L - 1))
+
+        return ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, accessToken, newRefreshToken, expiresAtTimestamp))
     }
 
     @PostMapping("/refresh-token/cookie")

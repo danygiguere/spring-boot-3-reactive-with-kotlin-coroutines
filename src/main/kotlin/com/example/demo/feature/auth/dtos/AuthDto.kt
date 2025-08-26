@@ -4,5 +4,7 @@ import com.example.demo.feature.user.dtos.UserDto
 
 data class AuthDto(
     val user: UserDto,
-    val token: String
+    val accessToken: String,
+    val refreshToken: String,
+    val accessTokenExpiresAtTimestamp: String
 )

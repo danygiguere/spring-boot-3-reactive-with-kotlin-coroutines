@@ -32,10 +32,14 @@ class AuthService(private val tokenizer: Tokenizer) {
             .build()
     }
 
+    fun createExpireAtTimestamp(expiry: Duration): String {
+        val safeExpiry = expiry.minusSeconds(0)
+        return (System.currentTimeMillis() + safeExpiry.toMillis()).toString()
+    }
+
     fun createAccessTokenExpiresAtCookie(expiry: Duration): ResponseCookie {
-        val safeExpiry = expiry.minusSeconds(0) // subtract 10 seconds to avoid clock skew
-        val expiresAtTimestamp = System.currentTimeMillis() + safeExpiry.toMillis()
-        return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_EXPIRES_AT_NAME, expiresAtTimestamp.toString())
+        val expiresAtTimestamp = createExpireAtTimestamp(expiry)
+        return ResponseCookie.from(AuthConstants.ACCESS_TOKEN_EXPIRES_AT_NAME, expiresAtTimestamp)
             .httpOnly(false)
             .path("/")
             .sameSite("Lax")
