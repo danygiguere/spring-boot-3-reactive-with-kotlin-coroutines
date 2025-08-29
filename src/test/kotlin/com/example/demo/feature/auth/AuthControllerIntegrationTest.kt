@@ -27,7 +27,7 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         val registerRequest = RegisterRequestFixture.createOne()
 
         webTestClient.post()
-            .uri("/register")
+            .uri("/api/register")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(registerRequest)
             .exchange()
@@ -46,7 +46,7 @@ class AuthControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         }
 
         val response = webTestClient.post()
-            .uri("/login")
+            .uri("/api/login")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(loginRequest)
             .exchange()

@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "/demo",
+			"name": "/api/demo",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -16,16 +16,17 @@
 				"header": [
 					{
 						"key": "Accept-Language",
-						"value": "fr",
+						"value": "en",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{domain}}/demo",
+					"raw": "{{domain}}/api/demo",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"demo"
 					]
 				}
@@ -33,7 +34,7 @@
 			"response": []
 		},
 		{
-			"name": "/users/1",
+			"name": "/api/users/1",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -54,7 +55,7 @@
 			"response": []
 		},
 		{
-			"name": "/posts",
+			"name": "/api/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -62,11 +63,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{domain}}/posts",
+					"raw": "{{domain}}/api/posts",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"posts"
 					]
 				}
@@ -74,7 +76,7 @@
 			"response": []
 		},
 		{
-			"name": "/posts/:id",
+			"name": "/api/posts/:id",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -82,13 +84,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/posts/1",
+					"raw": "http://localhost:8080/api/posts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
 						"posts",
 						"1"
 					]
@@ -97,7 +100,7 @@
 			"response": []
 		},
 		{
-			"name": "/posts",
+			"name": "/api/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -114,11 +117,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/posts",
+					"raw": "{{domain}}/api/posts",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"posts"
 					]
 				}
@@ -126,7 +130,7 @@
 			"response": []
 		},
 		{
-			"name": "/posts",
+			"name": "/api/posts",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -143,11 +147,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/posts/1",
+					"raw": "{{domain}}/api/posts/1",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"posts",
 						"1"
 					]
@@ -156,7 +161,7 @@
 			"response": []
 		},
 		{
-			"name": "/profile",
+			"name": "/api/profile",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -180,11 +185,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/profile",
+					"raw": "{{domain}}/api/profile",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"profile"
 					]
 				}
@@ -192,7 +198,7 @@
 			"response": []
 		},
 		{
-			"name": "/register",
+			"name": "/api/register",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -215,11 +221,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/register",
+					"raw": "{{domain}}/api/register",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"register"
 					]
 				}
@@ -227,7 +234,7 @@
 			"response": []
 		},
 		{
-			"name": "/login",
+			"name": "/api/login",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -244,11 +251,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/login",
+					"raw": "{{domain}}/api/login",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"login"
 					]
 				}
@@ -256,36 +264,7 @@
 			"response": []
 		},
 		{
-			"name": "/login-with-token",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"johndoe@test.com\",\n    \"password\": \"secret123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{domain}}/login-with-token",
-					"host": [
-						"{{domain}}"
-					],
-					"path": [
-						"login-with-token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/refresh-token",
+			"name": "/api/refresh-token",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -302,12 +281,75 @@
 					}
 				},
 				"url": {
-					"raw": "{{domain}}/refresh-token",
+					"raw": "{{domain}}/api/refresh-token",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
+						"api",
 						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/login/cookie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"johndoe@test.com\",\n    \"password\": \"secret1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/login/cookie",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"login",
+						"cookie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/refresh-token/cookie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/api/refresh-token/cookie",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"api",
+						"refresh-token",
+						"cookie"
 					]
 				}
 			},

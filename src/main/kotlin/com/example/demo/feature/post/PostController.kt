@@ -22,35 +22,35 @@ class PostController(private val postService: PostService,
 
     companion object: KLogging()
 
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     suspend fun getAll(): ResponseEntity<List<PostDto>?> {
         val response = postService.findAll()
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/api/posts/{id}")
     suspend fun getById(@PathVariable id: Long): ResponseEntity<PostDto> {
         val response = postService.findById(id)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/posts/{id}/with-images")
+    @GetMapping("/api/posts/{id}/with-images")
     suspend fun getByIdWithImages(@PathVariable id: Long): ResponseEntity<PostWithImagesDto> {
         val response = postService.findByIdWithImages(id)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/posts/{id}/with-user")
+    @GetMapping("/api/posts/{id}/with-user")
     suspend fun getByIdWithUser(@PathVariable id: Long): ResponseEntity<PostWithUserDto> {
         val response = postService.findByIdWithUser(id)
         return if (response != null) ResponseEntity.ok(response)
         else ResponseEntity.notFound().build()
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/api/posts")
     suspend fun create(
         @Valid @RequestBody request: CreatePostRequest,
         authentication: Authentication
@@ -66,7 +66,7 @@ class PostController(private val postService: PostService,
         return ResponseEntity.ok(post)
     }
 
-    @PostMapping("/posts-with-image")
+    @PostMapping("/api/posts-with-image")
     suspend fun createPostWithImage(
         @Valid @RequestBody request: PostCreatePostWithImageRequest,
         authentication: Authentication
@@ -102,7 +102,7 @@ class PostController(private val postService: PostService,
         return ResponseEntity.ok(response)
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("/api/posts/{id}")
     suspend fun update(
         @PathVariable id: Long,
         @Valid @RequestBody request: UpdatePostRequest,
@@ -119,7 +119,7 @@ class PostController(private val postService: PostService,
         return ResponseEntity.ok(response)
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/api/posts/{id}")
     suspend fun delete(@PathVariable id: Long): ResponseEntity<Long> {
         val response = postService.delete(id)
         return ResponseEntity.ok(response)

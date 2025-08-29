@@ -39,7 +39,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When
             val result = webTestClient.post()
-                .uri("/posts")
+                .uri("/api/posts")
                 .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
@@ -62,7 +62,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When
             webTestClient.post()
-                .uri("/user/1")
+                .uri("/api/user/1")
                 .bodyValue(postDto)
                 .exchange()
                 .expectStatus().isEqualTo(401)
@@ -80,7 +80,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When, Then
             webTestClient.post()
-                .uri("/posts")
+                .uri("/api/posts")
                 .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
@@ -100,7 +100,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When
             val result = webTestClient.get()
-                .uri("/posts")
+                .uri("/api/posts")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(PostDto::class.java)
@@ -120,7 +120,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When
             val result = webTestClient.get()
-                .uri("""/posts/${postDto.id}""")
+                .uri("""/api/posts/${postDto.id}""")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PostDto::class.java)
@@ -142,7 +142,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
 
             // When
             val result = webTestClient.put()
-                .uri("""/posts/${postDto.id}""")
+                .uri("""/api/posts/${postDto.id}""")
                 .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .bodyValue(postDto)
                 .exchange()
@@ -163,7 +163,7 @@ class PostControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         runTest {
             // When
             val result = webTestClient.delete()
-                .uri("""/posts/1""")
+                .uri("""/api/posts/1""")
                 .header(HttpHeaders.AUTHORIZATION, bearerToken)
                 .exchange()
                 .expectStatus().is2xxSuccessful

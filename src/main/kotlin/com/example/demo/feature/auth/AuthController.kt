@@ -28,7 +28,7 @@ class AuthController(private val userService: UserService,
 
     companion object: KLogging()
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     suspend fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> {
         val newUser = userService.create(request.toCreateUserDto())
         return if (newUser != null) {
@@ -47,7 +47,7 @@ class AuthController(private val userService: UserService,
         });
         return this.http.post<PostDto>('http://localhost:8080/posts', postDto, { headers });
     */
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     suspend fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<AuthDto> {
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
@@ -66,7 +66,7 @@ class AuthController(private val userService: UserService,
         then from javascript you can simply call this api with withCredentials set to true.
         Like: this.http.post<PostDto>('http://localhost:8080/posts', postDto, { withCredentials: true });
      */
-    @PostMapping("/login/cookie")
+    @PostMapping("/api/login/cookie")
     suspend fun loginCookie(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserDto> {
         val user = userService.findByEmail(request.email)
         val passwordMatch = passwordEncoder.matches(request.password, user?.password)
@@ -86,7 +86,7 @@ class AuthController(private val userService: UserService,
         }
     }
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/api/refresh-token")
     suspend fun refreshToken(exchange: ServerWebExchange): ResponseEntity<AuthDto> {
 
         val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]
@@ -114,7 +114,7 @@ class AuthController(private val userService: UserService,
         return ResponseEntity.ok().header("Authorization", tokenizer.createAccessToken(user.id)).body(AuthDto(user, accessToken, newRefreshToken, expiresAtTimestamp))
     }
 
-    @PostMapping("/refresh-token/cookie")
+    @PostMapping("/api/refresh-token/cookie")
     suspend fun refreshTokenCookie(exchange: ServerWebExchange): ResponseEntity<UserDto> {
 
         val refreshToken = exchange.request.cookies[AuthConstants.REFRESH_TOKEN_NAME]
@@ -148,7 +148,7 @@ class AuthController(private val userService: UserService,
             .body(user)
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     suspend fun logout(exchange: ServerWebExchange): ResponseEntity<String> {
         val accessTokenCookie = authService.invalidateAccessTokenCookie()
         val refreshTokenCookie = authService.invalidateRefreshTokenCookie()

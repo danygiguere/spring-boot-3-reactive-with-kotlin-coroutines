@@ -1,6 +1,7 @@
 package com.example.demo.configuration
 
 import com.example.demo.security.SecurityContextRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -18,11 +19,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 @Configuration
 class SecurityConfig(private val securityContextRepository: SecurityContextRepository) {
 
+    @Value("\${app.allowed-origins}")
+    private val appAllowedOrigins: String? = null
+
     companion object {
-        private val ALLOWED_ORIGINS = listOf("http://localhost", "http://localhost:80", "http://localhost:4200")
         private val PUBLIC_PATHS = arrayOf(
-            "/demo/**", "/users/**", "/images/**", "/profile/**",
-            "/status/check", "/register", "/login", "/login/cookie", "/refresh-token", "/refresh-token/cookie"
+            "/api/demo/**", "/api/users/**", "/api/images/**", "/api/profile/**",
+            "/status/check", "/api/register", "/api/login", "/api/login/cookie", "/api/refresh-token", "/api/refresh-token/cookie"
         )
     }
 
@@ -34,7 +37,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
     @Bean
     fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
         val corsConfig = CorsConfiguration().apply {
-            allowedOrigins = ALLOWED_ORIGINS
+            allowedOrigins = appAllowedOrigins?.split(",")?.map { it.trim() } ?: listOf("*")
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true
@@ -58,7 +61,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
             .logout { it.disable() }
             .authorizeExchange {
                 it.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .pathMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                     .pathMatchers(*PUBLIC_PATHS).permitAll()
                     .anyExchange().authenticated()
             }

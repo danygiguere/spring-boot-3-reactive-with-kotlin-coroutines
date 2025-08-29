@@ -11,7 +11,7 @@ spring:
     user: ${secrets.spring.flyway.user}
     password: ${secrets.spring.flyway.password}
     baseline-on-migrate: true
-    cleanDisabled: false
+    clean-disabled: ${secrets.spring.flyway.clean-disabled}
 
   r2dbc:
     url: ${secrets.spring.r2dbc.url}
@@ -29,7 +29,11 @@ spring:
       max-acquire-time: 5
       max-life-time: 15
 
+server:
+  port: 8080
+
 app:
+  allowed-origins: ${secrets.app.allowed-origins}
   token:
     issuer: ${spring.application.name}
   access-token:

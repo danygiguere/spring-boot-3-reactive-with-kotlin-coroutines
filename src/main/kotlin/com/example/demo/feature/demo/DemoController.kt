@@ -29,12 +29,12 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
     @Value("\${server.port:8080}") // Default to 8080 if not specified
     private val serverPort: Int = 0
 
-    @GetMapping("/demo")
+    @GetMapping("/api/demo")
     fun demo(): String {
-        return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale()) + " $serverPort"
+        return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale()) + " $serverPort" + " trial 4"
     }
 
-    @GetMapping("/demo/blocking")
+    @GetMapping("/api/demo/blocking")
     fun demoBlocking(exchange: ServerWebExchange): String {
         val timeBefore = System.currentTimeMillis()
         /*
@@ -53,7 +53,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         return "Number of milliseconds to execute function (containing two 1000ms queries) : $duration ms"
     }
 
-    @GetMapping("/demo/non-parallel")
+    @GetMapping("/api/demo/non-parallel")
     suspend fun demoNonParallel(exchange: ServerWebExchange): String {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed one after the other
@@ -64,7 +64,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         return "Number of milliseconds to execute function (containing two 1000ms queries) : $duration ms"
     }
 
-    @GetMapping("/demo/parallel")
+    @GetMapping("/api/demo/parallel")
     suspend fun demoParallel(exchange: ServerWebExchange): String = coroutineScope {
         val timeBefore = System.currentTimeMillis()
         // The 2 calls below are executed in parallel (at the same time)
@@ -77,7 +77,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         return@coroutineScope "Number of milliseconds to execute this function (containing two 1000ms parallel queries) : $duration ms"
     }
 
-    @GetMapping("/demo/webclient")
+    @GetMapping("/api/demo/webclient")
     suspend fun demoWebclient(): String? {
         val webClient = WebClient.create("http://localhost:8080")
 
@@ -95,7 +95,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
         }
     }
 
-    @GetMapping("/demo/flow")
+    @GetMapping("/api/demo/flow")
     suspend fun demoFlow(): Int {
         var sum = 0
         generateFlowNumbers(5).collect { number ->

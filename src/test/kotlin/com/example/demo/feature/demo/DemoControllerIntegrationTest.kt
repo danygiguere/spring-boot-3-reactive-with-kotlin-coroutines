@@ -19,7 +19,7 @@ class DemoControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         val welcomeMessageInEnglish = bundle.getString("welcome")
 
         val result = webTestClient.get()
-                .uri("/demo")
+                .uri("/api/demo")
                 .exchange()
                 .expectStatus().is2xxSuccessful
                 .expectBody(String::class.java)
@@ -33,7 +33,7 @@ class DemoControllerIntegrationTest(@Autowired val webTestClient: WebTestClient)
         val bundle = ResourceBundle.getBundle("messages", Locale.FRENCH)
         val welcomeMessageInFrench = bundle.getString("welcome")
         val result = webTestClient.get()
-            .uri("/demo")
+            .uri("/api/demo")
             .header("Accept-Language", "fr")
             .exchange()
             .expectStatus().is2xxSuccessful
