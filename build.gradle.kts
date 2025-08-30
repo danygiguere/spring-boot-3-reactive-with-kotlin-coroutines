@@ -39,6 +39,7 @@ dependencies {
 	implementation("io.bloco:faker:2.0.4")
 	implementation("com.auth0:java-jwt:4.4.0")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")

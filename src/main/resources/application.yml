@@ -33,7 +33,7 @@ server:
   port: 8080
 
 app:
-  allowed-origins: ${secrets.app.allowed-origins}
+  cors-allowed-origins: ${secrets.app.cors-allowed-origins}
   token:
     issuer: ${spring.application.name}
   access-token:

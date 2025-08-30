@@ -19,13 +19,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 @Configuration
 class SecurityConfig(private val securityContextRepository: SecurityContextRepository) {
 
-    @Value("\${app.allowed-origins}")
-    private val appAllowedOrigins: String? = null
+    @Value("\${app.cors-allowed-origins}")
+    private val corsAllowedOrigins: String? = null
 
     companion object {
         private val PUBLIC_PATHS = arrayOf(
-            "/api/demo/**", "/api/users/**", "/api/images/**", "/api/profile/**",
-            "/status/check", "/api/register", "/api/login", "/api/login/cookie", "/api/refresh-token", "/api/refresh-token/cookie"
+            "/actuator/health/**", "/api/demo/**", "/api/users/**", "/api/images/**", "/api/profile/**",
+           "/api/register", "/api/login", "/api/login/cookie", "/api/refresh-token", "/api/refresh-token/cookie"
         )
     }
 
@@ -37,7 +37,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
     @Bean
     fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
         val corsConfig = CorsConfiguration().apply {
-            allowedOrigins = appAllowedOrigins?.split(",")?.map { it.trim() } ?: listOf("*")
+            allowedOrigins = corsAllowedOrigins?.split(",")?.map { it.trim() } ?: listOf("*")
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true
@@ -61,6 +61,7 @@ class SecurityConfig(private val securityContextRepository: SecurityContextRepos
             .logout { it.disable() }
             .authorizeExchange {
                 it.pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .pathMatchers(HttpMethod.GET, "/actuator/health/**").permitAll()
                     .pathMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                     .pathMatchers(*PUBLIC_PATHS).permitAll()
                     .anyExchange().authenticated()
