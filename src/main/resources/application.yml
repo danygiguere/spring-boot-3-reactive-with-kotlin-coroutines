@@ -38,10 +38,10 @@ app:
     issuer: ${spring.application.name}
   access-token:
     secret: ${secrets.app.access-token.secret}
-    expires-minute: 50000
+    expires-minute: 99999999
   refresh-token:
     secret: ${secrets.app.refresh-token.secret}
-    expires-minute: 500000
+    expires-minute: 99999999
 
 logging:
   level:

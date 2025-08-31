@@ -79,10 +79,10 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
 
     @GetMapping("/api/demo/webclient")
     suspend fun demoWebclient(): String? {
-        val webClient = WebClient.create("http://localhost:8080")
+        val webClient = WebClient.create("http://localhost:${serverPort}")
 
         return webClient.get()
-            .uri("/demo")
+            .uri("/api/demo")
             .retrieve()
             .awaitBody<String>()
     }

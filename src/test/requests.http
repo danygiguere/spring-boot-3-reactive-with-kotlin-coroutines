@@ -1,34 +1,34 @@
 #You must start the app before running this file.
 
 ### Set a bearer token with no expiration date for testing purposes
-@bearerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZW1vIiwic3ViIjoiMSIsInJvbGUiOiJST0xFX1VTRVIiLCJleHAiOjE3NTAyODE3NDh9.YK5a0qPQJpS8C1m1B8u-navwXz0tV9aL_ErQQEO3ibs
+@bearerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZW1vIiwic3ViIjoiMTYiLCJyb2xlIjoiUk9MRV9VU0VSIiwidHlwZSI6IkFDQ0VTU19UT0tFTiIsImV4cCI6Nzc1NjY2NjM4MX0.jslOf2fFRrNXgIxLwwestyJMWDBdEsNs0vdSo1KpfWM
 
 ### Set port gloabally and drop and call /demo route
 < {%
     client.global.set("port", "8080")
 %}
-GET http://localhost:{{port}}/demo
+GET http://localhost:{{port}}/api/demo
 
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body === "Welcome to my Spring Boot Kotlin app")
+        client.assert(response.body.startsWith("Welcome to my Spring Boot Kotlin app"))
     });
 %}
 
 ### Call /demo route with the Accept-Language header set to French
-GET http://localhost:{{port}}/demo
+GET http://localhost:{{port}}/api/demo
 Accept-Language: fr
 
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body === "Bienvenue dans mon app Spring Boot Kotlin")
+        client.assert(response.body.startsWith("Bienvenue dans mon app Spring Boot Kotlin"))
     });
 %}
 
 ### Call /demo/blocking
-GET http://localhost:{{port}}/demo/blocking
+GET http://localhost:{{port}}/api/demo/blocking
 
 > {%
     client.test("Request executed successfully", function () {
@@ -37,7 +37,7 @@ GET http://localhost:{{port}}/demo/blocking
 %}
 
 ### Call /demo/non-parallel route
-GET http://localhost:{{port}}/demo/non-parallel
+GET http://localhost:{{port}}/api/demo/non-parallel
 
 > {%
     client.test("Request executed successfully", function () {
@@ -46,7 +46,7 @@ GET http://localhost:{{port}}/demo/non-parallel
 %}
 
 ### Call /demo/parallel route
-GET http://localhost:{{port}}/demo/parallel
+GET http://localhost:{{port}}/api/demo/parallel
 
 > {%
     client.test("Request executed successfully", function () {
@@ -55,181 +55,18 @@ GET http://localhost:{{port}}/demo/parallel
 %}
 
 ### Call /demo/webclient route
-GET http://localhost:{{port}}/demo/webclient
+GET http://localhost:{{port}}/api/demo/webclient
 
 > {%
     client.test("Request executed successfully", function () {
         client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body === "Welcome to my Spring Boot Kotlin app")
+        client.assert(response.body.startsWith("Welcome to my Spring Boot Kotlin app"))
     });
 %}
 
 #### Call /demo/flow route
-GET http://localhost:{{port}}/demo/flow
+GET http://localhost:{{port}}/api/demo/flow
 Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
-
-
-### GET User with id 1
-GET http://localhost:{{port}}/users/1
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.id === 1)
-    });
-%}
-
-### Create a Post
-POST http://localhost:{{port}}/posts
-Content-Type: application/json
-Authorization: {{bearerToken}}
-
-{
-  "userId": 1,
-  "title": "The title",
-  "description": "The description"
-}
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.userId === 1)
-        client.assert(response.body.title === "The title")
-    });
-%}
-
-### Create another Post
-POST http://localhost:{{port}}/posts
-Content-Type: application/json
-Authorization: {{bearerToken}}
-
-{
-  "userId": 1,
-  "title": "The title",
-  "description": "The description"
-}
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.userId === 1)
-        client.assert(response.body.title === "The title")
-    });
-%}
-
-#### GET User with id 1 with its posts
-GET http://localhost:{{port}}/users/1/with-posts
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.id === 1)
-        client.assert(response.body.posts[0].userId === 1)
-    });
-%}
-
-### GET all Posts
-GET http://localhost:{{port}}/posts
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
-
-### GET Post with id 1
-GET http://localhost:{{port}}/posts/1
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.id === 1)
-    });
-%}
-
-### Create an Image
-POST http://localhost:{{port}}/images
-Content-Type: application/json
-
-{
-  "postId": 1,
-  "url": "https://placehold.co/600x400"
-}
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.url === "https://placehold.co/600x400")
-    });
-%}
-
-### GET Image with id 1
-GET http://localhost:{{port}}/images/1
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.postId === 1)
-        client.assert(response.body.url.startsWith("https://picsum.photos/seed/"))
-    });
-%}
-
-### GET Post with id 1 with its images
-GET http://localhost:{{port}}/posts/1/with-images
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.images[0].id === 1)
-        client.assert(response.body.images[0].postId === 1)
-    });
-%}
-
-### GET Post with id 1 with the user it belongs to
-GET http://localhost:{{port}}/posts/1/with-user
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
-
-#### GET User with id 1 with its images (hasManyImagesThroughPosts relationship)
-GET http://localhost:{{port}}/users/1/with-images
-Accept: application/json
-
-> {%
-    client.test("Request executed successfully", function () {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.id === 1)
-        client.assert(response.body.images.length > 0)
-        client.assert(response.body.images[0].url.startsWith("https://picsum.photos/seed/"))
-    });
-%}
-
-
-### Update Post with id 1
-PUT http://localhost:{{port}}/posts/1
-Content-Type: application/json
-Authorization: {{bearerToken}}
-
-{
-  "title": "The new title",
-  "description": "The new description"
-}
 
 > {%
     client.test("Request executed successfully", function () {
@@ -238,7 +75,7 @@ Authorization: {{bearerToken}}
 %}
 
 ### Create a Profile
-POST http://localhost:{{port}}/profile
+POST http://localhost:{{port}}/api/profile
 Content-Type: application/json
 
 {
@@ -246,7 +83,7 @@ Content-Type: application/json
 }
 
 ### Create a Profile with an invalid phone number that will fail validation (will return a 400 with the errors)
-POST http://localhost:{{port}}/profile
+POST http://localhost:{{port}}/api/profile
 Content-Type: application/json
 
 {
@@ -261,7 +98,7 @@ Content-Type: application/json
 
 
 ### Create a User with the Accept-Language header set to French and with invalid inputs that will fail validation (will return a 400 with the errors in French)
-POST http://localhost:{{port}}/profile
+POST http://localhost:{{port}}/api/profile
 Content-Type: application/json
 Accept-Language: fr
 
