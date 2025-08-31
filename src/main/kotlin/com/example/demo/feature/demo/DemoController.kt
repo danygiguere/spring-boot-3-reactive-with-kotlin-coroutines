@@ -31,7 +31,7 @@ class DemoController(val messageSource: ResourceBundleMessageSource? = null) {
 
     @GetMapping("/api/demo")
     fun demo(): String {
-        return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale()) + " $serverPort" + " trial 4"
+        return messageSource!!.getMessage("welcome", null, LocaleContextHolder.getLocale()) + " $serverPort" + " trial 1"
     }
 
     @GetMapping("/api/demo/blocking")
