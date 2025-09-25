@@ -39,4 +39,14 @@ class UserRepository(
             .map { row -> (row["id"] as Number).toLong() }
             .awaitSingle()
 
+    suspend fun updatePassword(userId: Long, newPassword: String): Boolean {
+        val rowsUpdated = databaseClient.sql("UPDATE users SET password = :password WHERE id = :id")
+            .bind("id", userId)
+            .bind("password", passwordEncoder.encode(newPassword))
+            .fetch()
+            .rowsUpdated()
+            .awaitSingle()
+        return rowsUpdated > 0
+    }
+
 }

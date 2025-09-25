@@ -12,12 +12,14 @@ import com.example.demo.feature.user.dtos.toUserWithImagesDto
 import com.example.demo.feature.user.dtos.toUserWithPostsDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(val userRepository: UserRepository,
                   private val postRepository: PostRepository,
-                  private val imageRepository: ImageRepository) {
+                  private val imageRepository: ImageRepository,
+                  private val passwordEncoder: PasswordEncoder) {
     suspend fun findById(id: Long): UserDto? =
             userRepository.findById(id)?.toUserDto()
 
@@ -43,5 +45,15 @@ class UserService(val userRepository: UserRepository,
         return findById(id) ?: throw IllegalStateException("Failed to get user")
     }
 
+    suspend fun updatePassword(userId: Long, currentPassword: String, newPassword: String): Boolean {
+        val user = userRepository.findById(userId) ?: return false
+        val passwordMatch = passwordEncoder.matches(currentPassword, user.password)
+
+        if (!passwordMatch) {
+            return false
+        }
+
+        return userRepository.updatePassword(userId, newPassword)
+    }
 
 }
